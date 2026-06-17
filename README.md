@@ -18,6 +18,7 @@ Supervisor: François Lafond
 ├── README.md
 ├── methodology.md               ← full method description (Parts A/B/C)
 ├── partA1_findings.md           ← Part A.1 results and observations
+├── partA2_findings.md           ← Part A.2 results (addition, correlation, autocorrelation)
 │
 ├── report/
 │   └── main.tex                 ← 2-page LaTeX report
@@ -29,13 +30,13 @@ Supervisor: François Lafond
 │
 ├── scripts/
 │   ├── partA1_hindcast.py       ← Part A.1: hindcast evaluation (6 vars, weighting, vintage)
-│   ├── partA1_co2_errors.ipynb  ← Part A.1: interactive notebook (basic)
-│   └── partA1_co2_weighted.ipynb ← Part A.1: notebook with weighting toggle
+│   ├── partA2_diagnostics.py    ← Part A.2: addition test, cross-correlation, autocorrelation
 │
 └── figures/
     ├── partA1_fig1_by_year.png      ← 6×3 grid: all variables × ME/MAE/RMSE by year
     ├── partA1_fig2_mae_nz.png       ← 6 histograms: MAE NZ vs non-NZ
-    └── partA1_fig3_dashboard.png    ← dashboard: NZ + economy/energy + vintage
+    ├── partA1_fig3_dashboard.png    ← dashboard: NZ + economy/energy + vintage
+    └── partA2_fig1_diagnostics.png  ← correlation heatmap + ME bars + autocorrelation
 ```
 
 ## Naming convention

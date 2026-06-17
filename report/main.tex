@@ -31,7 +31,7 @@
 \affiliation{\institution{Schneider Electric, Grenoble}}
 
 \begin{abstract}
-Of the 1,564 pathways in the Scenario Compass Initiative, 497 reach net zero CO$_2$ by 2070, yielding a naive $P(\text{NZ2070}) \approx 32\%$. We evaluate this ensemble against observed 2010--2025 data for six variables. Net-zero scenarios carry significantly larger hindcast errors than non-net-zero ones --- they assumed faster decarbonisation than has occurred. This bias is robust to ensemble rebalancing across model families, to model economic structure, and to project vintage. The naive 32\% likely overstates the probability of reaching net zero by 2070.
+Of the 1,564 pathways in the Scenario Compass Initiative, 497 reach net zero CO$_2$ by 2070, yielding a naive $P(\text{NZ2070}) \approx 32\%$. We evaluate this ensemble against observed 2010--2025 data for six variables. Net-zero scenarios carry significantly larger hindcast errors than non-net-zero ones --- they assumed faster decarbonisation than has occurred. Moreover, models underestimate both fossil \emph{and} renewable deployment simultaneously: observed solar PV capacity in 2025 is double the ensemble median, yet coal also hit a record. The ensemble embeds a substitution logic that reality is not confirming --- the world adds renewables without retiring fossils at the expected pace. These findings are robust to ensemble rebalancing, model economic structure, and project vintage. The naive 32\% likely overstates the probability of reaching net zero by 2070.
 \end{abstract}
 
 \keywords{hindcast, scenario ensemble, net zero, integrated assessment models}
@@ -80,7 +80,9 @@ NZ2070 scenarios carry ME$_j = +607$ (they systematically underestimate emission
 \paragraph{A.1 --- Vintage does not explain the bias.}
 Recent projects ($\geq$2021) calibrate better at their base year (MAE$_{2010}$: 685 vs 1,141 for pre-2017 projects) but undershoot 2025 \emph{more} (ME$_{2025}$: $+3{,}280$ vs $+466$) because they incorporated more ambitious decarbonisation assumptions. The NZ vs.\ non-NZ gap persists within every vintage group (ME$_j \approx +800$ for NZ vs.\ $\approx 0$ for non-NZ).
 
-% ── Placeholder for Parts B and C results ──
+\paragraph{A.2 --- Energy addition, not substitution.}
+Models underestimate fossil \emph{and} renewable deployment simultaneously. Solar PV observed capacity in 2025 (2,392~GW) is double the ensemble median (1,169~GW), yet coal also hit a record. Cross-variable error correlations confirm the mechanism: within the ensemble, coal and solar errors are anti-correlated ($\rho = -0.28$), indicating models embed a substitution logic. But the \emph{level} is wrong for both --- the world adds renewables on top of persistent fossils rather than replacing them. NZ scenarios have a stronger substitution assumption ($\rho = -0.30$) than non-NZ ($-0.17$). Nuclear is overestimated (median 437 vs 377~GW observed) and GDP even more so ($-13{,}400$~B\$). Temporal autocorrelation reveals that energy errors evolve with the forecast horizon ($\rho_{2010,2025} \approx 0$ for CO$_2$, coal, solar), while GDP errors are structural and persistent ($\rho = +0.70$).
+
 % \paragraph{B --- Variable selection.}
 % TODO
 %
