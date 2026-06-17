@@ -1,0 +1,386 @@
+\documentclass[sigconf]{acmart}
+
+% ============================================================================
+% ESEE 2026 METADATA
+% ============================================================================
+\setcopyright{none}
+\settopmatter{printacmref=false, printccs=false}
+\acmDOI{}
+\acmISBN{}
+\acmConference[ESEE '26]{16th Biennial Conference of the European Society for Ecological Economics}{June 30--July 3, 2026}{Ghent, Belgium}
+
+% ============================================================================
+% PACKAGES
+% ============================================================================
+\usepackage{amsmath,amsfonts}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{eurosym}
+
+\sisetup{per-mode=symbol, exponent-product=\times, group-separator={,}}
+\usetikzlibrary{arrows.meta,positioning,calc}
+
+% ============================================================================
+\begin{document}
+% ============================================================================
+
+\title{Why Digital Efficiency Fails to Decouple: Purpose, Allocation, and the Energy Paradox of ICT Capital}
+
+\author{R\'emi Paccou}
+\email{remi.paccou@proton.me}
+\affiliation{%
+  \institution{CIRED -- Centre International de Recherche sur l'Environnement et le D\'eveloppement (UMR 8568, CNRS, \'Ecole des Ponts, Cirad, AgroParisTech, EHESS)}
+  \city{Nogent-sur-Marne}
+  \country{France}
+}
+
+% ----------------------------------------------------------------------------
+% ABSTRACT (150 words max)
+% ----------------------------------------------------------------------------
+\begin{abstract}
+Digitalization is widely invoked in climate strategies, yet aggregate data for France (2000--2019) reveal a paradox: ICT energy consumption grew +369\% while non-ICT energy declined $-$8\%, a divergence invisible in aggregate decoupling metrics. This paper develops a system dynamics model that disaggregates capital by technology type (ICT vs.\ non-ICT) and deployment purpose (sustainable vs.\ productive). The key finding is that purpose---not technology type---determines energy outcomes. Sustainable capital decouples by design; productive capital generates rebound and induced demand by structure. Yet sustainable ICT capital represents less than 0.5\% of total capital, because allocation follows private returns rather than collective efficiency. Scenarios to 2040 show that the composition of digital investment matters more than its volume: a 27-percentage-point gap separates reallocation from tendential trajectories. AI amplifies existing mechanisms without altering this structural constraint. Without institutional intervention on allocation, digital efficiency remains unrealized at macro scale.
+\end{abstract}
+
+\keywords{digitalization, energy demand, capital allocation, rebound effects, system dynamics, decoupling}
+
+\maketitle
+
+% ============================================================================
+\section{Introduction}\label{sec:intro}
+% ============================================================================
+
+Digital technologies are increasingly embedded in climate strategies under the assumption that efficiency gains at application level translate into energy reductions at macro scale. The European Green Deal frames digitalization as an enabler of climate objectives; national strategies invoke ``green digital transition'' as a policy priority. Yet the empirical record is less reassuring than these framings suggest.
+
+For France over 2000--2019, aggregate indicators show modest decoupling: GDP grew 27\% while final energy consumption declined 7\%. This trajectory is consistent with the standard narrative. However, disaggregating by technology type reveals a different picture. ICT energy consumption---covering data centers, networks, and terminals---grew approximately +369\%, while non-ICT energy declined $-$8\%. The aggregate trajectory conceals a sharp sectoral divergence where one sector intensifies while the other slowly decouples.
+
+This divergence is not an anomaly confined to France. Cross-country studies find complex, context-dependent relationships between ICT deployment and energy demand \cite{lange2020}, and recent work identifies digitalization as generating burdens alongside opportunities for energy transitions \cite{hambye2026}. The question is not whether digital technologies \emph{can} reduce energy---documented case studies confirm they can \cite{it4green2025}---but why these documented potentials fail to materialize at the macro level.
+
+The ecological economics literature offers a well-established framework for this type of puzzle. The rebound effect, formalized since Jevons and systematized by Sorrell \cite{sorrell2007}, explains how efficiency gains can be partially or fully offset by behavioral and systemic responses. Brockway et al.\ \cite{brockway2021} provide meta-analytic evidence that economy-wide rebound is substantial, potentially exceeding 60\%. But the digital case involves an additional mechanism: \emph{induced demand}---the creation of entirely new energy-consuming activities (streaming, cloud computing, generative AI) that do not require prior efficiency gains as a trigger. This channel, emphasized by Lange et al.\ \cite{lange2023}, may dominate rebound in magnitude for productive ICT.
+
+Despite this analytical richness, energy-economy models used for climate policy---including integrated assessment models (IAMs)---typically represent digital technologies as undifferentiated technical progress, absorbed into aggregate efficiency parameters \cite{grubler2018}. This treatment precludes scenario discrimination: when digital capital is homogeneous, models cannot distinguish futures where the same investment volume produces different energy outcomes because deployment purposes differ.
+
+This paper addresses the gap by developing a system dynamics model---DIGICLIM---that disaggregates capital along two dimensions: technology type (ICT vs.\ non-ICT) and deployment purpose (sustainable vs.\ productive). The model is calibrated on French data (2000--2019) using national accounts, ICT energy assessments, and climate investment tracking. Rather than predicting unique trajectories, the objective is to identify the structural conditions under which digitalization decouples or couples energy and economic growth.
+
+Three questions structure the analysis. First, does aggregation mask empirically significant divergences in energy trajectories? Second, does deployment purpose---rather than technology type alone---determine the direction of energy effects? Third, what do these structural dynamics imply for the feasibility of digital decoupling under current and alternative allocation patterns?
+
+
+% ============================================================================
+\section{Analytical framework}\label{sec:framework}
+% ============================================================================
+
+\subsection{Capital by purpose}
+
+The central analytical move is to classify capital not only by technology type but by the dominant energy mechanism it activates. We distinguish four categories along two dimensions:
+
+\begin{itemize}
+  \item \textbf{Technology type}: ICT (computing, storage, transmission infrastructure) versus non-ICT (buildings, machines, transport equipment, conventional infrastructure).
+  \item \textbf{Deployment purpose}: Sustainable ($K_S$)---capital deployed with explicit environmental objectives (building energy management systems, smart grids, industrial process optimization under emission constraints)---versus productive ($K_P$)---capital deployed for general economic output without explicit environmental targeting (enterprise IT, consumer devices, e-commerce infrastructure).
+\end{itemize}
+
+This yields four capital stocks: $K_{S,ICT}$, $K_{P,ICT}$, $K_{S,NICT}$, $K_{P,NICT}$. The distinction is not normative but mechanistic: sustainable and productive capital activate different combinations of efficiency, rebound, and induction. A logistics optimization algorithm is classified as $K_S$ when deployed under binding emission constraints (where rebound is institutionally blocked) and as $K_P$ when deployed for cost reduction (where savings are reallocated to further production). The same technology, different purpose, different energy outcome.
+
+This framing responds to a specific limitation of existing approaches. The ICT-for-sustainability literature tends to enumerate beneficial applications \cite{bieser2023} without accounting for the mechanisms that erode their macro-level impact. Conversely, the rebound literature identifies erosion mechanisms but rarely connects them to the structural composition of the capital stock. Purpose-based disaggregation links the two: mechanisms are not external parameters imposed on homogeneous capital but intrinsic properties of how capital is deployed.
+
+\subsection{Mechanisms as constitutive properties}
+
+Three mechanisms operate on energy intensity, each with different strength depending on capital type:
+
+\textbf{Efficiency} ($\eta$): energy reduction per unit of capital service. Sustainable capital is designed for this; productive capital achieves it incidentally.
+
+\textbf{Rebound} ($\sigma$): reallocation of savings from efficiency gains toward increased consumption of the same or other services. Sustainable capital deployed under institutional constraints (emission caps, energy budgets) exhibits lower rebound because savings cannot be freely reallocated. Productive capital, unconstrained, exhibits higher rebound.
+
+\textbf{Induction} ($\mu$): creation of entirely new energy-consuming activities. This mechanism is particularly strong for productive ICT, where digital infrastructure enables activities that did not previously exist (cloud services, real-time streaming, AI inference at scale). Sustainable capital, by definition oriented toward reducing existing pressures, generates little induction.
+
+The net effect on energy intensity is:
+\begin{equation}\label{eq:net}
+\text{NET} = -\eta + \sigma \cdot \eta + \mu \cdot \max(0, g_Y)
+\end{equation}
+where $g_Y$ is the rate of economic growth. When NET $< 0$, capital decouples; when NET $> 0$, capital couples energy and output.
+
+The mechanism hierarchy is:
+\begin{equation}\label{eq:hierarchy}
+\eta_S > \eta_P, \qquad \sigma_S < \sigma_P, \qquad \mu_S \ll \mu_P
+\end{equation}
+
+This ordering is not a calibration artefact. It follows from the constitutive properties of each capital type: sustainable capital is \emph{designed} for efficiency with constrained rebound; productive capital is \emph{designed} for output expansion, generating rebound and induction as structural byproducts.
+
+\subsection{Model structure}
+
+DIGICLIM is a stock-flow model with 9 state variables: 4 capital stocks, 2 energy intensity stocks ($ei_{ICT}$, $ei_{NICT}$), 1 carbon intensity stock ($IC$), and 2 lag variables. Investment is allocated through a two-level cascade: first between ICT and non-ICT (share $\phi$), then between sustainable and productive within each sector (shares $\rho_{S,ICT}$ and $\rho_{S,NICT}$).
+
+Energy is computed as:
+\begin{equation}\label{eq:energy}
+E = ei_{ICT} \times K_{ICT} + ei_{NICT} \times K_{NICT}
+\end{equation}
+where energy intensities evolve dynamically:
+\begin{equation}\label{eq:dei}
+\frac{d(ei)}{dt} = ei \times (\text{NET} - \text{AEEI})
+\end{equation}
+
+The autonomous energy efficiency improvement (AEEI) captures technology-specific trends distinct from digitalization: $\text{AEEI}_{ICT} = -0.053$ (intensification---usage growth outpaces hardware efficiency) and $\text{AEEI}_{NICT} = +0.022$ (decoupling---thermal regulations, industrial standards). This separation is how the model distinguishes digitalization-specific dynamics from general technical progress: the AEEI captures non-digital trends, while the mechanisms ($\eta$, $\sigma$, $\mu$) capture digitalization's specific contribution, modulated by the composition of the capital stock.
+
+Production follows an extended Cobb-Douglas function $Y = A(t) \cdot K_{eff}^\alpha \cdot L(t)^\beta \cdot E_{prev}^\gamma$, where effective capital $K_{eff} = K_{total} + \lambda \cdot K_{S,ICT}$ credits sustainable ICT with a productivity bonus---reflecting documented co-benefits of environmental digitalization (predictive maintenance reducing downtime, smart grids reducing outage costs).
+
+Employment enters through a trend function $L(t)$; energy prices are not endogenized. The model isolates the capital-energy channel deliberately: employment dynamics and price formation are relevant but constitute different research questions. This limitation is acknowledged, not hidden.
+
+
+% ============================================================================
+\section{Data and calibration}\label{sec:data}
+% ============================================================================
+
+The model is calibrated on France, 2000--2019, using six publicly available data sources:
+
+\begin{itemize}
+  \item \textbf{National accounts}: INSEE (GDP, employment, gross fixed capital formation)
+  \item \textbf{ICT capital}: EU KLEMS \& INTANProd (ICT/non-ICT capital stocks and investment)
+  \item \textbf{Climate investment}: I4CE Panorama (sustainable investment by sector, 2011--2019)
+  \item \textbf{Energy}: SDES (final energy consumption), ADEME--ARCEP (ICT energy, 2010--2022)
+  \item \textbf{Emissions}: CITEPA (GHG emissions by sector)
+  \item \textbf{ICT efficiency}: IT4GREEN (bottom-up assessment of 10 digital use cases)
+\end{itemize}
+
+Initial capital stocks (year 2000, in Bn\euro{}): $K_{S,ICT} = 4.5$, $K_{P,ICT} = 318$, $K_{S,NICT} = 472$, $K_{P,NICT} = 8{,}427$. Total capital: 9{,}221 Bn\euro{} (K/Y ratio $\approx$ 3.06). ICT represents 3.5\% of total capital; sustainable capital 5.2\%; sustainable ICT 0.05\%.
+
+\begin{table}[t]
+\centering
+\caption{Key calibrated parameters}
+\label{tab:params}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Source} & \textbf{Confidence} \\
+\midrule
+$\eta_{S}$ (efficiency, sustainable) & 0.04 & IT4GREEN, IEA & Medium \\
+$\eta_{P}$ (efficiency, productive) & 0.02 & IT4GREEN, IEA & Medium \\
+$\sigma_{S}$ (rebound, sustainable) & 0.46 & Sorrell, Brockway & Medium \\
+$\sigma_{P}$ (rebound, productive) & 0.58 & Sorrell, Brockway & Medium \\
+$\mu_{S}$ (induction, sustainable) & 0.05 & Estimate & Low \\
+$\mu_{P}$ (induction, productive) & 0.25 & Calibrated & Low \\
+AEEI$_{ICT}$ & $-$0.053 & ADEME-ARCEP & High \\
+AEEI$_{NICT}$ & $+$0.022 & SDES trend & High \\
+$\delta_{ICT}$ (depreciation) & 0.133 & EU KLEMS & High \\
+$\delta_{S,NICT}$ & 0.052 & Literature & Medium \\
+$\delta_{P,NICT}$ & 0.081 & EU KLEMS & High \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The allocation shares $\phi$ (ICT share of investment) and $\rho_S$ (sustainable share within each sector) are calibrated as linear trends on observed data: $\phi(t) = 0.055 + 0.0015t$ and $\rho_{S,ICT}(t) = 0.017 + 0.002t$. These trends are treated as exogenous in the baseline---endogenizing them is a distinct research question addressed through a signal-price extension ($\theta > 0$) in the scenario analysis.
+
+The confidence hierarchy in Table~\ref{tab:params} is deliberate. AEEI values and depreciation rates rest on direct observation. Efficiency and rebound parameters draw on meta-analytic literature but involve judgment in mapping economy-wide estimates to purpose-specific categories. Induction ($\mu$) is the least constrained empirically---$\mu_P = 0.25$ is calibrated as the residual needed to match observed ICT energy intensification, which makes it a model-dependent estimate rather than an independent measurement.
+
+
+% ============================================================================
+\section{Results}\label{sec:results}
+% ============================================================================
+
+Results are organized around five empirical findings and one exploratory hypothesis, presented in decreasing order of epistemic robustness.
+
+% ---------------------------------------------------------------------------
+\subsection{Aggregate decoupling masks sectoral divergence}
+
+Over 2000--2019, France's energy intensity declined 27\%---a trajectory consistent with decoupling narratives. Disaggregation reveals that this aggregate trend conceals opposing dynamics: ICT energy grew +369\% (from 0.77 to 3.61 Mtoe) while non-ICT energy declined $-$8\% (from 157.7 to 144.4 Mtoe). ICT's share of final energy rose from 0.5\% to 2.4\%.
+
+This is an empirical fact, not a model result. It follows directly from ADEME--ARCEP energy assessments and SDES national energy balances. The 2025 ADEME--ARCEP study confirms the trend through 2022: France's digital sector consumed 51.5 TWh (approximately 3.87 Mtoe), with a carbon footprint of 29.5 MtCO$_2$eq (4.4\% of national emissions).
+
+The finding echoes broader critiques of aggregate decoupling metrics \cite{hickel2020}. What appears as efficiency improvement at aggregate level is partly an accounting artefact: a slowly declining large sector (non-ICT) offsets a rapidly growing small sector (ICT) whose intensification is invisible in the total.
+
+% ---------------------------------------------------------------------------
+\subsection{Deployment purpose determines energy effects}
+
+The ICT/non-ICT disaggregation, while revealing, is insufficient. Within ICT, sustainable and productive capital have opposing energy dynamics.
+
+With the calibrated parameters (Table~\ref{tab:params}), the net mechanism effect is:
+\begin{align}
+\text{NET}_{S} &= -0.04 + 0.46 \times 0.04 + 0.05 \times g_Y \approx -0.02 < 0 \\
+\text{NET}_{P} &= -0.02 + 0.58 \times 0.02 + 0.25 \times g_Y \approx +0.004 > 0
+\end{align}
+(evaluated at $g_Y = 0.02$, the approximate French average growth rate).
+
+Sustainable capital decouples: its efficiency exceeds the combined rebound and induction. Productive capital couples: its weaker efficiency is more than offset by higher rebound and substantially higher induction. This divergence is not a parametric coincidence---it follows from the constitutive properties of each capital type as discussed in Section~\ref{sec:framework}.
+
+The model confirms this through progressive disaggregation. An aggregate representation (single capital stock) yields a mean absolute percentage error (MAPE) of 22\% on energy trajectories. Disaggregating into ICT/non-ICT reduces MAPE to 18\%. Adding purpose disaggregation brings MAPE to 2\%. The improvement is not merely statistical---it reflects that aggregate and two-type models cannot capture the opposing dynamics that purpose disaggregation reveals.
+
+% ---------------------------------------------------------------------------
+\subsection{Current allocation precludes macro-level decoupling}
+
+Sustainable ICT capital ($K_{S,ICT}$) represented 0.05\% of total capital in 2000 and 0.19\% in 2019---approximately \euro{}21 billion out of \euro{}10,900 billion. Even under generous assumptions about its effectiveness (doubled efficiency, zero rebound), its maximum arithmetic contribution to observed aggregate decoupling is bounded at approximately 5\%.
+
+This is not a technological failure. The efficiency mechanisms exist and are empirically documented: smart grids reduce transmission losses, building management systems cut heating demand, precision agriculture reduces input waste \cite{it4green2025}. The failure is allocative. Capital flows toward productive uses where private returns are higher: enterprise IT, consumer devices, cloud infrastructure, and AI compute. From the standpoint of private investment decisions, this allocation is rational---productive ICT generates measurable output gains. From the standpoint of collective energy outcomes, it means that documented efficiency potential remains structurally unrealized.
+
+This pattern differs from the classical Jevons paradox in an important respect. Jevons identified a mechanism where efficiency \emph{itself} increases demand through price effects. Here, the primary mechanism is not that efficiency increases demand, but that efficiency \emph{is not deployed}---because capital flows toward uses where countervailing mechanisms (rebound, induction) are unconstrained.
+
+% ---------------------------------------------------------------------------
+\subsection{Composition dominates volume}
+
+Scenario analysis to 2040 demonstrates that the \emph{composition} of digital investment matters more than its \emph{volume}. Three scenarios illustrate the range:
+
+\begin{table}[t]
+\centering
+\caption{Contrasting scenarios to 2040}
+\label{tab:scenarios}
+\small
+\begin{tabular}{@{}lccl@{}}
+\toprule
+\textbf{Scenario} & $\rho_S$ & $\Delta E$ & \textbf{Logic} \\
+\midrule
+AI-neutral (trend) & 5\% & +8\% & Historical parameters \\
+Tendential (AI shifts) & 5\% & +15\% & Stronger rebound/induction \\
+Reallocation & 15\% & $-$12\% & Higher $\rho_S$, moderated AI \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The 27-percentage-point gap between the tendential scenario (+15\%) and the reallocation scenario ($-$12\%) quantifies the leverage of allocation over volume. Both scenarios assume comparable total investment levels; they differ in the share directed toward sustainable purposes. Increasing aggregate digital investment without changing its composition (tendential) \emph{worsens} energy outcomes. The implication is direct: ``more digitalization'' is not a climate policy. ``More sustainable digitalization at the expense of productive digitalization'' might be---but requires institutional intervention to redirect capital flows.
+
+% ---------------------------------------------------------------------------
+\subsection{AI amplifies the direction set by allocation}
+
+The expansion of generative AI since 2020 modifies mechanism parameters asymmetrically. Based on the economics of compute scaling---where hardware improvements create incentives for demand expansion---we explore shifts where efficiency-oriented channels weaken ($-$20\%) while rebound (+25\%) and induction (+86\%) strengthen. Under these assumptions, productive ICT shifts from weak decoupling toward net energy intensification.
+
+This is a scenario result, not an empirical finding for the post-2020 period. Its value is structural: AI does not transform the model's logic but amplifies it. If allocation is oriented toward productive uses, AI accelerates coupling. If allocation were redirected toward sustainable uses, AI would amplify efficiency instead. The technology is an amplifier; the direction is set by the allocation structure.
+
+Partial validation through 2022 suggests the pre-AI baseline remains a reasonable approximation: extrapolating 2000--2019 parameters to 2022 yields ICT energy within 2.4\% of the ADEME--ARCEP estimate (3.87 Mtoe observed vs.\ 3.78 Mtoe predicted).
+
+% ---------------------------------------------------------------------------
+\subsection{Without institutional intervention, the system does not self-correct}
+
+The model includes an optional feedback mechanism: a signal-price loop where rising emissions increase the sustainable allocation share ($\rho_S$). When the feedback parameter $\theta = 0$ (baseline), allocation follows exogenous trends and the system produces the tendential trajectory. When $\theta > 0$, emissions trigger reallocation toward sustainable capital, activating an equilibrating loop.
+
+This is the most normative finding and the least empirically grounded. The signal-price mechanism is exploratory---it formalizes the \emph{possibility} of institutional correction without claiming to model any specific policy instrument. Its implication is structural: the market allocation of digital capital, following private returns, does not spontaneously produce the composition required for macro-level decoupling. Institutional intervention---whether through carbon pricing, earmarked investment mandates, or regulatory constraints on energy-intensive digital uses---is a necessary condition, not a desirable add-on.
+
+
+% ============================================================================
+\section{Discussion}\label{sec:discussion}
+% ============================================================================
+
+\subsection{The twin transition as structural constraint}
+
+European policy discourse frames digitalization and decarbonization as mutually reinforcing---the ``twin transition.'' The results presented here suggest this framing is conditional at best. Digitalization \emph{as currently allocated} does not reinforce decarbonization; it runs counter to it. The mechanisms that drive ICT energy growth---rebound on productive efficiency, induction of new energy-consuming activities---are not anomalies to be corrected by better technology. They are structural properties of how productive digital capital operates.
+
+The twin transition becomes coherent only under a specific condition: that a sufficient share of digital investment is directed toward sustainable purposes, and that this capital operates under institutional constraints that limit rebound. Neither condition is met by default. The model quantifies the gap: at current allocation ($\rho_S \approx 5\%$), the twin transition is an accounting fiction. At $\rho_S \approx 15\%$, it becomes plausible. The distance between 5\% and 15\% is the space that policy must fill.
+
+\subsection{Beyond the Jevons paradox}
+
+The allocation paradox identified here is related to but distinct from the Jevons paradox. Jevons described a mechanism where efficiency improvements \emph{within} a technology increase its total resource use through price-mediated demand expansion. The digital case adds two layers.
+
+First, \emph{induction} operates independently of efficiency: generative AI creates new compute-intensive activities regardless of whether existing activities became more efficient. This channel is distinct from rebound and may dominate it in magnitude for productive ICT ($\mu_P = 0.25$ vs.\ $\sigma_P \times \eta_P = 0.012$).
+
+Second, the \emph{non-deployment} of efficiency is a separate channel from its erosion. Even if rebound were zero, sustainable ICT's contribution to macro decoupling would remain negligible at current allocation levels simply because there is too little of it. The efficiency exists in engineering assessments but not in the capital stock. This is an allocation failure, not a rebound failure.
+
+\subsection{Limitations}
+
+The model has deliberate scope limitations. Employment is exogenous (trend function), meaning digitalization's effects on labor markets are not captured. Energy prices are not endogenized---the signal-price mechanism acts on emissions, not on energy market dynamics. The France case provides analytical depth at the cost of generalizability; cross-country variation in allocation patterns and institutional contexts remains unexplored.
+
+Within the model, the lowest-confidence parameters are the induction coefficients ($\mu_S$, $\mu_P$). Monte Carlo analysis on $K_{S,ICT}$ initial conditions shows that the allocation paradox (sustainable ICT $< 0.5\%$ of total capital) is robust across 10{,}000 simulations---100\% of draws produce shares below 0.5\%. The qualitative findings are robust; the quantitative magnitudes should be interpreted as indicative.
+
+
+% ============================================================================
+\section{Conclusion}\label{sec:conclusion}
+% ============================================================================
+
+This paper makes three contributions to ecological economics.
+
+First, it demonstrates empirically that aggregate decoupling metrics conceal a structural divergence: ICT energy intensifies while non-ICT energy slowly decouples. This finding is data-driven and does not depend on the model.
+
+Second, it shows through calibrated system dynamics that deployment \emph{purpose}---not technology type---determines whether digital capital decouples or couples energy and output. The mechanisms (efficiency, rebound, induction) are not external parameters but constitutive properties of how capital is deployed. This reframes the debate: the question is not ``does digitalization save energy?'' but ``what kind of digitalization, deployed under what institutional conditions?''
+
+Third, it quantifies the leverage of allocation over volume: a 27-percentage-point gap in energy trajectories separates reallocation from tendential scenarios under comparable investment levels. The composition of digital capital matters more than its quantity---a finding that directly challenges policies promoting aggregate digital investment as climate action.
+
+The implication for governance is that digital climate policy must target allocation mechanisms---investment mandates, conditional subsidies, energy performance standards for digital infrastructure---rather than promoting digitalization generically. AI amplifies this urgency without changing the underlying structure: it is an accelerant whose direction is determined by the allocation it enters.
+
+Future work should endogenize the allocation mechanism itself---explaining \emph{why} capital flows toward productive uses and under what conditions institutional intervention can redirect it. This requires coupling the macro-level system dynamics developed here with agent-based models of firm-level investment decisions, a research direction currently being explored through SD-ABM coupling.
+
+
+% ============================================================================
+% REFERENCES
+% ============================================================================
+\bibliographystyle{ACM-Reference-Format}
+
+\begin{thebibliography}{20}
+
+\bibitem{lange2020}
+S.~Lange, J.~Pohl, and T.~Santarius.
+\newblock Digitalization and energy consumption. {D}oes {ICT} reduce energy demand?
+\newblock {\em Ecological Economics}, 176:106760, 2020.
+
+\bibitem{hambye2026}
+C.~Hambye-Verbrugghen.
+\newblock From twin transition to twice the burden: Digitalisation, energy demand, and economic growth.
+\newblock {\em Ecological Economics}, 2026.
+
+\bibitem{sorrell2007}
+S.~Sorrell.
+\newblock The rebound effect: an assessment of the evidence for economy-wide energy savings from improved energy efficiency.
+\newblock UK Energy Research Centre, 2007.
+
+\bibitem{brockway2021}
+P.~E. Brockway, S.~Sorrell, G.~Semieniuk, M.~K. Heun, and V.~Court.
+\newblock Energy efficiency and economy-wide rebound effects: A review of the evidence and its implications.
+\newblock {\em Renewable and Sustainable Energy Reviews}, 141:110781, 2021.
+
+\bibitem{lange2023}
+S.~Lange, T.~Santarius, and J.~Pohl.
+\newblock Digitalization and energy transitions.
+\newblock In {\em The Palgrave Handbook of the Economics of Digitalization}, Springer, 2023.
+
+\bibitem{grubler2018}
+A.~Grubler, C.~Wilson, N.~Bento, et~al.
+\newblock A low energy demand scenario for meeting the 1.5°{C} target and {SDGs} without negative emission technologies.
+\newblock {\em Nature Energy}, 3:515--527, 2018.
+
+\bibitem{bieser2023}
+J.~C.~T. Bieser, L.~M. Hilty, et~al.
+\newblock Assessing indirect environmental effects of {ICT}: A systematic literature review.
+\newblock {\em Sustainability}, 15(3):2209, 2023.
+
+\bibitem{hickel2020}
+J.~Hickel and G.~Kallis.
+\newblock Is green growth possible?
+\newblock {\em New Political Economy}, 25(4):469--486, 2020.
+
+\bibitem{it4green2025}
+{ADEME/Arcep/CGDD}.
+\newblock {IT4GREEN}: \'Evaluation environnementale des effets de la num\'erisation -- Synth\`ese de 10 cas d'usage.
+\newblock Technical report, 2025.
+
+\bibitem{ademe2025}
+{ADEME--ARCEP}.
+\newblock \'Evaluation de l'empreinte environnementale du num\'erique en {France} -- Donn\'ees 2022.
+\newblock Technical report, January 2025.
+
+\bibitem{muench2022}
+S.~Muench, E.~Stoermer, K.~Jensen, T.~Asikainen, M.~Salvi, and F.~Scapolo.
+\newblock Towards a green and digital future.
+\newblock EUR 31075 EN, Publications Office of the European Union, 2022.
+
+\bibitem{iea2025}
+{International Energy Agency}.
+\newblock Key questions on energy and {AI}.
+\newblock IEA, 2025.
+
+\bibitem{pettifor2024}
+H.~Pettifor, C.~Wilson, I.~G.~Hamilton, and T.~Oreszczyn.
+\newblock Disentangling impact mechanisms from deployment context in {ICT} energy research.
+\newblock {\em Journal of Cleaner Production}, 2024.
+
+\bibitem{kaack2022}
+L.~H. Kaack, P.~L. Donti, E.~Strubell, G.~Kamiya, F.~Creutzig, and D.~Rolnick.
+\newblock Aligning artificial intelligence with climate change mitigation.
+\newblock {\em Nature Climate Change}, 12:518--527, 2022.
+
+\bibitem{santarius2022}
+T.~Santarius, J.~C.~T. Bieser, V.~Frick, et~al.
+\newblock Digital sufficiency: conceptual considerations for {ICT}s on a finite planet.
+\newblock {\em Annals of Telecommunications}, 78:277--295, 2022.
+
+\bibitem{wilson2020}
+C.~Wilson, L.~Kerr, F.~Sprei, E.~Vrain, and M.~Wilson.
+\newblock Potential climate benefits of digital consumer innovations.
+\newblock {\em Annual Review of Environment and Resources}, 45:113--144, 2020.
+
+\end{thebibliography}
+
+\end{document}
