@@ -22,40 +22,42 @@ Supervisor: François Lafond
 │   └── main.tex                 ← 2-page LaTeX report
 │
 ├── data/
-│   ├── observed.xlsx            ← observed data (CO₂ + Coal, 4 time steps)
+│   ├── observed.xlsx            ← observed data (6 variables × 4 time steps)
 │   ├── observed_full.xlsx       ← observed data (annual, multiple sources)
 │   └── sci_readme.pdf           ← SCI documentation
 │
 ├── scripts/
-│   ├── partA1_co2_errors.py     ← Part A.1: error computation (ME, MAE, RMSE)
-│   ├── partA1_co2_errors.ipynb  ← Part A.1: interactive notebook
-│   └── partA1_co2_weighted.ipynb
+│   ├── partA1_hindcast.py       ← Part A.1: hindcast evaluation (6 vars, weighting, vintage)
+│   ├── partA1_co2_errors.ipynb  ← Part A.1: interactive notebook (basic)
+│   └── partA1_co2_weighted.ipynb ← Part A.1: notebook with weighting toggle
 │
 └── figures/
-    ├── partA1_fig_co2_3x3.png   ← 3×3 grid (ME/MAE/RMSE × 3 views)
-    └── ...
+    ├── partA1_fig1_by_year.png      ← 6×3 grid: all variables × ME/MAE/RMSE by year
+    ├── partA1_fig2_mae_nz.png       ← 6 histograms: MAE NZ vs non-NZ
+    └── partA1_fig3_dashboard.png    ← dashboard: NZ + economy/energy + vintage
 ```
 
 ## Naming convention
 
-### Prefixes by section
+| Prefix | Content |
+|--------|---------|
+| `partA1_` | Hindcast error computation (ME, MAE, RMSE) |
+| `partA2_` | Error diagnostics (autocorrelation, cross-variable) |
+| `partB1_` | Variable selection — box plots |
+| `partB2_` | Variable selection — LASSO |
+| `partC1_` | Scenario filtering and revised P(NZ2070) |
+| `partC2_` | PV forecast (logistic + Wright's law) |
 
-| Prefix | Method §  | Content |
-|--------|-----------|---------|
-| `partA1_` | §3.1–3.3 | Error computation (ME, MAE, RMSE) |
-| `partA2_` | §3.4     | Error diagnostics (autocorrelation, cross-variable) |
-| `partB1_` | §4.2     | Variable selection — box plots |
-| `partB2_` | §4.3     | Variable selection — LASSO |
-| `partC1_` | §5.1     | Scenario filtering and revised P(NZ2070) |
-| `partC2_` | §5.2     | PV forecast (logistic + Wright's law) |
+## Observed variables
 
-### File types
-
-| Location | Naming | Example |
-|----------|--------|---------|
-| `scripts/` | `partXY_description.py` or `.ipynb` | `partA1_co2_errors.py` |
-| `figures/` | `partXY_fig_description.png` | `partA1_fig_co2_3x3.png` |
-| `data/` | descriptive name | `observed.xlsx` |
+| Variable | Source | Confidence |
+|----------|--------|-----------|
+| CO₂ emissions (Mt CO₂/yr) | Global Carbon Budget 2025 | high |
+| Coal primary energy (EJ/yr) | Energy Institute Statistical Review 2025 | medium |
+| Solar PV capacity (GW) | IRENA 2026 | high |
+| Wind capacity (GW) | IRENA 2026 | high |
+| Nuclear capacity (GW) | IAEA PRIS | high |
+| GDP PPP (B US$2010/yr) | IMF WEO / World Bank | medium |
 
 ## Configuration
 
