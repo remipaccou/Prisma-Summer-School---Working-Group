@@ -1,7 +1,7 @@
 """
-Step 1 — Hindcast evaluation: CO2 emissions
-3x3 grid: ME / MAE / RMSE × View 1 (by year) / View 2 (by scenario) / View 3 (overall)
-Histograms normalized to density so NZ2070 (n=497) and non-NZ (n=1094) are comparable.
+Part A.1 — Hindcast error computation (ME, MAE, RMSE)
+Four variables: CO₂ emissions, Coal, Solar PV, Wind
+Three views × three metrics
 """
 
 import pandas as pd
@@ -11,184 +11,234 @@ import matplotlib.ticker as ticker
 from pathlib import Path
 
 # ── Config ──────────────────────────────────────────────────────────────
-# Each user: update SCI_DATA to your local path
 SCI_DATA = Path.home() / "PhD" / "4. Modeling" / "Prisma School" / "Scenario_Compass_Initiative_Data"
 SCI_FILE = SCI_DATA / "SCI-2025_v1.0_pathways_ensemble_global.xlsx"
 FIG_DIR = Path(__file__).parent.parent / "figures"
 FIG_DIR.mkdir(exist_ok=True)
 
-VARIABLE = "Emissions|CO2|Energy and Industrial Processes"
-EVAL_YEARS = ["2010", "2015", "2020", "2025"]
-OBS = {"2010": 33400, "2015": 35400, "2020": 34800, "2025": 38100}
+YEARS = ["2010", "2015", "2020", "2025"]
 
-# Colors
-C_POS, C_NEG = "#1D9E75", "#D85A30"  # green / orange
-C_NZ, C_OTHER, C_ALL = "#D85A30", "#378ADD", "#534AB7"  # orange / blue / purple
+VARIABLES = {
+    "Emissions|CO2|Energy and Industrial Processes": {
+        "obs": {"2010": 33400, "2015": 35400, "2020": 34800, "2025": 38100},
+        "unit": "Mt CO₂/yr", "short": "CO₂ emissions", "source": "GCB 2025"
+    },
+    "Primary Energy|Coal": {
+        "obs": {"2010": 148, "2015": 155, "2020": 152, "2025": 164},
+        "unit": "EJ/yr", "short": "Coal", "source": "EI StatReview 2025"
+    },
+    "Capacity|Electricity|Solar|PV": {
+        "obs": {"2010": 40, "2015": 227, "2020": 714, "2025": 2392},
+        "unit": "GW", "short": "Solar PV", "source": "IRENA 2026"
+    },
+    "Capacity|Electricity|Wind": {
+        "obs": {"2010": 198, "2015": 433, "2020": 733, "2025": 1291},
+        "unit": "GW", "short": "Wind", "source": "IRENA 2026"
+    },
+}
+
+C_NZ, C_OT, C_ALL = "#D85A30", "#378ADD", "#534AB7"
+C_POS, C_NEG = "#1D9E75", "#D85A30"
 
 # ── Load ────────────────────────────────────────────────────────────────
-print("Loading SCI data (this may take 1-2 min)...")
+print("Loading SCI data...")
 df = pd.read_excel(SCI_FILE, sheet_name="data")
 meta = pd.read_excel(SCI_FILE, sheet_name="meta")
 
-s = df[df["Variable"] == VARIABLE].copy()
-print(f"  {len(s)} scenarios, {s['Model'].nunique()} models")
-
-# NZ2070 flag
 meta["nz_year"] = pd.to_numeric(
     meta["Emissions Diagnostics|Year of Net Zero|CO2"], errors="coerce"
 )
 meta["nz2070"] = meta["nz_year"].notna() & (meta["nz_year"] <= 2070)
 meta["key"] = meta["Model"] + "|||" + meta["Scenario"]
 nz_keys = set(meta.loc[meta["nz2070"], "key"])
-s["key"] = s["Model"] + "|||" + s["Scenario"]
-s["nz2070"] = s["key"].isin(nz_keys)
 
-n_nz = s["nz2070"].sum()
-n_other = (~s["nz2070"]).sum()
-print(f"  NZ2070: {n_nz} | non-NZ: {n_other}")
+# ── Compute errors per variable ─────────────────────────────────────────
+results = {}
 
-# ── Compute errors ──────────────────────────────────────────────────────
-for yr in EVAL_YEARS:
-    s[f"eps_{yr}"] = OBS[yr] - s[yr]
+for varname, vinfo in VARIABLES.items():
+    s = df[df["Variable"] == varname].copy()
+    s["key"] = s["Model"] + "|||" + s["Scenario"]
+    s["nz2070"] = s["key"].isin(nz_keys)
 
-eps_cols = [f"eps_{yr}" for yr in EVAL_YEARS]
-eps_mat = s[eps_cols]
+    obs = vinfo["obs"]
+    for yr in YEARS:
+        s[f"eps_{yr}"] = obs[yr] - s[yr]
 
-s["ME_j"] = eps_mat.mean(axis=1)
-s["MAE_j"] = eps_mat.abs().mean(axis=1)
-s["RMSE_j"] = np.sqrt((eps_mat ** 2).mean(axis=1))
+    eps_cols = [f"eps_{yr}" for yr in YEARS]
+    eps_mat = s[eps_cols]
 
-# View 3 data
-all_eps = eps_mat.values.flatten()
-all_eps = all_eps[~np.isnan(all_eps)]
-eps_nz = eps_mat[s["nz2070"].values].values.flatten()
-eps_nz = eps_nz[~np.isnan(eps_nz)]
-eps_other = eps_mat[~s["nz2070"].values].values.flatten()
-eps_other = eps_other[~np.isnan(eps_other)]
+    s["ME_j"] = eps_mat.mean(axis=1)
+    s["MAE_j"] = eps_mat.abs().mean(axis=1)
+    s["RMSE_j"] = np.sqrt((eps_mat ** 2).mean(axis=1))
 
-# ── Print summary ───────────────────────────────────────────────────────
-print("\n── View 1: by year ──")
-print(f"{'Year':<6} | {'ME':>8} | {'MAE':>8} | {'RMSE':>8}")
-print("-" * 40)
-for yr in EVAL_YEARS:
-    e = s[f"eps_{yr}"].dropna()
-    print(f"{yr:<6} | {e.mean():>+8,.0f} | {e.abs().mean():>8,.0f} | {np.sqrt((e**2).mean()):>8,.0f}")
+    results[varname] = {
+        "s": s, "eps_mat": eps_mat, "obs": obs,
+        "short": vinfo["short"], "unit": vinfo["unit"], "source": vinfo["source"],
+        "n": len(s), "n_nz": s["nz2070"].sum(), "n_other": (~s["nz2070"]).sum(),
+    }
 
-print("\n── View 2: by scenario ──")
-print(f"{'':>10} | {'ME_j':>8} | {'MAE_j':>8} | {'RMSE_j':>8}")
-print("-" * 42)
-for grp, label in [(True, "NZ2070"), (False, "non-NZ"), (None, "All")]:
-    sub = s if grp is None else s[s["nz2070"] == grp]
-    print(f"{label:>10} | {sub['ME_j'].mean():>+8,.0f} | {sub['MAE_j'].mean():>8,.0f} | {sub['RMSE_j'].mean():>8,.0f}")
+# ── Print summary tables ────────────────────────────────────────────────
+for varname, r in results.items():
+    s = r["s"]
+    obs = r["obs"]
+    print(f"\n{'='*70}")
+    print(f"  {r['short']} ({r['unit']}) — source: {r['source']}")
+    print(f"  n={r['n']} scenarios, {s['Model'].nunique()} models")
+    print(f"{'='*70}")
 
-print("\n── View 3: overall ──")
-print(f"  ME  = {np.mean(all_eps):>+8,.0f} | NZ: {np.mean(eps_nz):>+8,.0f} | non-NZ: {np.mean(eps_other):>+8,.0f}")
-print(f"  MAE = {np.mean(np.abs(all_eps)):>8,.0f} | NZ: {np.mean(np.abs(eps_nz)):>8,.0f} | non-NZ: {np.mean(np.abs(eps_other)):>8,.0f}")
-print(f"  RMSE= {np.sqrt(np.mean(all_eps**2)):>8,.0f} | NZ: {np.sqrt(np.mean(eps_nz**2)):>8,.0f} | non-NZ: {np.sqrt(np.mean(eps_other**2)):>8,.0f}")
+    print(f"\n  View 1: by year")
+    print(f"  {'Year':<6} | {'ME':>10} | {'MAE':>10} | {'RMSE':>10} | {'±10%':>6}")
+    print(f"  {'-'*50}")
+    for yr in YEARS:
+        e = s[f"eps_{yr}"].dropna()
+        pct10 = (e.abs() / abs(obs[yr]) <= 0.10).mean() * 100
+        print(f"  {yr:<6} | {e.mean():>+10,.0f} | {e.abs().mean():>10,.0f} | {np.sqrt((e**2).mean()):>10,.0f} | {pct10:>5.0f}%")
 
-# ── Figure: 3×3 grid ────────────────────────────────────────────────────
-fig, axes = plt.subplots(3, 3, figsize=(15, 11))
+    print(f"\n  View 2: by scenario (NZ vs non-NZ)")
+    print(f"  {'Group':<10} | {'ME_j':>8} | {'MAE_j':>8} | {'RMSE_j':>8} | {'n':>6}")
+    print(f"  {'-'*50}")
+    for grp, label in [(None, "All"), (True, "NZ2070"), (False, "non-NZ")]:
+        sub = s if grp is None else s[s["nz2070"] == grp]
+        print(f"  {label:<10} | {sub['ME_j'].mean():>+8,.0f} | {sub['MAE_j'].mean():>8,.0f} | {sub['RMSE_j'].mean():>8,.0f} | {len(sub):>6d}")
+
+    all_eps = r["eps_mat"].values.flatten()
+    all_eps = all_eps[~np.isnan(all_eps)]
+    print(f"\n  View 3: overall")
+    print(f"  ME={np.mean(all_eps):>+,.0f}  MAE={np.mean(np.abs(all_eps)):>,.0f}  RMSE={np.sqrt(np.mean(all_eps**2)):>,.0f}")
+
+# ── Figure: 4 variables × 3 metrics (View 1 by year) ───────────────────
+fig, axes = plt.subplots(len(VARIABLES), 3, figsize=(15, 4 * len(VARIABLES)))
 fig.suptitle(
-    f"Hindcast evaluation — {VARIABLE}\n"
-    r"$\varepsilon = y_{\mathrm{observed}} - \hat{y}_{\mathrm{projected}}$"
-    f"  (Mt CO₂/yr)  |  NZ2070: n={n_nz}, non-NZ: n={n_other}",
-    fontsize=12, fontweight="bold", y=1.01,
+    "Part A.1 — Hindcast evaluation by year\n"
+    r"$\varepsilon = y_{\mathrm{obs}} - \hat{y}_{\mathrm{proj}}$"
+    "  |  positive = models underestimate observed",
+    fontsize=13, fontweight="bold", y=1.01,
 )
 
-metrics = [
-    ("ME", "systematic bias", True),
-    ("MAE", "typical error size", False),
-    ("RMSE", "penalises large errors", False),
+metric_fns = [
+    ("ME", lambda e: e.mean(), True),
+    ("MAE", lambda e: e.abs().mean(), False),
+    ("RMSE", lambda e: np.sqrt((e**2).mean()), False),
 ]
 
-for col, (name, subtitle, signed) in enumerate(metrics):
+for row, (varname, r) in enumerate(results.items()):
+    s = r["s"]
+    for col, (mname, fn, signed) in enumerate(metric_fns):
+        ax = axes[row, col]
+        vals = [fn(s[f"eps_{yr}"].dropna()) for yr in YEARS]
+        colors = [C_POS if v >= 0 else C_NEG for v in vals] if signed else [C_OT if mname == "MAE" else C_ALL] * 4
 
-    # ── Row 0: View 1 — by year ──
-    ax = axes[0, col]
-    if name == "ME":
-        vals = [s[f"eps_{yr}"].dropna().mean() for yr in EVAL_YEARS]
-    elif name == "MAE":
-        vals = [s[f"eps_{yr}"].dropna().abs().mean() for yr in EVAL_YEARS]
-    else:
-        vals = [np.sqrt((s[f"eps_{yr}"].dropna() ** 2).mean()) for yr in EVAL_YEARS]
+        bars = ax.bar(YEARS, vals, color=colors, width=0.55)
+        if signed:
+            ax.axhline(0, color="gray", lw=0.5, ls="--")
+        for bar, v in zip(bars, vals):
+            off = max(abs(v) * 0.08, abs(max(vals, key=abs)) * 0.03)
+            label = f"{v:+,.0f}" if signed else f"{v:,.0f}"
+            ax.text(bar.get_x() + bar.get_width() / 2,
+                    v + (off if v >= 0 or not signed else -off),
+                    label, ha="center",
+                    va="bottom" if (v >= 0 or not signed) else "top", fontsize=8)
 
-    colors = [C_POS if v >= 0 else C_NEG for v in vals] if signed else [C_OTHER if name == "MAE" else C_ALL] * 4
-    bars = ax.bar(EVAL_YEARS, vals, color=colors, width=0.55, edgecolor="none", zorder=3)
-    if signed:
-        ax.axhline(0, color="gray", lw=0.5, ls="--", zorder=1)
-    for bar, v in zip(bars, vals):
-        offset = max(abs(v) * 0.06, 80)
-        label = f"{v:+,.0f}" if signed else f"{v:,.0f}"
-        ax.text(bar.get_x() + bar.get_width() / 2,
-                v + (offset if v >= 0 or not signed else -offset),
-                label, ha="center",
-                va="bottom" if (v >= 0 or not signed) else "top", fontsize=9)
-
-    ax.set_title(f"{name} — {subtitle}", fontsize=10, fontweight="bold", loc="left")
-    if col == 0:
-        ax.set_ylabel("View 1: by year\n(Mt CO₂)", fontsize=9)
-    ax.spines[["top", "right"]].set_visible(False)
-    ax.grid(axis="y", alpha=0.15, zorder=0)
-
-    # ── Row 1: View 2 — by scenario (histogram, normalized) ──
-    ax = axes[1, col]
-    metric_col = f"{name}_j"
-    v_nz = s.loc[s["nz2070"], metric_col].dropna().values
-    v_other = s.loc[~s["nz2070"], metric_col].dropna().values
-
-    lo = min(v_nz.min(), v_other.min())
-    hi = max(v_nz.max(), v_other.max())
-    bins = np.arange(np.floor(lo / 500) * 500, np.ceil(hi / 500) * 500 + 500, 500)
-
-    # density=True normalizes area to 1, making NZ and non-NZ comparable
-    ax.hist(v_other, bins=bins, density=True, alpha=0.55, color=C_OTHER,
-            label=f"non-NZ (n={len(v_other)})", edgecolor="white", lw=0.3, zorder=2)
-    ax.hist(v_nz, bins=bins, density=True, alpha=0.55, color=C_NZ,
-            label=f"NZ2070 (n={len(v_nz)})", edgecolor="white", lw=0.3, zorder=3)
-
-    # Mean lines
-    ax.axvline(np.mean(v_other), color=C_OTHER, lw=1.8, ls="--", zorder=4)
-    ax.axvline(np.mean(v_nz), color=C_NZ, lw=1.8, ls="--", zorder=4)
-
-    ax.legend(fontsize=8, loc="upper right")
-    ax.set_xlabel(f"{name}$_j$ (Mt CO₂)", fontsize=9)
-    if col == 0:
-        ax.set_ylabel("View 2: by scenario\n(density)", fontsize=9)
-    ax.spines[["top", "right"]].set_visible(False)
-    ax.grid(axis="y", alpha=0.15, zorder=0)
-
-    # ── Row 2: View 3 — overall (horizontal bars) ──
-    ax = axes[2, col]
-    if name == "ME":
-        v3 = [np.mean(all_eps), np.mean(eps_nz), np.mean(eps_other)]
-    elif name == "MAE":
-        v3 = [np.mean(np.abs(all_eps)), np.mean(np.abs(eps_nz)), np.mean(np.abs(eps_other))]
-    else:
-        v3 = [np.sqrt(np.mean(all_eps**2)), np.sqrt(np.mean(eps_nz**2)), np.sqrt(np.mean(eps_other**2))]
-
-    labels3 = ["All", "NZ2070", "non-NZ"]
-    colors3 = [C_ALL, C_NZ, C_OTHER]
-    bars3 = ax.barh(labels3, v3, color=colors3, height=0.5, edgecolor="none", zorder=3)
-    for bar, v in zip(bars3, v3):
-        label = f"{v:+,.0f}" if signed else f"{v:,.0f}"
-        ax.text(v + max(abs(v) * 0.03, 30), bar.get_y() + bar.get_height() / 2,
-                label, ha="left", va="center", fontsize=9)
-    if col == 0:
-        ax.set_ylabel("View 3: overall\n", fontsize=9)
-    ax.set_xlabel(f"{name} (Mt CO₂)", fontsize=9)
-    ax.spines[["top", "right"]].set_visible(False)
-    ax.grid(axis="x", alpha=0.15, zorder=0)
-    xmax = max(abs(v) for v in v3) * 1.25
-    if signed:
-        ax.set_xlim(-xmax, xmax)
-    else:
-        ax.set_xlim(0, xmax)
+        if row == 0:
+            ax.set_title(f"{mname}", fontsize=11, fontweight="bold")
+        if col == 0:
+            ax.set_ylabel(f"{r['short']}\n({r['unit']})", fontsize=9)
+        ax.spines[["top", "right"]].set_visible(False)
+        ax.grid(axis="y", alpha=0.15)
 
 plt.tight_layout()
-out_png = FIG_DIR / "partA1_fig_co2_3x3.png"
-out_pdf = FIG_DIR / "partA1_fig_co2_3x3.pdf"
-plt.savefig(out_png, dpi=150, bbox_inches="tight")
-plt.savefig(out_pdf, bbox_inches="tight")
-print(f"\nSaved: {out_png}")
-print(f"       {out_pdf}")
-plt.show()
+out = FIG_DIR / "partA1_fig_all_by_year.png"
+plt.savefig(out, dpi=150, bbox_inches="tight")
+plt.savefig(FIG_DIR / "partA1_fig_all_by_year.pdf", bbox_inches="tight")
+print(f"\nSaved: {out}")
+
+# ── Figure: 4 variables — NZ vs non-NZ histograms (MAE_j) ──────────────
+fig2, axes2 = plt.subplots(2, 2, figsize=(12, 8))
+fig2.suptitle(
+    "Part A.1 — MAE distribution: NZ2070 vs non-NZ scenarios",
+    fontsize=13, fontweight="bold",
+)
+
+for idx, (varname, r) in enumerate(results.items()):
+    ax = axes2[idx // 2, idx % 2]
+    s = r["s"]
+
+    v_nz = s.loc[s["nz2070"], "MAE_j"].dropna().values
+    v_ot = s.loc[~s["nz2070"], "MAE_j"].dropna().values
+
+    lo = min(v_nz.min(), v_ot.min())
+    hi = max(v_nz.max(), v_ot.max())
+    step = (hi - lo) / 30
+    bins = np.arange(lo, hi + step, step)
+
+    ax.hist(v_ot, bins=bins, density=True, alpha=0.55, color=C_OT,
+            label=f"non-NZ (n={len(v_ot)})", edgecolor="white", lw=0.3)
+    ax.hist(v_nz, bins=bins, density=True, alpha=0.55, color=C_NZ,
+            label=f"NZ2070 (n={len(v_nz)})", edgecolor="white", lw=0.3)
+    ax.axvline(np.mean(v_ot), color=C_OT, lw=1.8, ls="--")
+    ax.axvline(np.mean(v_nz), color=C_NZ, lw=1.8, ls="--")
+    ax.legend(fontsize=8)
+    ax.set_title(f"{r['short']} ({r['unit']})", fontsize=10, fontweight="bold")
+    ax.set_xlabel(f"MAE_j ({r['unit']})", fontsize=9)
+    ax.set_ylabel("density", fontsize=9)
+    ax.spines[["top", "right"]].set_visible(False)
+
+plt.tight_layout()
+out2 = FIG_DIR / "partA1_fig_all_mae_nz.png"
+plt.savefig(out2, dpi=150, bbox_inches="tight")
+plt.savefig(FIG_DIR / "partA1_fig_all_mae_nz.pdf", bbox_inches="tight")
+print(f"Saved: {out2}")
+
+# ── Figure: summary bar — View 3 overall ────────────────────────────────
+fig3, axes3 = plt.subplots(1, 3, figsize=(14, 4))
+fig3.suptitle("Part A.1 — Overall error (all years × all scenarios)", fontsize=13, fontweight="bold")
+
+for col, (mname, _, signed) in enumerate(metric_fns):
+    ax = axes3[col]
+    labels = []
+    vals_all, vals_nz, vals_ot = [], [], []
+
+    for varname, r in results.items():
+        eps_all = r["eps_mat"].values.flatten()
+        eps_all = eps_all[~np.isnan(eps_all)]
+        eps_nz = r["eps_mat"][r["s"]["nz2070"].values].values.flatten()
+        eps_nz = eps_nz[~np.isnan(eps_nz)]
+        eps_ot = r["eps_mat"][~r["s"]["nz2070"].values].values.flatten()
+        eps_ot = eps_ot[~np.isnan(eps_ot)]
+
+        if mname == "ME":
+            vals_all.append(np.mean(eps_all))
+            vals_nz.append(np.mean(eps_nz))
+            vals_ot.append(np.mean(eps_ot))
+        elif mname == "MAE":
+            vals_all.append(np.mean(np.abs(eps_all)))
+            vals_nz.append(np.mean(np.abs(eps_nz)))
+            vals_ot.append(np.mean(np.abs(eps_ot)))
+        else:
+            vals_all.append(np.sqrt(np.mean(eps_all**2)))
+            vals_nz.append(np.sqrt(np.mean(eps_nz**2)))
+            vals_ot.append(np.sqrt(np.mean(eps_ot**2)))
+
+        labels.append(r["short"])
+
+    x = np.arange(len(labels))
+    w = 0.25
+    ax.bar(x - w, vals_nz, w, color=C_NZ, label="NZ2070")
+    ax.bar(x, vals_all, w, color=C_ALL, label="All")
+    ax.bar(x + w, vals_ot, w, color=C_OT, label="non-NZ")
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, fontsize=9)
+    ax.set_title(mname, fontsize=11, fontweight="bold")
+    ax.legend(fontsize=8)
+    ax.spines[["top", "right"]].set_visible(False)
+    if signed:
+        ax.axhline(0, color="gray", lw=0.5, ls="--")
+
+plt.tight_layout()
+out3 = FIG_DIR / "partA1_fig_all_summary.png"
+plt.savefig(out3, dpi=150, bbox_inches="tight")
+plt.savefig(FIG_DIR / "partA1_fig_all_summary.pdf", bbox_inches="tight")
+print(f"Saved: {out3}")
+
+print("\nDone.")
