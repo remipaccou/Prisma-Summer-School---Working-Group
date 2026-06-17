@@ -16,7 +16,8 @@ Supervisor: François Lafond
 
 ```
 ├── README.md
-├── methodology_draft.md         ← full method description (Parts A/B/C)
+├── methodology.md               ← full method description (Parts A/B/C)
+├── partA1_findings.md           ← Part A.1 results and observations
 │
 ├── report/
 │   └── main.tex                 ← 2-page LaTeX report
