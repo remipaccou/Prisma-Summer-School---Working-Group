@@ -178,25 +178,19 @@ for varname, r in results.items():
         print(row)
 
 # ═══════════════════════════════════════════════════════════════════════
-# FIGURE 1: All variables × ME/MAE/RMSE by year
+# FIGURE 1: All variables × ME/MAE/RMSE by year (6×3 grid)
 # ═══════════════════════════════════════════════════════════════════════
 n_vars = len(results)
 fig1, axes1 = plt.subplots(n_vars, 3, figsize=(15, 3.2 * n_vars))
 fig1.suptitle("Part A.1 — Hindcast by year (family-weighted)", fontsize=13, fontweight="bold", y=1.01)
 
-metric_fns = [("ME", True), ("MAE", False), ("RMSE", False)]
-
 for row, (varname, r) in enumerate(results.items()):
     s = r["s"]
-    for col, (mname, signed) in enumerate(metric_fns):
+    for col, (mname, signed) in enumerate([("ME", True), ("MAE", False), ("RMSE", False)]):
         ax = axes1[row, col] if n_vars > 1 else axes1[col]
-        if mname == "ME":
-            vals = [wmean(s[f"eps_{yr}"], s["w"]) for yr in YEARS]
-        elif mname == "MAE":
-            vals = [wmean(s[f"eps_{yr}"].abs(), s["w"]) for yr in YEARS]
-        else:
-            vals = [np.sqrt(wmean(s[f"eps_{yr}"]**2, s["w"])) for yr in YEARS]
-
+        if mname == "ME":    vals = [wmean(s[f"eps_{yr}"], s["w"]) for yr in YEARS]
+        elif mname == "MAE": vals = [wmean(s[f"eps_{yr}"].abs(), s["w"]) for yr in YEARS]
+        else:                vals = [np.sqrt(wmean(s[f"eps_{yr}"]**2, s["w"])) for yr in YEARS]
         colors = [C_POS if v >= 0 else C_NEG for v in vals] if signed else [C_OT if mname == "MAE" else C_ALL] * 4
         bars = ax.bar(YEARS, vals, color=colors, width=0.55)
         if signed: ax.axhline(0, color="gray", lw=0.5, ls="--")
@@ -211,18 +205,15 @@ for row, (varname, r) in enumerate(results.items()):
         ax.grid(axis="y", alpha=0.15)
 
 plt.tight_layout()
-fig1.savefig(FIG_DIR / "partA1_fig_all_by_year.png", dpi=150, bbox_inches="tight")
-fig1.savefig(FIG_DIR / "partA1_fig_all_by_year.pdf", bbox_inches="tight")
-print(f"Saved: partA1_fig_all_by_year")
+fig1.savefig(FIG_DIR / "partA1_fig1_by_year.png", dpi=150, bbox_inches="tight")
+print("Saved: partA1_fig1_by_year.png")
 
 # ═══════════════════════════════════════════════════════════════════════
-# FIGURE 2: NZ vs non-NZ MAE histograms
+# FIGURE 2: MAE histograms NZ vs non-NZ (6 panels)
 # ═══════════════════════════════════════════════════════════════════════
-ncols = 3
-nrows = (n_vars + ncols - 1) // ncols
-fig2, axes2 = plt.subplots(nrows, ncols, figsize=(14, 4 * nrows))
-fig2.suptitle("Part A.1 — MAE distribution: NZ2070 vs non-NZ", fontsize=13, fontweight="bold")
-axes2_flat = axes2.flatten() if n_vars > 1 else [axes2]
+fig2, axes2 = plt.subplots(2, 3, figsize=(15, 8))
+fig2.suptitle("Part A.1 — MAE distribution: NZ2070 vs non-NZ (density)", fontsize=13, fontweight="bold")
+axes2_flat = axes2.flatten()
 
 for idx, (varname, r) in enumerate(results.items()):
     ax = axes2_flat[idx]
@@ -232,116 +223,76 @@ for idx, (varname, r) in enumerate(results.items()):
     lo, hi = min(v_nz.min(), v_ot.min()), max(v_nz.max(), v_ot.max())
     bins = np.arange(lo, hi + (hi - lo) / 30, (hi - lo) / 30)
     ax.hist(v_ot, bins=bins, density=True, alpha=0.55, color=C_OT, label=f"non-NZ ({len(v_ot)})", edgecolor="white", lw=0.3)
-    ax.hist(v_nz, bins=bins, density=True, alpha=0.55, color=C_NZ, label=f"NZ2070 ({len(v_nz)})", edgecolor="white", lw=0.3)
+    ax.hist(v_nz, bins=bins, density=True, alpha=0.55, color=C_NZ, label=f"NZ ({len(v_nz)})", edgecolor="white", lw=0.3)
     ax.axvline(np.mean(v_ot), color=C_OT, lw=1.8, ls="--")
     ax.axvline(np.mean(v_nz), color=C_NZ, lw=1.8, ls="--")
-    ax.legend(fontsize=8)
-    ax.set_title(f"{r['short']} ({r['unit']})", fontsize=10, fontweight="bold")
+    ax.legend(fontsize=7)
+    ax.set_title(r["short"], fontsize=10, fontweight="bold")
     ax.spines[["top", "right"]].set_visible(False)
 
 for idx in range(len(results), len(axes2_flat)):
     axes2_flat[idx].set_visible(False)
 
 plt.tight_layout()
-fig2.savefig(FIG_DIR / "partA1_fig_all_mae_nz.png", dpi=150, bbox_inches="tight")
-fig2.savefig(FIG_DIR / "partA1_fig_all_mae_nz.pdf", bbox_inches="tight")
-print(f"Saved: partA1_fig_all_mae_nz")
+fig2.savefig(FIG_DIR / "partA1_fig2_mae_nz.png", dpi=150, bbox_inches="tight")
+print("Saved: partA1_fig2_mae_nz.png")
 
 # ═══════════════════════════════════════════════════════════════════════
-# FIGURE 3: Economy vs Energy (CO2 only)
+# FIGURE 3: Dashboard — MAE_j across all cuts, all variables
+# Rows = variables, Cols = NZ/non-NZ | economy/energy | early/mid/late
 # ═══════════════════════════════════════════════════════════════════════
-co2_key = "Emissions|CO2|Energy and Industrial Processes"
-if co2_key in results:
-    s = results[co2_key]["s"]
-    fig3, axes3 = plt.subplots(1, 3, figsize=(15, 4))
-    fig3.suptitle("Part A.1 — Economy vs Energy models (CO₂, family-weighted)", fontsize=12, fontweight="bold")
+var_names = [r["short"] for r in results.values()]
+n_v = len(var_names)
 
-    x = np.arange(len(YEARS))
-    bw = 0.35
-    for ax, (mname, signed) in zip(axes3, [("ME", True), ("MAE", False), ("RMSE", False)]):
-        for k, cl in enumerate(["energy", "economy"]):
-            sub = s[s["Class"] == cl]
-            wsub = 1.0 / sub.groupby("Family")["Family"].transform("size")
-            if mname == "ME":
-                vals = [wmean(sub[f"eps_{yr}"], wsub) for yr in YEARS]
-            elif mname == "MAE":
-                vals = [wmean(sub[f"eps_{yr}"].abs(), wsub) for yr in YEARS]
-            else:
-                vals = [np.sqrt(wmean(sub[f"eps_{yr}"]**2, wsub)) for yr in YEARS]
-            ax.bar(x + (k - 0.5) * bw, vals, bw, label=cl, color=C_CLASS[cl])
-        if signed: ax.axhline(0, color="gray", lw=0.5, ls="--")
-        ax.set_xticks(x); ax.set_xticklabels(YEARS)
-        ax.set_title(mname, fontsize=11, fontweight="bold", loc="left")
-        ax.spines[["top", "right"]].set_visible(False)
-        ax.grid(axis="y", alpha=0.15)
-    axes3[0].legend(fontsize=9)
-    plt.tight_layout()
-    fig3.savefig(FIG_DIR / "partA1_fig_economy_vs_energy.png", dpi=150, bbox_inches="tight")
-    fig3.savefig(FIG_DIR / "partA1_fig_economy_vs_energy.pdf", bbox_inches="tight")
-    print(f"Saved: partA1_fig_economy_vs_energy")
+fig3, axes3 = plt.subplots(1, 3, figsize=(16, 5))
+fig3.suptitle("Part A.1 — MAE summary across all variables and analysis dimensions",
+              fontsize=13, fontweight="bold")
 
-# ═══════════════════════════════════════════════════════════════════════
-# FIGURE 4: Vintage analysis (CO2 only)
-# ═══════════════════════════════════════════════════════════════════════
-if co2_key in results:
-    s = results[co2_key]["s"]
-    fig4, axes4 = plt.subplots(1, 3, figsize=(15, 4))
-    fig4.suptitle("Part A.1 — ME by project vintage (CO₂)\nearly ≤2017 | mid 2018–2020 | late 2021–2024",
-                  fontsize=12, fontweight="bold")
+x = np.arange(n_v)
+bw = 0.35
 
-    x = np.arange(len(YEARS))
-    bw = 0.25
-    for ax, (mname, signed) in zip(axes4, [("ME", True), ("MAE", False), ("RMSE", False)]):
-        for k, v in enumerate(["early", "mid", "late"]):
-            sub = s[s["vintage"] == v]
-            if mname == "ME":
-                vals = [sub[f"eps_{yr}"].mean() for yr in YEARS]
-            elif mname == "MAE":
-                vals = [sub[f"eps_{yr}"].abs().mean() for yr in YEARS]
-            else:
-                vals = [np.sqrt((sub[f"eps_{yr}"]**2).mean()) for yr in YEARS]
-            ax.bar(x + (k - 1) * bw, vals, bw, label=v, color=C_VINTAGE[v])
-        if signed: ax.axhline(0, color="gray", lw=0.5, ls="--")
-        ax.set_xticks(x); ax.set_xticklabels(YEARS)
-        ax.set_title(mname, fontsize=11, fontweight="bold", loc="left")
-        ax.spines[["top", "right"]].set_visible(False)
-        ax.grid(axis="y", alpha=0.15)
-    axes4[0].legend(fontsize=9)
-    plt.tight_layout()
-    fig4.savefig(FIG_DIR / "partA1_fig_vintage.png", dpi=150, bbox_inches="tight")
-    fig4.savefig(FIG_DIR / "partA1_fig_vintage.pdf", bbox_inches="tight")
-    print(f"Saved: partA1_fig_vintage")
+# Panel 1: NZ vs non-NZ
+ax = axes3[0]
+for k, (nz, label, color) in enumerate([(True, "NZ2070", C_NZ), (False, "non-NZ", C_OT)]):
+    vals = []
+    for r in results.values():
+        sub = r["s"][r["s"]["nz2070"] == nz]
+        vals.append(sub["MAE_j"].mean())
+    ax.barh(x + (k - 0.5) * bw, vals, bw, label=label, color=color)
+ax.set_yticks(x); ax.set_yticklabels(var_names, fontsize=9)
+ax.set_xlabel("MAE_j"); ax.set_title("NZ vs non-NZ", fontweight="bold")
+ax.legend(fontsize=8); ax.spines[["top", "right"]].set_visible(False)
+ax.invert_yaxis()
 
-# ═══════════════════════════════════════════════════════════════════════
-# FIGURE 5: Vintage × NZ (CO2, MAE_j)
-# ═══════════════════════════════════════════════════════════════════════
-if co2_key in results:
-    s = results[co2_key]["s"]
-    fig5, ax5 = plt.subplots(figsize=(8, 5))
-    fig5.suptitle("Part A.1 — MAE by vintage × NZ status (CO₂)", fontsize=12, fontweight="bold")
+# Panel 2: economy vs energy
+ax = axes3[1]
+for k, (cl, color) in enumerate([("economy", C_CLASS["economy"]), ("energy", C_CLASS["energy"])]):
+    vals = []
+    for r in results.values():
+        sub = r["s"][r["s"]["Class"] == cl]
+        vals.append(sub["MAE_j"].mean() if len(sub) > 10 else 0)
+    ax.barh(x + (k - 0.5) * bw, vals, bw, label=cl, color=color)
+ax.set_yticks(x); ax.set_yticklabels(var_names, fontsize=9)
+ax.set_xlabel("MAE_j"); ax.set_title("Economy vs Energy", fontweight="bold")
+ax.legend(fontsize=8); ax.spines[["top", "right"]].set_visible(False)
+ax.invert_yaxis()
 
-    vintages = ["early", "mid", "late"]
-    x = np.arange(len(vintages))
-    bw = 0.35
-    for k, (nz, label, color) in enumerate([(True, "NZ2070", C_NZ), (False, "non-NZ", C_OT)]):
-        vals = []
-        for v in vintages:
-            sub = s[(s["vintage"] == v) & (s["nz2070"] == nz)]
-            vals.append(sub["MAE_j"].mean() if len(sub) > 5 else 0)
-        bars = ax5.bar(x + (k - 0.5) * bw, vals, bw, label=label, color=color)
-        for bar, v in zip(bars, vals):
-            if v > 0:
-                ax5.text(bar.get_x() + bar.get_width() / 2, v + 30,
-                         f"{v:,.0f}", ha="center", va="bottom", fontsize=9)
-    ax5.set_xticks(x)
-    ax5.set_xticklabels([f"{v}\n(≤2017)" if v == "early" else f"{v}\n(2018-20)" if v == "mid" else f"{v}\n(2021+)" for v in vintages])
-    ax5.set_ylabel("MAE_j (Mt CO₂/yr)")
-    ax5.legend(fontsize=10)
-    ax5.spines[["top", "right"]].set_visible(False)
-    ax5.grid(axis="y", alpha=0.15)
-    plt.tight_layout()
-    fig5.savefig(FIG_DIR / "partA1_fig_vintage_nz.png", dpi=150, bbox_inches="tight")
-    fig5.savefig(FIG_DIR / "partA1_fig_vintage_nz.pdf", bbox_inches="tight")
-    print(f"Saved: partA1_fig_vintage_nz")
+# Panel 3: vintage
+ax = axes3[2]
+bw3 = 0.25
+for k, (v, color) in enumerate([("early", C_VINTAGE["early"]), ("mid", C_VINTAGE["mid"]), ("late", C_VINTAGE["late"])]):
+    vals = []
+    for r in results.values():
+        sub = r["s"][r["s"]["vintage"] == v]
+        vals.append(sub["MAE_j"].mean() if len(sub) > 5 else 0)
+    ax.barh(x + (k - 1) * bw3, vals, bw3, label=v, color=color)
+ax.set_yticks(x); ax.set_yticklabels(var_names, fontsize=9)
+ax.set_xlabel("MAE_j"); ax.set_title("By vintage", fontweight="bold")
+ax.legend(fontsize=8); ax.spines[["top", "right"]].set_visible(False)
+ax.invert_yaxis()
 
-print("\nDone — all Part A.1 figures generated.")
+plt.tight_layout()
+fig3.savefig(FIG_DIR / "partA1_fig3_dashboard.png", dpi=150, bbox_inches="tight")
+print("Saved: partA1_fig3_dashboard.png")
+
+print("\nDone — 3 figures generated.")
