@@ -104,7 +104,29 @@ The world in 2025 looks more like the non-NZ ensemble than the NZ one. The naive
 3. **GDP unit**: the GDP PPP observed values assume US$2010 base; some models may use US$2005 — to be verified.
 4. **Nuclear and GDP results** need verification in the script output (CO₂ and Coal fully validated).
 
-## Files
+## Open questions for Part A.2
+
+The findings above are descriptive and largely expected. Three non-trivial questions emerge that require deeper analysis:
+
+### Q1 — Addition vs substitution
+
+Models underestimate coal in 2025. But do they also underestimate solar PV? If ME > 0 for both coal AND solar simultaneously, the real world is in an **energy addition** mode — renewables grow fast but fossil fuels persist — rather than the substitution dynamic embedded in most models (renewables replace fossils). This would be a structural finding about the models' worldview, not just a calibration error.
+
+**Test:** check the sign of ME at 2025 for all 6 variables simultaneously.
+
+### Q2 — Cross-variable error correlation
+
+Do scenarios that overestimate coal also underestimate solar? If errors are anti-correlated (coal↑ ↔ solar↓), the models have a coherent substitution logic that's wrong in both directions. If errors are positively correlated (both↑ or both↓), the error is more of a global scale factor. The correlation matrix of ε across variables tells us whether the bias is a "worldview" problem or a "level" problem.
+
+**Test:** compute Corr(ε_coal, ε_solar), Corr(ε_coal, ε_CO2), etc. across scenarios at 2025.
+
+### Q3 — Regional decomposition
+
+Is the coal error concentrated in Asia (China/India driving the record 2025 levels) or distributed globally? The R5 regional data is available. If the error is Asia-specific, models may capture OECD dynamics correctly but miss non-OECD growth. This has implications for which scenarios to trust regionally.
+
+**Test:** repeat the hindcast on R5 emissions/energy files.
+
+---
 
 | File | Description |
 |---|---|
