@@ -1,163 +1,109 @@
 \documentclass[sigconf, nonacm]{acmart}
 
-% ============================================================================
-% PRISMA SUMMER SCHOOL 2026 -- GROUP WORK REPORT
-% ============================================================================
 \setcopyright{none}
 \settopmatter{printacmref=false, printccs=false, printfolios=true}
 \acmDOI{}
 \acmISBN{}
-\acmConference[PRISMA '26]{PRISMA Summer School on Uncertainty in Energy Systems}{June 15--19, 2026}{University of Geneva, Switzerland}
+\acmConference[PRISMA '26]{PRISMA Summer School}{June 15--19, 2026}{Geneva}
 
-% ============================================================================
-% PACKAGES
-% ============================================================================
 \usepackage{amsmath,amsfonts}
 \usepackage{booktabs}
 \usepackage{siunitx}
 \usepackage{graphicx}
-\usepackage{float}
 
-\sisetup{per-mode=symbol, exponent-product=\times, group-separator={,}}
+\sisetup{per-mode=symbol, group-separator={,}}
 
-% ============================================================================
 \begin{document}
-% ============================================================================
 
-\title{Hindcast Evaluation of the SCI Ensemble: Is the Probability of Net Zero by 2070 Biased?}
+\title{Is the Probability of Net Zero by 2070 Biased? A Hindcast Evaluation of the SCI Ensemble}
 
 \author{Lucas Alvarez}
 \email{lualpi@upv.es}
-\affiliation{%
-  \institution{Universitat Polit\`ecnica de Val\`encia}
-  \city{Valencia}
-  \country{Spain}
-}
+\affiliation{\institution{Universitat Polit\`ecnica de Val\`encia}}
 
 \author{Matteo Catania}
 \email{matteo.catania@polimi.it}
-\affiliation{%
-  \institution{Politecnico di Milano}
-  \city{Milan}
-  \country{Italy}
-}
+\affiliation{\institution{Politecnico di Milano}}
 
 \author{R\'emi Paccou}
 \email{remi.paccou@proton.me}
-\affiliation{%
-  \institution{CIRED}
-  \city{Nogent-sur-Marne}
-  \country{France}
-}
-\affiliation{%
-  \institution{Schneider Electric}
-  \city{Grenoble}
-  \country{France}
-}
+\affiliation{\institution{CIRED, Nogent-sur-Marne}}
+\affiliation{\institution{Schneider Electric, Grenoble}}
 
-% ----------------------------------------------------------------------------
 \begin{abstract}
-The Scenario Compass Initiative (SCI) assembles 1,564 integrated assessment model pathways, of which 497 reach global net zero CO$_2$ by 2070, suggesting a naive probability of 32\%. But not all scenarios are equally credible. We evaluate the ensemble against observed data over 2010--2025 for CO$_2$ emissions, coal, solar PV, and wind capacity. We find that the ensemble systematically underestimates 2025 emissions and coal consumption, and that net-zero scenarios carry significantly larger hindcast errors than non-net-zero ones. Correcting for ensemble imbalance across model families preserves this finding. Economy-integrated models show a persistent optimistic bias on decarbonisation, while energy-system models are better centred but miss macro shocks. These results suggest that the naive 32\% overstates the probability of reaching net zero by 2070.
+Of the 1,564 pathways in the Scenario Compass Initiative, 497 reach net zero CO$_2$ by 2070, yielding a naive $P(\text{NZ2070}) \approx 32\%$. We evaluate this ensemble against observed 2010--2025 data for six variables. Net-zero scenarios carry significantly larger hindcast errors than non-net-zero ones --- they assumed faster decarbonisation than has occurred. This bias is robust to ensemble rebalancing across model families, to model economic structure, and to project vintage. The naive 32\% likely overstates the probability of reaching net zero by 2070.
 \end{abstract}
 
-\keywords{hindcast evaluation, scenario ensemble, net zero, forecast error, integrated assessment models}
+\keywords{hindcast, scenario ensemble, net zero, integrated assessment models}
 
 \maketitle
 
 % ============================================================================
-\section{Introduction}\label{sec:intro}
+\section{Introduction}
 % ============================================================================
 
-The Scenario Compass Initiative (SCI 2025) assembles 1,564 pathways from 65 integrated assessment models (IAMs). Of these, 497 reach global net zero CO$_2$ emissions by 2070, yielding a naive estimate $P(\text{NZ2070}) = 497/1564 \approx 32\%$. This estimate treats every scenario as equally credible. Yet these scenarios were built at different times, with different base-year calibrations, and encode different assumptions about technology deployment and policy ambition. Some have already been contradicted by observed data.
-
-We ask: \emph{does correcting for historical accuracy change the probability of reaching net zero by 2070?} To answer this, we compare scenario projections against observed data over 2010--2025, measure forecast errors, and test whether net-zero scenarios are systematically less accurate than others. If they are, the naive 32\% is biased upward.
+The SCI 2025 ensemble assembles 1,564 IAM pathways from 65 models across 41 research projects spanning 2015--2024. A naive count gives $P(\text{NZ2070}) = 32\%$, but this treats all scenarios as equally credible. We test whether scenarios that reach net zero are systematically less accurate about the recent past, which would indicate the naive estimate is biased upward.
 
 % ============================================================================
-\section{Data and Methods}\label{sec:methods}
+\section{Data and Methods}
 % ============================================================================
 
-\paragraph{Scenario data.} We use the SCI 2025 v1.0 global ensemble in IAMC format, covering 2010--2100 in 5-year steps. The meta-sheet provides the year of net zero CO$_2$ for each scenario; we flag those with net zero $\leq 2070$ ($|\mathcal{N}| = 497$).
-
-\paragraph{Observed data.} We compile global observations at the SCI time steps ($t \in \{2010, 2015, 2020, 2025\}$) from three sources: CO$_2$ emissions from the Global Carbon Budget 2025, coal primary energy from the Energy Institute Statistical Review 2025, and solar PV and wind capacity from IRENA Renewable Capacity Statistics 2026.
-
-\paragraph{Error metrics.} For each scenario $j$, variable $v$, and year $t$:
-\begin{equation}
-  \varepsilon_{j,v,t} = y_{v,t} - \hat{y}_{j,v,t}
-\end{equation}
-where $y$ is the observed value and $\hat{y}$ is the projection. A positive $\varepsilon$ indicates the scenario underestimates the observed value. We compute the Mean Error (ME~$= \overline{\varepsilon}$, capturing bias), Mean Absolute Error (MAE~$= \overline{|\varepsilon|}$, capturing typical error magnitude), and Root Mean Square Error (RMSE~$= \sqrt{\overline{\varepsilon^2}}$, penalising large deviations). Each metric is computed in three views: averaged over scenarios (one value per year), averaged over time (one value per scenario), and over both (a single summary number).
-
-\paragraph{Ensemble weighting.} The raw ensemble is unbalanced: five model families (REMIND, MESSAGE, IMAGE, WITCH, POLES) contribute 66\% of scenarios. We weight each scenario by $1/n_f$, where $n_f$ is the number of scenarios from its model family, so that each of the 17 families receives equal total weight. Weights are recomputed within the NZ2070 and non-NZ subsets to preserve a fair comparison.
-
-\paragraph{Model classification.} We classify families by economic structure: \emph{economy} models with endogenous macro-economy (CGE: AIM, GEM-E3, IMACLIM, EPPA, CGEM; Ramsey growth: REMIND, WITCH, MERGE; 8 families, 701 scenarios) and \emph{energy-system} models with exogenous GDP (MESSAGE, IMAGE, POLES, COFFEE, GCAM, TIAM, PROMETHEUS; 7 families, 883 scenarios).
+We compare SCI projections at $t \in \{2010, 2015, 2020, 2025\}$ against observed values from the Global Carbon Budget 2025, Energy Institute Statistical Review 2025, IRENA 2026, and IAEA PRIS for six variables: CO$_2$ emissions, coal primary energy, solar PV and wind capacity, nuclear capacity, and GDP (PPP). For each scenario $j$, variable $v$, and year $t$, we compute $\varepsilon_{j,v,t} = y_{v,t}^{\text{obs}} - \hat{y}_{j,v,t}$ and derive ME (bias), MAE (typical error), and RMSE. To correct for ensemble imbalance (five model families contribute 66\% of scenarios), we weight each scenario by $1/n_f$ where $n_f$ is the count from its family (17 families). We further test robustness along two dimensions: model economic structure (endogenous-economy vs.\ energy-system models) and project vintage (early $\leq$2017, mid 2018--2020, late 2021--2024).
 
 % ============================================================================
-\section{Results}\label{sec:results}
+\section{Results}
 % ============================================================================
 
-\paragraph{The ensemble undershoots recent trends.}
-Table~\ref{tab:view1} shows family-weighted error metrics by year for CO$_2$ emissions. The ensemble is well calibrated in 2010--2015 (ME close to zero). In 2020, models overshoot by $-1{,}572$ Mt~CO$_2$, missing the COVID-induced dip. In 2025, models undershoot by $+2{,}582$ Mt~CO$_2$: the post-COVID rebound exceeded what most scenarios anticipated. Only 32\% of scenarios project coal within $\pm 10\%$ of the observed 2025 value of 164~EJ. Coal reached a record high in 2024--2025, while the ensemble median projected 140~EJ.
+\paragraph{A.1 --- The ensemble undershoots 2025.}
+Table~\ref{tab:main} summarises CO$_2$ errors. The ensemble is well calibrated in 2010--2015, overshoots in 2020 (COVID), and undershoots in 2025: the post-COVID rebound exceeded expectations. Only 32\% of scenarios project coal within $\pm 10\%$ of observed 2025 levels (164~EJ, a record).
 
 \begin{table}[h]
 \centering
-\caption{Family-weighted forecast errors for CO$_2$ emissions (Mt~CO$_2$/yr).}
-\label{tab:view1}
-\begin{tabular}{lrrr}
+\small
+\caption{Family-weighted CO$_2$ forecast errors (Mt CO$_2$/yr) and NZ2070 comparison.}
+\label{tab:main}
+\begin{tabular}{lrrr|rr}
 \toprule
-Year & ME & MAE & RMSE \\
+ & \multicolumn{3}{c|}{By year (ME)} & \multicolumn{2}{c}{By scenario (MAE$_j$)} \\
+ & 2015 & 2020 & 2025 & NZ2070 & non-NZ \\
 \midrule
-2010 & $+405$ & $750$ & $970$ \\
-2015 & $+15$ & $732$ & $1{,}023$ \\
-2020 & $-1{,}572$ & $1{,}860$ & $2{,}433$ \\
-2025 & $+2{,}582$ & $3{,}550$ & $4{,}537$ \\
+All & $+15$ & $-1{,}572$ & $+2{,}582$ & $2{,}165$ & $1{,}746$ \\
+Economy models & $+317$ & $-1{,}264$ & $+2{,}717$ & --- & --- \\
+Energy models & $-425$ & $-2{,}164$ & $+2{,}541$ & --- & --- \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\paragraph{Net-zero scenarios are more wrong.}
-Table~\ref{tab:view2} compares per-scenario errors (averaged over time) between the NZ2070 and non-NZ groups. NZ scenarios carry a positive ME of $+607$, meaning they systematically project less CO$_2$ than observed --- i.e., they assume faster decarbonisation than has occurred. Non-NZ scenarios are nearly unbiased (ME~$= -23$). The MAE gap ($2{,}165$ vs $1{,}746$) confirms that NZ scenarios are not only biased but also less accurate in magnitude.
+\paragraph{A.1 --- NZ scenarios are more wrong.}
+NZ2070 scenarios carry ME$_j = +607$ (they systematically underestimate emissions), while non-NZ scenarios are centred at $-23$. The gap is significant (KS $p < 10^{-16}$) and holds for all six variables. Economy models (REMIND, WITCH, AIM, GEM-E3) show a persistent optimistic bias ($\text{ME} = +613$); energy-system models (MESSAGE, IMAGE, POLES) are centred ($-41$) but miss COVID more severely.
 
-\begin{table}[h]
-\centering
-\caption{Family-weighted per-scenario errors for CO$_2$ (Mt~CO$_2$/yr).}
-\label{tab:view2}
-\begin{tabular}{lrrrr}
-\toprule
-Group & ME$_j$ & MAE$_j$ & RMSE$_j$ & $n$ \\
-\midrule
-All & $+321$ & $1{,}770$ & $2{,}354$ & 1{,}591 \\
-NZ2070 & $+607$ & $2{,}165$ & $2{,}976$ & 497 \\
-non-NZ & $-23$ & $1{,}746$ & $2{,}270$ & 1{,}094 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\paragraph{A.1 --- Vintage does not explain the bias.}
+Recent projects ($\geq$2021) calibrate better at their base year (MAE$_{2010}$: 685 vs 1,141 for pre-2017 projects) but undershoot 2025 \emph{more} (ME$_{2025}$: $+3{,}280$ vs $+466$) because they incorporated more ambitious decarbonisation assumptions. The NZ vs.\ non-NZ gap persists within every vintage group (ME$_j \approx +800$ for NZ vs.\ $\approx 0$ for non-NZ).
 
-\paragraph{Economy models are more optimistic.}
-Splitting by model class, economy models carry a persistent positive bias (ME~$= +613$), projecting lower emissions than observed across all years. Energy-system models are nearly centred (ME~$= -41$). However, energy models miss the 2020 COVID shock more severely ($-2{,}164$ vs $-1{,}264$), consistent with their bottom-up structure that tracks technical trajectories but not macro shocks. In 2025, both classes undershoot comparably ($+2{,}541$ vs $+2{,}717$): the post-COVID rebound is a shared blind spot.
+% ── Placeholder for Parts B and C results ──
+% \paragraph{B --- Variable selection.}
+% TODO
+%
+% \paragraph{C --- Revised P(NZ2070).}
+% TODO
 
 % ============================================================================
-\section{Discussion and Conclusions}\label{sec:discussion}
+\section{Discussion}
 % ============================================================================
 
-Our hindcast evaluation reveals a structural pattern: the SCI ensemble collectively underestimates the persistence of fossil fuels and overestimates the pace of near-term decarbonisation. This bias is concentrated in the net-zero scenarios, which assumed faster coal phase-out and emission reductions than what has materialised through 2025. The finding is robust to ensemble rebalancing across model families.
+The hindcast reveals a structural pattern: the ensemble overestimates the pace of near-term decarbonisation, and this bias is concentrated in net-zero scenarios. The finding is robust to model family weighting, economic structure, and project vintage. If the scenarios most likely to be wrong about the recent past are the ones reaching net zero, the naive $P(\text{NZ2070}) \approx 32\%$ is biased upward.
 
-This has a direct implication for the guiding question of this exercise. If scenarios that reach net zero by 2070 are the ones that most poorly track recent reality, then the naive estimate $P(\text{NZ2070}) \approx 32\%$ is likely biased upward. Filtering the ensemble for historical credibility --- retaining only scenarios within a given error threshold on CO$_2$ and coal --- would reduce this probability, though the exact magnitude depends on the filtering criterion.
+Two caveats apply. First, 2020--2025 includes the COVID shock and its rebound, an exogenous event no scenario was designed to capture. Second, hindcast accuracy over 15~years does not guarantee forecast accuracy over 45~years. Nevertheless, systematic optimism about coal phase-out and emission reductions --- visible across model types and vintages --- points to a structural issue, not a transient one.
 
-Two caveats are important. First, the 2020--2025 period includes an unprecedented exogenous shock (COVID-19 and its rebound) that no scenario was designed to capture. Some of the measured error is attributable to this shock rather than to structural model deficiencies. Second, hindcast accuracy over a 15-year window does not guarantee forecast accuracy over 45 years: a model that correctly tracks coal in 2025 may still be wrong about 2070.
+% Future work: filtering the ensemble for historical credibility (Part~C) and applying Wright's law to solar PV deployment would allow a quantitative revision of $P(\text{NZ2070})$.
 
-% ============================================================================
 \bibliographystyle{ACM-Reference-Format}
-\begin{thebibliography}{10}
-
-\bibitem{gcb2025} Friedlingstein, P. et al. (2026). Global Carbon Budget 2025. \emph{Earth System Science Data}, 18.
-
-\bibitem{iea2026} IEA (2026). \emph{Global Energy Review 2026}. Paris: International Energy Agency.
-
-\bibitem{ei2025} Energy Institute (2025). \emph{Statistical Review of World Energy 2025}. London.
-
-\bibitem{irena2026} IRENA (2026). \emph{Renewable Capacity Statistics 2026}. Abu Dhabi.
-
+\begin{thebibliography}{5}
+\bibitem{gcb} Friedlingstein, P. et al. (2026). Global Carbon Budget 2025. \emph{ESSD}, 18.
+\bibitem{iea} IEA (2026). \emph{Global Energy Review 2026}. Paris.
+\bibitem{ei} Energy Institute (2025). \emph{Statistical Review of World Energy 2025}.
+\bibitem{irena} IRENA (2026). \emph{Renewable Capacity Statistics 2026}. Abu Dhabi.
 \bibitem{sci} Scenario Compass Initiative, \url{https://scenariocompass.org}.
-
 \end{thebibliography}
 
 \end{document}
