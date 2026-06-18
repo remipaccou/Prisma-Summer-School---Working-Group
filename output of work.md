@@ -1,7 +1,7 @@
-# Narrative — formal version
+# Reaching net-zero CO₂ by 2070: what the scenario ensemble can and cannot tell us
 
-*Three parts — the question, the diagnosis, what can still be forecast. Kept factual and explicit
-(notation, metrics, forecasting concepts spelled out), not a story. Oversold claims deflated.*
+*Output of work. Three parts — the question, the diagnosis (hindcast), and what can still be forecast.
+Factual and explicit throughout (notation, metrics, and forecasting concepts spelled out), not a story.*
 
 ## Framework & notation
 
@@ -86,7 +86,7 @@ and credibility filtering (§2.6).*
 **2.1 — Error series; the 2025 undershoot is structural.** The full ensemble (all 1,591 pathways
 2010–2100, with the four observed points) and a zoom on the hindcast window:
 
-![Full SCI ensemble and the observed CO₂ points](co2_overview.png)
+![Full SCI ensemble and the observed CO₂ points](figures/co2_overview.png)
 
 ε = y − ŷ on CO₂ (family-weighted mean):
 
@@ -102,7 +102,7 @@ to ≈ +378, so ~75% of the 2020 gap is the shock. The 2025 error is structural:
 pre-COVID trend (~39,400 extrapolated), so reality did not deviate — the ensemble did, by assuming a
 peak-and-decline. The +2,582 survives every detrending.
 
-![COVID (2020) vs structural (2025)](co2_finding1_simple.png)
+![COVID (2020) vs structural (2025)](figures/co2_finding1_simple.png)
 
 **2.2 — Bias by outcome.** Mean error ME = mean over years of ε, family-weighted: NZ2070 **+650** vs
 non-NZ **+216**. (The non-NZ *level* is weighting-dependent — near 0 under scenario weighting — so we
@@ -111,7 +111,7 @@ magnitudes (MAE ≈ 6% vs 5%) are close: this is a **bias** (systematic directio
 It is also partly definitional — reaching net-zero by 2070 forces an early downturn, so such pathways
 must under-project a reality that did not turn.
 
-![NZ scenarios biased low, not more imprecise](nz_bias.png)
+![NZ scenarios biased low, not more imprecise](figures/nz_bias.png)
 
 **2.3 — Skill vs a naive rule (a corollary, not an independent test).** Forecasting 2025 from 2010–
 2015 with a random walk or linear trend:
@@ -130,7 +130,7 @@ wins on CO₂/coal/GDP precisely because reality stayed on trend while the ensem
 nuclear's skill 9.9 is **hollow** — nuclear is flat (375→377 GW), so "nothing changes" wins by
 construction. Honest statement: on the on-trend variables the ensemble shows no skill against a ruler.
 
-![A trivial rule beats the ensemble on the on-trend variables](co2_benchmark.png)
+![A trivial rule beats the ensemble on the on-trend variables](figures/co2_benchmark.png)
 
 **2.4 — Calibration (a diagnostic, not a formal test).** Percentile of observed 2025 in F:
 
@@ -144,7 +144,7 @@ per variable** this is a suggestive diagnostic of low bias, not a formal PIT tes
 origins × targets). "Overconfident" is firm only for solar and GDP. What is solid is the *direction*:
 reality off-centre low ⇒ F is not a clean distribution to read P(NZ2070) from.
 
-![Reality on the low-emissions side of the cloud](calibration_pit.png)
+![Reality on the low-emissions side of the cloud](figures/calibration_pit.png)
 
 **2.5 — Variable selection (Part B).** Separation score sep = (median_NZ − median_non-NZ)/IQR per
 variable: **Coal +0.46, CO₂ +0.39, Solar −0.32** discriminate; Wind, Nuclear, GDP ≈ 0 do not. The
@@ -152,7 +152,7 @@ three informative variables **disagree in sign**: NZ worse on coal/CO₂, better
 signature). An L1-LASSO predicting NZ from the errors selects the same three with the same signs.
 Consequence: filter on coal+CO₂+solar jointly — CO₂ alone is a trap (its GDP/intensity errors cancel).
 
-![Coal, CO₂, solar carry the signal — and disagree](partB1_boxplots.png)
+![Coal, CO₂, solar carry the signal — and disagree](figures/partB1_boxplots.png)
 
 **2.6 — Filtering (Part C): ~20%, not "anything".** Keeping the 25% most accurate and recomputing the
 net-zero share: **CO₂ → 20%, multivariate → 22%, solar-only → 48%** (naive 34%). So the corrected
@@ -162,7 +162,7 @@ dependence on the conditioning variable — the empirical proof of Part 1 (no si
 probability exists). We label this object the **sensitivity of the net-zero share**, not a revised
 probability.
 
-![Net-zero share ~20% under sensible filters](partC_sensitivity.png)
+![Net-zero share ~20% under sensible filters](figures/partC_sensitivity.png)
 
 ---
 
@@ -183,7 +183,7 @@ out-of-sample test — the AR5 vintage (~2014 forecasting 2025) would provide on
 (2010→2024); Wright's law projects ~30–40 USD/kW by 2070. The net-zero and non-net-zero projections
 are nearly identical — clean tech becomes cheap whether or not the world reaches net-zero.
 
-![PV cost (Wright): collapse, and NZ ≈ non-NZ](../figures/pv_wright_cost_projection_to_2070.png)
+![PV cost (Wright): collapse, and NZ ≈ non-NZ](figures/pv_wright_cost_projection_to_2070.png)
 
 *Two caveats we hold ourselves to:* the figure draws lines, not intervals — to match our own
 calibration critique it needs an uncertainty band on the learning rate; and Wright's law is hard to

@@ -50,6 +50,6 @@ ax.set_title('Step 3 — Net-zero scenarios are biased low, not more imprecise\n
              f'MAE similar ({maA/354:.0f}% vs {maB/354:.0f}% of ~35 Gt) → a bias gap, not a precision gap',
              fontsize=10.5, fontweight='bold')
 ax.legend(fontsize=9, loc='upper left'); ax.spines[['top','right']].set_visible(False); ax.grid(axis='y', alpha=0.15)
-plt.tight_layout(); plt.savefig('nz_bias.png', dpi=150, bbox_inches='tight')
+plt.tight_layout(); plt.savefig('../figures/nz_bias.png', dpi=150, bbox_inches='tight')
 print(f'ME_j(fam): NZ +{meA:.0f} | non-NZ +{meB:.0f}    MAE_j(fam): NZ {maA:.0f} | non-NZ {maB:.0f}')
 print('Saved: nz_bias.png')

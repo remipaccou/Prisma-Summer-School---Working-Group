@@ -59,5 +59,5 @@ axR.set_ylim(-2200, 3100); axR.spines[['top','right']].set_visible(False)
 
 fig.suptitle('Once COVID is removed, the models are too low AT BOTH dates → constant optimism bias',
              fontsize=12, fontweight='bold')
-plt.tight_layout(); plt.savefig('co2_finding1_simple.png', dpi=150, bbox_inches='tight')
+plt.tight_layout(); plt.savefig('../figures/co2_finding1_simple.png', dpi=150, bbox_inches='tight')
 print('Saved: co2_finding1_simple.png')

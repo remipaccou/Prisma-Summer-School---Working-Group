@@ -82,7 +82,7 @@ On four of six variables a two-point rule beats the entire ensemble. Two honest 
 
 On solar/wind the ensemble wins yet is still ~50% wrong on PV — "everyone misses PV, the straight line more so" — which is exactly where a purpose-built method is needed (Part C). *Caveat:* with a single target year, "% beaten" is the robust statistic, not the point skill.
 
-→ Figure: `working files/co2_benchmark.png`
+→ Figure: `figures/co2_benchmark.png`
 
 ## Finding 9 — The ensemble is biased low as a distribution (calibration)
 
@@ -101,7 +101,7 @@ Read honestly: reality sits **above the centre for every energy/emissions variab
 
 *Method caveat.* With one observation per variable (six points) this is a calibration *diagnostic*, not a formal calibration test — the latter needs many forecast origins. It is suggestive, and consistent with the bias findings, but should be presented as such. Still, it makes the conceptual point: a cloud where reality routinely sits off-centre is not a probability distribution of futures, and ordinary error metrics (MAE) would miss it.
 
-→ Figure: `working files/calibration_pit.png`
+→ Figure: `figures/calibration_pit.png`
 
 ## Key takeaway
 
@@ -113,5 +113,5 @@ The models think in substitution; the world acts in addition — renewables exce
 |---|---|
 | `scripts/partA2_diagnostics.py` | Diagnostics (addition test, correlations, autocorrelation) |
 | `figures/partA2_fig1_diagnostics.png` | 3-panel: heatmap + ME bars + autocorrelation |
-| `working files/co2_benchmark.png` | Skill vs a naive rule |
-| `working files/calibration_pit.png` | PIT (where reality falls in the cloud) |
+| `figures/co2_benchmark.png` | Skill vs a naive rule |
+| `figures/calibration_pit.png` | PIT (where reality falls in the cloud) |

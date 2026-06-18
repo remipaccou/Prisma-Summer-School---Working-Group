@@ -2,7 +2,7 @@
 
 The detailed results behind the narrative, one file per part. Each finding is a claim with the
 numbers and the honest caveats. The readable story that strings them together is in
-`working files/narrative_updated.md`.
+`output of work.md`.
 
 | File | Covers | Findings |
 |---|---|---|

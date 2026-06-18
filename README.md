@@ -12,49 +12,58 @@ What conclusions can we draw on reaching net zero CO₂ emissions globally by 20
 
 Supervisor: François Lafond
 
+## Start here
+
+**→ [`output of work.md`](output%20of%20work.md)** — the main written output: the full argument with the
+forecasting vocabulary made explicit (framework, the question, the hindcast diagnosis, what can still be
+forecast). It embeds every figure and is the document to read first.
+
+Then, for depth:
+
+- [`methodology.md`](methodology.md) — the method itself (notation, metrics, Parts A/B/C, data sources).
+- [`findings/`](findings/) — the detailed results behind each claim, one file per part, with the numbers
+  and the honest caveats.
+
 ## Repository structure
 
-**→ Main written output: [`working files/narrative_updated.md`](working%20files/narrative_updated.md)** — the full story with the forecasting vocabulary made explicit. (Plain 8-step version: [`working files/narrative.md`](working%20files/narrative.md).) *The output will be promoted to the repo root once final.*
-
 ```
+├── output of work.md            ← THE OUTPUT — read this first
+├── methodology.md               ← the method (notation, metrics, Parts A/B/C)
 ├── README.md
-├── methodology.md               ← full method description (Parts A/B/C)
-├── findings/                    ← detailed results, one file per part (A1/A2/B/C)
+│
+├── findings/                    ← detailed results, one file per part
 │   ├── partA1_findings.md       ← hindcast bias (undershoot, NZ low, ambition≠model, vintage)
 │   ├── partA2_findings.md       ← error structure & forecast quality (addition, skill, calibration)
 │   ├── partB_findings.md        ← variable selection (coal/CO₂/solar discriminate)
-│   └── partC_findings.md        ← filtering + the irreducible floor + Wright cost view
+│   └── partC_findings.md        ← filtering, the irreducible floor, Wright cost view
 │
 ├── report/main.tex              ← 2-page LaTeX report
-├── data/                        ← observed data (6 variables) + SCI documentation
+├── data/                        ← observed data (6 variables) + cost series + SCI documentation
 │
-├── scripts/                     ← analysis pipeline (the "official" run)
+├── scripts/                     ← all analysis & figure code (run from this folder)
 │   ├── partA1_hindcast.py       ← Part A.1: hindcast evaluation (6 vars, weighting, vintage)
 │   ├── partA2_diagnostics.py    ← Part A.2: addition test, cross-correlation, autocorrelation
 │   ├── partB1_boxplots.py       ← Part B.1: variable selection (box plots)
 │   ├── partB2_lasso.py          ← Part B.2: variable selection (LASSO, confirms B.1)
-│   └── analyse_pv_wind_wright_costs_vetted_log.py  ← Part C.2: Wright's-law cost projection (PV/wind)
+│   ├── analyse_pv_wind_wright_costs_vetted_log.py  ← Part C: Wright's-law cost projection (PV/wind)
+│   └── co2_overview.py, co2_benchmark.py, …         ← generators for the figures in the output
 │
-├── figures/                     ← figures for the pipeline (partA1/A2/B1/B2 + Wright PV/wind)
+├── figures/                     ← every figure (pipeline + the ones the output embeds)
 │
-└── working files/               ← the narratives + their figures + lab
-    ├── narrative.md             ← the story in 8 steps (team-facing)
-    ├── narrative_updated.md     ← the OUTPUT (detailed, with forecasting vocabulary)
-    ├── *.png                    ← the figures the narratives embed
-    ├── scripts/                 ← the Python that regenerates those figures
-    └── archive/                 ← secondary / superseded explorations
+└── archive/                     ← superseded explorations + narrative_plain.md (early 8-step draft)
 ```
+
+All scripts write their figures to `figures/` and are meant to be run from inside `scripts/`.
 
 ## Naming convention
 
 | Prefix | Content |
 |--------|---------|
 | `partA1_` | Hindcast error computation (ME, MAE, RMSE) |
-| `partA2_` | Error diagnostics (autocorrelation, cross-variable) |
+| `partA2_` | Error diagnostics (autocorrelation, cross-variable, skill, calibration) |
 | `partB1_` | Variable selection — box plots |
 | `partB2_` | Variable selection — LASSO |
-| `partC1_` | Scenario filtering and revised P(NZ2070) |
-| `partC2_` | PV forecast (logistic + Wright's law) |
+| `partC_`  | Scenario filtering, the irreducible floor, Wright's-law cost view |
 
 ## Observed variables
 

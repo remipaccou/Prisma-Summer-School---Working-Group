@@ -148,7 +148,7 @@ Moore forecasts cost unconditionally from time; **Wright's law forecasts cost co
 | Nuclear capacity | IAEA PRIS | Annual |
 | SCI scenario ensemble | Scenario Compass Initiative v1.0, IIASA | 5-year steps, 2010–2100 |
 
-Observed data are compiled in `observed_data_cleaned.xlsx`. A genuine long-horizon, out-of-sample test (e.g. AR5-vintage scenarios from ~2014 forecasting 2025) requires the external **IIASA AR5 Scenario Database**, as the SCI ensemble contains no pre-2017 (pre-AR6) pathways.
+Observed data are compiled in `data/observed.xlsx` (and `data/observed_full.xlsx`). A genuine long-horizon, out-of-sample test (e.g. AR5-vintage scenarios from ~2014 forecasting 2025) requires the external **IIASA AR5 Scenario Database**, as the SCI ensemble contains no pre-2017 (pre-AR6) pathways.
 
 ## References
 

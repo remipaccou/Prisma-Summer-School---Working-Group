@@ -77,7 +77,7 @@ axR.set_xlim(2008, 2032); axR.set_ylim(15000, 55000)
 axR.set_title('Zoom: hindcast window 2010–2030', loc='left', fontsize=10, fontweight='bold')
 axR.set_xlabel('Year'); axR.legend(loc='lower left', fontsize=9)
 axR.spines[['top','right']].set_visible(False)
-plt.tight_layout(); plt.savefig('co2_overview.png', dpi=150, bbox_inches='tight')
+plt.tight_layout(); plt.savefig('../figures/co2_overview.png', dpi=150, bbox_inches='tight')
 print('Saved: co2_overview.png')
 
 # ════════════════════════ FIG 2 — selections ═══════════════════════════
@@ -118,7 +118,7 @@ for ax, (title, sub, color) in zip(axes.flat, panels):
     ax.spines[['top','right']].set_visible(False)
 for ax in axes[:,0]: ax.set_ylabel('Mt CO₂/yr')
 for ax in axes[1,:]: ax.set_xlabel('Year')
-plt.tight_layout(); plt.savefig('co2_views.png', dpi=150, bbox_inches='tight')
+plt.tight_layout(); plt.savefig('../figures/co2_views.png', dpi=150, bbox_inches='tight')
 print('Saved: co2_views.png')
 
 # ════════════════════════ metrics table ════════════════════════════════

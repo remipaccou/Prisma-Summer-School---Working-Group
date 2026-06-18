@@ -47,6 +47,6 @@ ax.set_title("Kaya decomposition of the 2025 CO₂ error\n"
              "crushes it (−7 729) → our bias = DECOUPLING optimism, not growth",
              fontsize=11, fontweight='bold')
 ax.spines[['top','right']].set_visible(False)
-plt.tight_layout(); plt.savefig('co2_kaya.png', dpi=150, bbox_inches='tight')
+plt.tight_layout(); plt.savefig('../figures/co2_kaya.png', dpi=150, bbox_inches='tight')
 print(f"obs {OBS_CO2} -> +GDP {gdp_eff:+,.0f} -> +CI {ci_eff:+,.0f} -> ens {co2_e:,.0f}")
 print('Saved: co2_kaya.png')

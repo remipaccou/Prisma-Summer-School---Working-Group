@@ -76,5 +76,5 @@ ax.set_title('Does the IAM ensemble beat a trivial rule at predicting 2025?\n'
              'Forecast made with info 2010-2015 (pre-COVID). skill>1 = the rule wins.',
              fontsize=12, fontweight='bold')
 ax.legend(fontsize=9); ax.spines[['top','right']].set_visible(False); ax.grid(axis='y', alpha=0.15)
-plt.tight_layout(); plt.savefig('co2_benchmark.png', dpi=150, bbox_inches='tight')
+plt.tight_layout(); plt.savefig('../figures/co2_benchmark.png', dpi=150, bbox_inches='tight')
 print('\nSaved: co2_benchmark.png')

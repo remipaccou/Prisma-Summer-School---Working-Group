@@ -18,7 +18,7 @@ Read honestly: **under any reasonable filter (CO₂ or the multivariate criterio
 
 The mechanism is Finding 10: net-zero pathways were right on solar and wrong on CO₂/coal, so filtering on what they missed removes them while filtering on what they got right keeps them. This **non-robustness is the empirical proof of the conditional-forecast point**: one cannot extract an unconditional probability from conditional forecasts, because the answer depends on the conditioning variable chosen. We therefore relabel the object — not "the revised probability" but **the sensitivity of the net-zero share** to credibility filtering.
 
-→ Figure: `working files/partC_sensitivity.png`
+→ Figure: `figures/partC_sensitivity.png`
 
 ## Finding 13 — The irreducible floor (the honest limit)
 
@@ -45,8 +45,8 @@ There is no single corrected net-zero probability — the share is ~20% under an
 
 | File | Description |
 |---|---|
-| `working files/scripts/partC_sensitivity.py` | Net-zero share vs filtering criterion (C.1) |
+| `scripts/partC_sensitivity.py` | Net-zero share vs filtering criterion (C.1) |
 | `scripts/analyse_pv_wind_wright_costs_vetted_log.py` | Wright's-law cost projection, PV & wind (C.2) |
-| `working files/partC_sensitivity.png` | The share is not robust |
+| `figures/partC_sensitivity.png` | The share is not robust |
 | `figures/pv_wright_cost_projection_to_2070.png` | PV cost to 2070 by group |
 | `figures/wind_wright_cost_projection_to_2070.png` | Wind cost to 2070 by group |

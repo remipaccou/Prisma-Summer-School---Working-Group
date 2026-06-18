@@ -39,4 +39,4 @@ Part B reduces to one instruction for the filtering step: **filter on coal + CO�
 | `scripts/partB2_lasso.py` | LASSO confirmation (anti-circular) |
 | `figures/partB1_boxplots.png` | Coal/CO₂/solar separate; wind/nuclear/GDP do not |
 | `figures/partB2_lasso.png` | LASSO selects the same three |
-| `working files/co2_kaya.png` | Why CO₂-alone filtering is a trap (Kaya) |
+| `figures/co2_kaya.png` | Why CO₂-alone filtering is a trap (Kaya) |

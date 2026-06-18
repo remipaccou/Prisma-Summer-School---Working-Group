@@ -66,5 +66,5 @@ axR.set_ylabel('Percentile of observed (PIT)')
 axR.set_title('Calibration degrades with horizon\n(reality drifts from centre to tails)', loc='left', fontsize=10, fontweight='bold')
 axR.spines[['top','right']].set_visible(False)
 
-plt.tight_layout(); plt.savefig('calibration_pit.png', dpi=150, bbox_inches='tight')
+plt.tight_layout(); plt.savefig('../figures/calibration_pit.png', dpi=150, bbox_inches='tight')
 print(R.round(0).to_string()); print('Saved: calibration_pit.png')

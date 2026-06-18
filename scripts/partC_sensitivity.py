@@ -53,7 +53,7 @@ ax.set_title("Part C — the « corrected NZ share » is not robust: 20%→48% d
              fontsize=11, fontweight='bold')
 ax.set_xlim(0, 108); ax.set_ylim(0, 52)
 ax.legend(fontsize=8.5, loc='upper right'); ax.spines[['top','right']].set_visible(False); ax.grid(alpha=0.15)
-plt.tight_layout(); plt.savefig('partC_sensitivity.png', dpi=150, bbox_inches='tight')
+plt.tight_layout(); plt.savefig('../figures/partC_sensitivity.png', dpi=150, bbox_inches='tight')
 print(f"naive {naive:.0f}% (n={len(M)})")
 for q in [0.25,0.5]:
     print(f"  keep {int(q*100)}%: solar {curve('Solar_r')[1][np.argmin(abs(np.linspace(.05,1,40)-q))]:.0f}% | "
