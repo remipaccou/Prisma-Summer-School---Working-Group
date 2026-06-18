@@ -41,6 +41,10 @@ its own definition is not a probability.
 We compare the ensemble's CO₂ projection to observed reality at the 4 points 2010→2025.
 Error = observed − projected (**positive = the models aimed too low**).
 
+The full ensemble — all CO₂ trajectories (2010–2100) with the 4 observed points (context):
+
+![All SCI scenarios + observed CO₂](co2_overview.png)
+
 | Year | Observed | Projected (mean) | Error |
 |---|---|---|---|
 | 2010 | 33,400 | 32,995 | +405 |
@@ -68,4 +72,36 @@ ensemble is biased low.
 
 ---
 
-*Next: Step 3 — the net-zero scenarios are the most biased low.*
+## Step 3 — The net-zero scenarios are the ones most biased low
+
+Split the ensemble into **NZ2070** (the 497 that reach net-zero by 2070) and **non-NZ**.
+Their mean CO₂ error over 2010–2025 (family-weighted):
+
+| Group | Mean error (ME) | MAE |
+|---|---|---|
+| **NZ2070** | **+650** (under-project) | 2,147 (~6%) |
+| **non-NZ** | **+216** (far less) | 1,649 (~5%) |
+
+NZ scenarios systematically project less CO₂ than reality — they assumed faster decarbonization
+than happened. The gap holds under every weighting (+434 family, +837 scenario, +1,281 project).
+
+![Step 3 — NZ scenarios are biased low, not more imprecise](nz_bias.png)
+
+Three things to keep honest:
+
+- **It is a bias, not imprecision.** The error *magnitude* (MAE) is similar (~6% vs ~5%). What
+  separates the groups is the *direction* (NZ always too low), not the size.
+- **It is partly tautological.** To reach net-zero by 2070 a pathway must bend emissions down
+  early; reality did not; so an NZ pathway under-projects 2025 *by construction*. And a pathway
+  that decarbonizes late (after ~2030) is indistinguishable from non-NZ over 2010–2025 — the
+  hindcast only catches early movers.
+- **It is robust** to how we weight (scenario / family / project).
+
+**Defensible claim** (not "net-zero models are wrong"):
+
+> Pathways premised on an early turn — which has not begun — are now the least consistent with
+> observation.
+
+---
+
+*Next: Step 4 — does the ensemble forecast at all? (a trivial rule beats it on 4 of 6 variables).*
