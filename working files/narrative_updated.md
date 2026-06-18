@@ -35,7 +35,7 @@ The SCI 2025 ensemble holds 1,564 pathways; 497 reach net-zero CO₂ by 2070 —
 "chance". **Is that 32% meaningful — and what happens to it once we confront the scenarios with the
 observed record 2010–2025?**
 
-## Step 1 — The naive 32% is not a probability  ·  *[Lafond: conditional forecasts, slide 3]*
+## Step 1 — The naive 32% is not a probability  ·  
 
 **Conceptual.** Counting how many conditional forecasts $\hat{y}_j = f_j(P_j)$ end in net-zero
 measures the *menu of assumed policy paths* $\{P_j\}$ the modelling teams chose to run — not
