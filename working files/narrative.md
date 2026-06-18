@@ -137,4 +137,35 @@ demonstrated forecasting skill — and the net-zero share it implies inherits th
 
 ---
 
-*Next: Step 5 — the ensemble is not even calibrated as a distribution (reality sits in the tails).*
+## Step 5 — The ensemble is not even calibrated as a distribution
+
+Step 4 showed the point forecast (the median) is bad. But an ensemble is a range, not a point — is
+it at least honest as a *distribution*? No.
+
+**The calibration test (PIT).** For each variable, where does observed 2025 fall in the scenario
+cloud (its percentile)? A calibrated forecast would put reality near the median (~50th) about half
+the time, scattered uniformly. If it sits in the **tails**, the ensemble is biased *and* overconfident.
+
+| Variable | Percentile of observed 2025 | Reading |
+|---|---|---|
+| **GDP** | **1st** | ensemble far too high |
+| Nuclear | 20th | too high |
+| CO₂ | 75th | too low |
+| Wind | 75th | too low |
+| Coal | 79th | too low |
+| **Solar PV** | **90th** | far too low |
+
+For all 6 variables reality lands in the **tails, never the centre** — GDP below 99% of scenarios.
+And calibration **degrades with horizon**: at 2015 several variables were near the centre (CO₂ at
+the 52nd); by 2025 they have drifted to the edges.
+
+![Step 5 — reality falls in the tails, not the centre](calibration_pit.png)
+
+This is the **probabilistic version** of the bias: Step 4 said the median is wrong; Step 5 says the
+*whole distribution* is mis-calibrated — biased and overconfident. It closes the loop with Step 1:
+an ensemble whose reality lands at the 90th or 1st percentile is **not a probability distribution**
+of futures, so no "P(net-zero)" can be read from it. Calibration, not MAE, is what reveals this.
+
+---
+
+*Next: Part B — which variables carry the signal (what to filter on).*
