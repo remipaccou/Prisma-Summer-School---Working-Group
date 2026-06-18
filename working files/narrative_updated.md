@@ -12,18 +12,18 @@ We treat each scenario as a **forecast object** and evaluate it the way one eval
 
 **Four Lafond concepts the whole project rests on.**
 
-1. **Conditional vs unconditional forecast (slide 3).** A scenario is a *conditional* forecast,
+1. **Conditional vs unconditional forecast.** A scenario is a *conditional* forecast,
    $\hat{y}_j = f_j(P_j)$ — emissions *given* an assumed policy/technology path $P_j$. An
    *unconditional* forecast is $\mathbb{E}[y_t \mid \text{information}]$ — what will actually happen.
    **You cannot obtain the second by counting the first.**
-2. **Forecast origin × horizon (slide 11).** Each forecast has an origin $t_0$ (when it was made)
+2. **Forecast origin × horizon.** Each forecast has an origin $t_0$ (when it was made)
    and a horizon $\tau = t - t_0$. For a random walk with an estimated drift, error variance grows
    as $\sigma^2(\tau) \propto \tau + \tau^2/m$ — uncertainty compounds with horizon.
-3. **Calibration & sharpness (slide 5).** A forecast is *calibrated* if observations fall uniformly
+3. **Calibration & sharpness.** A forecast is *calibrated* if observations fall uniformly
    across its predictive distribution: the PIT $F_{v,t}(y_{v,t}) \sim \mathrm{Uniform}(0,1)$.
    *Sharpness* is how narrow the intervals are. A narrow interval that misses too often is
    **overconfident**.
-4. **Skill vs a naive benchmark (slide 2).** A forecast earns trust only by beating a trivial rule
+4. **Skill vs a naive benchmark.** A forecast earns trust only by beating a trivial rule
    (random walk / linear trend). Skill ratio $= |\varepsilon_{\text{model}}| / |\varepsilon_{\text{naive}}|$;
    **$>1$ means the naive rule wins.**
 
