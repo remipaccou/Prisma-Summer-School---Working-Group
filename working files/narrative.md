@@ -168,4 +168,40 @@ of futures, so no "P(net-zero)" can be read from it. Calibration, not MAE, is wh
 
 ---
 
-*Next: Part B — which variables carry the signal (what to filter on).*
+## Step 6 — Part B: which variables carry the signal?
+
+To filter scenarios by credibility we must know which variables actually separate good from bad
+pathways. For each variable we compare the hindcast error of **NZ vs non-NZ** scenarios (box plots).
+Clear separation → the variable carries signal; overlap → it does not.
+Score: `sep = (median_NZ − median_nonNZ) / IQR`.
+
+| Variable | sep | Discriminating? | Direction |
+|---|---|---|---|
+| **Coal** | **+0.46** | ✅ | NZ worse |
+| **CO₂** | **+0.39** | ✅ | NZ worse |
+| **Solar** | **−0.32** | ✅ | NZ better |
+| Wind | −0.08 | ❌ | — |
+| Nuclear | +0.08 | ❌ | — |
+| GDP | −0.05 | ❌ | — |
+
+Three variables carry the signal — **coal, CO₂, solar**. The other three separate nothing.
+
+![Step 6 — coal, CO₂, solar discriminate; wind/nuclear/GDP do not](partB1_boxplots.png)
+
+**The crucial twist:** the *sign* disagrees. On CO₂ and coal the NZ scenarios are *worse* (they
+assumed a decline that did not happen); on solar they are *better* (they predicted the boom). The
+discriminating variables contradict each other — the "addition" signature at the credibility level.
+
+This dictates Part C:
+
+1. **Filter multivariate (coal + solar + CO₂)**, not CO₂ alone — CO₂ alone is a trap (Kaya: its
+   GDP/intensity errors cancel).
+2. Because the informative variables disagree, the filtered result depends on which you weight —
+   exactly what flips Part C.
+
+No LASSO or PCA needed: Part B reduces to "coal, CO₂ and solar carry the signal; filter on them,
+multivariate."
+
+---
+
+*Next: Step 7 — Part C, the result: filtering gives no stable number (20%→48%).*
