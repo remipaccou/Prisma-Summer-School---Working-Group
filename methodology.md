@@ -2,11 +2,30 @@
 
 ## 1. Context and Research Question
 
-The Scenario Compass Initiative (SCI 2025) assembles 1,564 integrated assessment model pathways from 65 models. Of these, 497 reach global net zero CO$_2$ emissions by 2070.
+The Scenario Compass Initiative (SCI 2025) assembles 1,564 integrated assessment model (IAM) pathways from 65 models. Of these, 497 reach global net zero CO$_2$ emissions by 2070.
 
-A naive reading of the ensemble would suggest $P(\text{NZ2070}) = 497/1564 \approx 32\%$. But this treats all scenarios as equally credible. Some of these models were built years ago; some have been calibrated on outdated assumptions; some have already been contradicted by observed data over 2010–2025. The question is: **does correcting for historical accuracy change the probability of reaching net zero by 2070?**
+A naive reading divides one count by another, $P(\text{NZ2070}) = 497/1564 \approx 32\%$, and calls it a probability. It is not. Following Lafond (PRISMA lectures; Farmer & Lafond 2016), **each IAM pathway is a *conditional* forecast** — a statement of the form "*if* policy, technology cost, and demand follow this path, *then* emissions follow that path." A probabilistic forecast is an *unconditional* predictive distribution, $F_{t,\tau}(y) = \mathbb{P}(Y_{t+\tau} \le y \mid \mathcal{I}_t)$. **One cannot manufacture an unconditional probability by counting conditional forecasts**: the share reaching net zero is determined by which scenarios modelling teams chose to run, not by the likelihood of the world. This is the single most important framing decision of the project, and it reshapes the question.
 
-To answer this, we need a method to evaluate scenario credibility against observed data, identify which variables carry the most information about credibility, and revise the probability accordingly.
+We therefore replace "revise the probability" with three nested, answerable questions:
+
+- **Q-A (Calibration).** Read as an implied predictive distribution, is the SCI ensemble *calibrated* against observed 2010–2025 outcomes, or is it biased and overconfident? *Calibration*: events assigned probability $p$ should occur a fraction $p$ of the time. *Sharpness*: conditional on calibration, narrower intervals are better. A narrow interval that misses too often is overconfident (Lafond, calibration–sharpness).
+- **Q-B (Skill).** Does the ensemble *beat a trivial, empirically validated benchmark* (a geometric random walk with drift, or an experience curve)? An ensemble with no skill against a naive rule cannot be trusted to discriminate futures.
+- **Q-C (Sensitivity & decision).** Treating each pathway as a conditional forecast, how sensitive is the *share* of net-zero-by-2070 pathways to conditioning on historical credibility — and what is the **irreducible floor** that a 15-year backtest cannot resolve?
+
+We deliver calibration, skill, and a sensitivity curve — **not** an unconditional $P(\text{NZ2070})$. The three project deliverables follow this structure: (1) a calibration assessment of the ensemble (§3); (2) an empirically validated benchmark forecast for the key observables (§5.2); (3) the policy-conditional view via Wright's law (§5.3).
+
+### 1.1 The forecasting object (vocabulary)
+
+| Term | Meaning |
+|---|---|
+| Predictive distribution $F_{t,\tau}$ | full distribution over $Y_{t+\tau}$ given information $\mathcal{I}_t$ at the forecast origin $t$ |
+| Horizon $\tau$ | how far ahead the forecast reaches |
+| Conditional forecast | $Y$ given that $X$ follows a stated path (an IAM scenario) |
+| Unconditional forecast | $Y$ marginally, integrating over $X$ (a probability) |
+| Calibration | coverage matches nominal level: $\mathbb{P}(Y_{t+\tau} \le q_{\alpha}) \approx \alpha$ |
+| Sharpness | width of the predictive interval (smaller is better, given calibration) |
+| PIT | probability integral transform: where the realised value falls in the predicted CDF |
+| Skill | accuracy relative to a naive benchmark; skill $>1$ means the benchmark wins |
 
 ## 2. Notation
 
@@ -19,134 +38,108 @@ To answer this, we need a method to evaluate scenario credibility against observ
 | $T$ | Set of evaluation years: $\{2010, 2015, 2020, 2025\}$ |
 | $\mathcal{N}$ | Set of scenarios reaching net zero CO$_2$ by 2070 ($|\mathcal{N}| = 497$) |
 | $\mathcal{C}_\tau$ | Set of historically credible scenarios (defined in §5) |
+| $\tau$, $m$ | Forecast horizon; training-window length (Lafond model, §5.2) |
 
-## 3. Part A — Hindcast Error Analysis
+Sign convention: a positive $\varepsilon$ means the scenario **underestimated** the observed value (projected less CO$_2$, less coal, less solar than actually occurred). A negative $\varepsilon$ means it overestimated.
 
-### 3.1 Rationale
+## 3. Part A — Hindcast as a Backtest
 
-The SCI scenarios project the evolution of CO$_2$ emissions, energy supply, and technology deployment from 2010 to 2100. For the period 2010–2025, observed data is available from the Global Carbon Budget, IEA, and the Energy Institute Statistical Review. By comparing each scenario's projection to the observed trajectory, we measure how well it anticipated what actually happened. Scenarios that failed to track reality over the recent past have weaker grounds for credibility regarding their future projections.
+### 3.1 Rationale and a framing caveat
 
-### 3.2 Error computation
+For 2010–2025, observed data are available (Global Carbon Budget, IEA, Energy Institute, IRENA, IAEA). Comparing each pathway's projection to the realised trajectory is a **backtest**: we place ourselves at a past origin, read off the forecast, and score it against what happened.
 
-For each scenario $j$, variable $v$, and year $t \in T$:
+One caution, stated up front. Because IAM pathways are conditional forecasts, a net-zero pathway that "misses" 2025 may be missing because the *assumed policy did not occur*, not because the *model is wrong*. The defensible claim is therefore not "net-zero models are bad," but: **trajectories premised on an early decarbonisation that has not begun are now less consistent with observation.** This is a statement about the world (policy has not turned), conditioned through the model — and it is what the backtest can legitimately support.
 
-$$\varepsilon_{j,v,t} = y_{v,t} - \hat{y}_{j,v,t}$$
+### 3.2 Error metrics and calibration metrics
 
-A positive $\varepsilon$ means the scenario underestimated the observed value (projected less CO$_2$ or less coal than actually occurred). A negative $\varepsilon$ means it overestimated.
+For each scenario $j$, variable $v$, and year $t \in T$, $\varepsilon_{j,v,t} = y_{v,t} - \hat{y}_{j,v,t}$.
 
-We compute three summary metrics, each capturing a different aspect of forecast quality:
+**Accuracy (magnitude / bias).**
 
-**Mean Error (ME)** — systematic bias. The sign indicates whether the ensemble collectively over- or underestimates:
+$$\text{ME}_{v,t} = \tfrac{1}{J}\!\sum_j \varepsilon_{j,v,t}, \qquad
+\text{MAE}_{j,v} = \tfrac{1}{|T|}\!\sum_{t}|\varepsilon_{j,v,t}|, \qquad
+\text{RMSE}_{j,v} = \sqrt{\tfrac{1}{|T|}\!\sum_{t}\varepsilon_{j,v,t}^2}.$$
 
-$$\text{ME}_{v,t} = \frac{1}{J} \sum_{j=1}^{J} \varepsilon_{j,v,t} \qquad \text{(averaged over scenarios, one value per year)}$$
+ME captures systematic bias; MAE the typical magnitude; RMSE penalises occasional large misses more heavily (a scenario perfect three times and off by 4,000 once has the same MAE as one consistently off by 1,000, but a larger RMSE).
 
-$$\text{ME}_{j,v} = \frac{1}{|T|} \sum_{t \in T} \varepsilon_{j,v,t} \qquad \text{(averaged over time, one value per scenario)}$$
+**Calibration (the metric the accuracy scores miss).** MAE does not tell us whether the *ensemble spread* is honest. We add, treating the cross-scenario distribution at each year as an implied predictive distribution:
 
-$$\overline{\text{ME}}_v = \frac{1}{J \cdot |T|} \sum_{j} \sum_{t} \varepsilon_{j,v,t} \qquad \text{(averaged over both)}$$
+- **PIT** — the percentile of the observed value within the ensemble at year $t$: $\text{PIT}_{v,t} = \tfrac{1}{J}\sum_j \mathbb{1}[\hat{y}_{j,v,t} < y_{v,t}]$. A calibrated ensemble places the realised value near the 50th percentile, with PIT values uniform across origins.
+- **Coverage** — does the ensemble's central $1-\alpha$ band contain the realised value at the nominal rate?
 
-**Mean Absolute Error (MAE)** — typical error magnitude, regardless of sign:
+A consistently high PIT (realised value in the upper tail) diagnoses a low-biased, overconfident ensemble — directly answering Q-A.
 
-$$\text{MAE}_{j,v} = \frac{1}{|T|} \sum_{t \in T} |\varepsilon_{j,v,t}|$$
+### 3.3 Why both families of metric
 
-**Root Mean Square Error (RMSE)** — penalises large deviations more heavily than MAE:
-
-$$\text{RMSE}_{j,v} = \sqrt{\frac{1}{|T|} \sum_{t \in T} \varepsilon_{j,v,t}^2}$$
-
-### 3.3 Why these three metrics
-
-ME alone can be misleading: a scenario that overestimates by 5,000 in 2020 and underestimates by 5,000 in 2025 has ME $\approx$ 0 but is clearly inaccurate. MAE captures total error magnitude. RMSE further penalises scenarios with occasional large misses, distinguishing a scenario that is consistently off by 1,000 from one that is perfect three times and off by 4,000 once (same MAE, very different RMSE).
+Accuracy without calibration is misleading: an ensemble can have small median error yet be badly overconfident (narrow band, realised value in its tail). Calibration is the property that matters for any probabilistic statement about NZ2070, so it is reported alongside ME/MAE/RMSE rather than instead of them.
 
 ### 3.4 Error diagnostics
 
-Beyond aggregate metrics, we examine the structure of errors.
+**Autocorrelation (base-year bias vs trajectory error).** $\rho_v(t_0,t_1) = \mathrm{Corr}_j(\varepsilon_{j,v,t_0}, \varepsilon_{j,v,t_1})$. High autocorrelation across horizons indicates a *structural* bias locked in at the base year (likely to persist); low autocorrelation indicates a *trajectory* error (the model got the level right but the rate wrong). This distinction governs whether filtering on base-year accuracy is even useful.
 
-**Autocorrelation** — Do scenarios that err at one time point also err at others?
+**Cross-variable correlation (the embedded worldview).** $\rho(v_1,v_2) = \mathrm{Corr}_j(\varepsilon_{j,v_1,t}, \varepsilon_{j,v_2,t})$. If scenarios that overproject coal underproject renewables, the ensemble embeds a *substitution* worldview. This matters for variable selection: filtering on a single variable can be fooled by **compensating errors** (a scenario right on CO$_2$ but wrong on both coal and solar in offsetting directions).
 
-$$\rho_v(t_0, t_1) = \text{Corr}\left(\varepsilon_{j,v,t_0},\; \varepsilon_{j,v,t_1}\right) \quad \text{across } j$$
+**Credibility vs NZ2070 status (the central test).** $|\varepsilon_{j,v,t}| = \alpha + \beta\,\mathbb{1}[j \in \mathcal{N}] + u_j$. If $\beta > 0$, net-zero pathways are historically less accurate. *Caveat (Lafond, backtesting):* overlapping and reused samples make scored errors serially dependent, so naive significance tests (e.g. a raw KS $p$-value) overstate significance. Where a hard claim rests on significance, the null should be assessed with **surrogate datasets** (synthetic histories generated under a stated null model and run through the identical procedure), not an off-the-shelf $p$-value.
 
-High autocorrelation indicates a structural model bias (the model is calibrated wrong from the start), as opposed to a random error (the model got the trend right but missed a specific event like COVID). This matters because structural biases are likely to persist into the future, while random errors may not.
+### 3.5 Skill against a naive benchmark (Q-B)
 
-**Cross-variable correlation** — Do scenarios that overestimate coal also underestimate renewables?
+Following Lafond's opening test ("is the model better than a random walk with drift?"), we benchmark the ensemble against a trivial forecast trained only on pre-COVID information (2010–2015): a linear trend or a geometric random walk. For each variable,
 
-$$\rho(v_1, v_2) = \text{Corr}\left(\varepsilon_{j,v_1,t},\; \varepsilon_{j,v_2,t}\right) \quad \text{across } j$$
+$$\text{skill}_v = \frac{|\,\text{error}_\text{ensemble}\,|}{|\,\text{error}_\text{naive rule}\,|}, \qquad \text{skill} > 1 \Rightarrow \text{the naive rule wins.}$$
 
-If errors are correlated across variables, it reveals a coherent worldview embedded in the model: some models are systematically "fossil-heavy" while others are systematically "green". This means filtering on a single variable may suffice, or conversely, that filtering on one variable without checking others could be misleading if compensating biases exist.
+We also report the share of individual scenarios beaten by the rule. An ensemble that a trivial rule beats on most variables has, by Lafond's standard, no demonstrated forecasting skill — and its implied NZ2070 share carries correspondingly little weight.
 
-**Error vs. NZ2070 status** — Do NZ scenarios have systematically larger errors?
-
-$$|\varepsilon_{j,v,t}| = \alpha + \beta \cdot \mathbb{1}[j \in \mathcal{N}] + u_j$$
-
-If $\beta > 0$, NZ scenarios are less accurate historically. This is the central test: it directly links historical credibility to the outcome we care about.
-
-## 4. Part B — Variable Selection
+## 4. Part B — Which Observables Carry the Signal
 
 ### 4.1 Rationale
 
-The SCI dataset contains over 2,000 variables per scenario. Not all are equally relevant for assessing credibility. We need to identify which variables carry the most information about whether a scenario tracks reality. This serves two purposes: (i) it tells us what to monitor in the real world to assess whether we are on a NZ-compatible path, and (ii) it determines which variables to use for filtering in Part C.
+The SCI contains thousands of variables. Part B identifies the few whose realised values most cleanly separate accurate from inaccurate pathways — i.e. *what to monitor in the real world*, and *what to filter on* in Part C. Part A's diagnostics already point to **coal and solar PV** as the discriminating pair (largest, structurally coherent errors; the addition signal). Part B confirms and, critically, motivates a **multivariate** filter so that compensating errors (§3.4) cannot buy a scenario undeserved credibility on CO$_2$ alone.
 
-### 4.2 Box-plot comparison (non-parametric approach)
+### 4.2 Box-plot separation (non-parametric)
 
-We split scenarios into two groups based on historical accuracy: "accurate" (MAE below a threshold $\tau$) and "inaccurate" (MAE above $\tau$). For each variable in the SCI at year 2025 or 2030, we compare the distribution across the two groups using side-by-side box plots.
+Split scenarios into accurate vs inaccurate (MAE below/above a threshold) and, for each candidate variable at 2025, compare the two distributions with side-by-side box plots. Clear separation $\Rightarrow$ informative variable; heavy overlap $\Rightarrow$ uninformative. This is a visual, assumption-light form of forecast encompassing and is the primary Part B deliverable.
 
-Variables where the two distributions are clearly separated are informative: knowing their value tells you whether the scenario is historically credible. Variables where the distributions overlap are uninformative.
+### 4.3 Optional: LASSO and PCA
 
-This is a simplified, visual version of forecast encompassing: instead of regressing errors on projections, we directly compare distributions. It requires no modeling assumptions and produces immediately interpretable figures.
+LASSO regression of $|\varepsilon|$ on all projected variables (L1 penalty shrinking most coefficients to zero) gives an automatic, collinearity-aware ranking of informative variables. **Leakage caveat:** regressing $|\varepsilon_{\text{CO}_2}|$ on projected CO$_2$ is near-circular; predict *late-period* error from *early-period* projections, or use variables other than the target. PCA/SVD on the projection matrix can reveal a latent "fossil-intensity" dimension. Both are reported only if they change the coal+solar conclusion; otherwise Part B reduces to the box plots and the multivariate-filter motivation.
 
-### 4.3 LASSO regression (regularised variable selection)
+## 5. Part C — Sensitivity of the Conditional-Forecast Share, and an Honest Benchmark Forecast
 
-To formalise the box-plot approach, we regress absolute error on all available scenario variables simultaneously, with L1 regularisation:
+### 5.1 Credibility filtering and the sensitivity curve
 
-$$\min_\beta \sum_{j=1}^{J} \left( |\varepsilon_{j,v,t}| - \beta_0 - \sum_{k=1}^{K} \beta_k \hat{y}_{j,v_k,t} \right)^2 + \lambda \sum_{k=1}^{K} |\beta_k|$$
+We define a multivariate credibility set on the variables selected in Part B,
 
-The $\lambda$ penalty shrinks most coefficients to exactly zero. The variables that survive with $\beta_k \neq 0$ are the ones that best predict forecast error. This is useful because:
+$$\mathcal{C}_\tau = \{\, j : \text{MAE}_{j,v} \le \tau \ \ \forall\, v \in \mathcal{V}_{\text{selected}} \,\},$$
 
-- It handles collinearity: when coal and CO$_2$ are highly correlated, LASSO picks the more informative one rather than splitting the signal.
-- It is automatic: no need to pre-select candidate variables.
-- The output is a short list of variables ranked by importance.
+and report the **share** of net-zero pathways surviving the filter:
 
-### 4.4 Dimensionality reduction (PCA/SVD)
+$$s(\tau) = \frac{|\mathcal{N} \cap \mathcal{C}_\tau|}{|\mathcal{C}_\tau|}.$$
 
-An alternative to selecting individual variables is to compress the variable space. Using singular value decomposition:
+This curve **is** the project's central figure. We label it the *sensitivity of the net-zero share to credibility filtering*, **not** "the revised probability" (§1): it is a sensitivity analysis over a set of conditional forecasts, and reporting it as a probability would repeat the category error the project exposes.
 
-$$Y = U \Sigma V'$$
+**The irreducible floor.** A 15-year backtest has limited power: a pathway that decarbonises *late* (after ~2030) tracks 2010–2025 just as well as a non-net-zero pathway, yet still reaches NZ2070. Such late movers are observationally indistinguishable from the historical record and **cannot be filtered out**. Hence $s(\tau)$ has a floor: it falls from the naive 32% toward, but not below, the late-mover share. Stating this floor is a result, not a footnote — it is the honest limit of what hindcasting can establish.
 
-where $Y$ is the $J \times K$ matrix of scenario projections (scenarios as rows, variables as columns), $U$ captures scenario patterns, $\Sigma$ captures variance, and $V'$ captures variable loadings. The first few principal components often explain most of the variance. We then test which components correlate with historical accuracy.
+### 5.2 An empirically validated benchmark forecast (geometric random walk → diffusion)
 
-This is useful when the question is not "which specific variable matters" but "what underlying dimension of variation matters" — for instance, a component that loads on coal, gas, and CO$_2$ simultaneously might represent a "fossil intensity" dimension.
+To answer Q-A/Q-B for the observables that matter, we build our *own* probabilistic forecast — independent of the ensemble — and check that its intervals are calibrated against history (the "empirically validated probabilistic forecast" of Lafond's title).
 
-## 5. Part C — Filtering, Forecasting, and Revised Probability
+**Baseline model — geometric random walk with drift.** Let $y_t = \ln(\cdot)$. Then $\Delta y_t = \mu + \varepsilon_t$, $\varepsilon_t \sim \mathcal{N}(0,\sigma^2)$. With a training window of $m$ growth rates, $\hat\mu = \tfrac1m\sum \Delta y_s$, and the central forecast is $\hat y_{t+\tau} = y_t + \hat\mu\tau$. The forecast-error variance (Farmer & Lafond 2016) is
 
-### 5.1 Scenario filtering
+$$\mathrm{Var}(\mathcal{E}_{t,\tau}) = \sigma^2\!\left(\tau + \frac{\tau^2}{m}\right),$$
 
-Based on Parts A and B, we define a credibility criterion. We retain scenarios whose MAE on selected variables falls below a threshold $\tau$:
+giving the $1-\alpha$ predictive interval $y_t + \tau\hat\mu \pm z_{1-\alpha/2}\,\sigma\sqrt{\tau + \tau^2/m}$ (use $\hat\sigma$ and the $t_{m-1}$ distribution in practice). With positive autocorrelation $\rho$ in the noise, the variance scales by $(1+\rho)^2/(1+\rho^2)$ — intervals widen even when the median is unchanged.
 
-$$\mathcal{C}_\tau = \left\{ j : \text{MAE}_{j,v} \leq \tau \quad \forall\, v \in \mathcal{V}_{\text{selected}} \right\}$$
+**Diffusion correction for solar PV.** Early exponential-looking data can be the front of an S-shaped diffusion (Lafond, diffusion curves). A pure random-walk (Moore) extrapolation of solar PV therefore *overshoots* at long horizons. We fit instead a one-parameter **Bertalanffy–Richards** S-curve,
 
-where $\mathcal{V}_{\text{selected}}$ is the set of variables identified in Part B.
+$$Y(t) = \frac{L}{\big[1 + \exp(-\beta k(t-t_0))\big]^{1/\beta}}, \qquad \beta = 1 \text{ recovers the logistic},$$
 
-The revised probability of NZ2070 is:
+backtested by refitting the asymptote $\hat L$ on data up to several origins (e.g. 5/10/25/50% of $\hat L$) and forecasting forward, then scored by PIT/coverage. **Honest limitation:** the asymptote $L$ is unknown and dominates the long-horizon forecast — results are reported with explicit sensitivity to $\hat L$.
 
-$$P(\text{NZ2070} \mid \text{credible}) = \frac{|\mathcal{N} \cap \mathcal{C}_\tau|}{|\mathcal{C}_\tau|}$$
+**Validation, not just a line.** The forecast is judged by calibration: do the predictive intervals cover the realised path at the nominal rate (PIT / coverage, proper scores such as CRPS), and how does the realised solar outcome sit relative to the *ensemble's* band? The expected finding — the empirical band contains reality while the IAM ensemble places it in its upper tail — is precisely the calibration failure of Q-A.
 
-We vary $\tau$ and plot $P(\text{NZ2070} \mid \mathcal{C}_\tau)$ as a function of $\tau$ to assess robustness. If the revised probability is stable across a range of thresholds, the result is robust; if it is highly sensitive to $\tau$, the result depends on the filtering choice.
+### 5.3 The policy-conditional view: Wright's law
 
-### 5.2 Application to Solar PV: logistic growth and Wright's law
-
-As a focal case, we apply a simple forecasting model to solar PV deployment, connecting the hindcast evaluation to a forward-looking probabilistic forecast.
-
-**Logistic growth model** for PV deployment:
-
-$$y(t) = \frac{L}{1 + \exp\left(-k(t - t_0)\right)}$$
-
-where $L$ is the saturation level (maximum installed capacity), $k$ is the growth rate, and $t_0$ is the inflection point. In the early phase ($t \ll t_0$), this reduces to exponential growth: $y(t) \approx \exp(kt)$. In log space: $\ln y \approx kt + \text{const}$, so $k$ can be estimated by linear regression on observed log-capacity over 2010–2025.
-
-**Wright's law** for PV cost:
-
-$$\Delta \ln c = \omega \cdot \Delta \ln z + \varepsilon$$
-
-where $c$ is unit cost, $z$ is cumulative production, and $\omega$ is the learning rate. For solar PV, the empirical estimate is $\omega \approx -0.32$ (roughly 20% cost reduction per doubling of cumulative production). Given a logistic trajectory for deployment, cumulative production $z(t)$ is determined, and Wright's law gives a probabilistic forecast for future cost: $\hat{c}_{t+\tau} = z_{t+\tau}^{\omega}$.
-
-**Connection to ensemble evaluation:** we compare each SCI scenario's PV trajectory against the fitted logistic + Wright model. Scenarios whose PV projections are consistent with the empirically calibrated model inherit credibility from the observed learning curve. We test whether these scenarios are the same ones that score well on the hindcast evaluation (Part A), providing an independent validation.
+Moore forecasts cost unconditionally from time; **Wright's law forecasts cost conditional on a deployment path**, which makes it the relevant tool for policy counterfactuals (Lafond). Each IAM pathway *is* a deployment path. Writing $X_t = \Delta\ln z_t$ (cumulative production) and $Y_t = \Delta\ln c_t$ (unit cost), the differenced model is $Y_t = \omega X_t + \eta_t$, and the cost forecast is conditional on future experience, $\hat y_{t+\tau} = y_t + \hat\omega\sum_{s\le\tau} X_{t+s}$. Applied to each scenario's solar deployment, this yields an implied cost trajectory; following Way, Ives, Mealy & Farmer (2022), faster deployment drives larger experience-curve cost declines, so pathways that assume an *expensive* transition can be inconsistent with their own deployment. **Caveat (Lafond):** Wright's law is hard to establish as superior to Moore's law (causality, multicollinearity, co-evolution of cost and production); it is presented as the policy-relevant lens, not as a proven point predictor.
 
 ## 6. Data Sources
 
@@ -155,16 +148,20 @@ where $c$ is unit cost, $z$ is cumulative production, and $\omega$ is the learni
 | CO$_2$ emissions (fossil + industrial) | Global Carbon Budget 2025 (Friedlingstein et al.) | Annual, 2010–2025 |
 | CO$_2$ emissions (cross-check) | IEA Global Energy Review 2025/2026 | Annual |
 | Primary energy by fuel (coal, gas, oil) | Energy Institute Statistical Review 2025 | Annual, 2010–2024 |
-| Solar PV and wind capacity | IRENA Renewable Capacity Statistics 2025 | Annual, by country |
+| Solar PV and wind capacity | IRENA Renewable Capacity Statistics 2025/2026 | Annual, by country |
 | Nuclear capacity | IAEA PRIS | Annual |
 | SCI scenario ensemble | Scenario Compass Initiative v1.0, IIASA | 5-year steps, 2010–2100 |
 
-All observed data is compiled in `observed_data_cleaned.xlsx`.
+Observed data are compiled in `observed_data_cleaned.xlsx`. A genuine long-horizon, out-of-sample test (e.g. AR5-vintage scenarios from ~2014 forecasting 2025) requires the external **IIASA AR5 Scenario Database**, as the SCI ensemble contains no pre-2017 (pre-AR6) pathways.
 
 ## References
 
+- Farmer, J.D. & Lafond, F. (2016). How predictable is technological progress? *Research Policy*, 45(3), 647–665.
+- Lafond, F., Bailey, A.G., Bakker, J.D., Rebois, D., Zadourian, R., McSharry, P. & Farmer, J.D. (2018). How well do experience curves predict technological progress? A method for making distributional forecasts. *Technological Forecasting and Social Change*, 128, 104–117.
+- Lafond, F., Greenwald, D. & Farmer, J.D. (2022). Can stimulating demand drive costs down? World War II as a natural experiment. *Journal of Economic History*, 82(3).
+- Way, R., Ives, M.C., Mealy, P. & Farmer, J.D. (2022). Empirically grounded technology forecasts and the energy transition. *Joule*, 6(9), 2057–2082.
+- Wagenvoort, B., Dyer, J., Lafond, F. & Farmer, J.D. (in progress). Universality and predictability of technology diffusion.
 - Friedlingstein, P. et al. (2026). Global Carbon Budget 2025. *Earth System Science Data*, 18.
 - IEA (2026). *Global Energy Review 2026*. Paris: International Energy Agency.
 - Energy Institute (2025). *Statistical Review of World Energy 2025*. London.
-- Farmer, J.D. & Lafond, F. (2016). How predictable is technological progress? *Research Policy*, 45(3), 647–665.
 - Scenario Compass Initiative: https://scenariocompass.org

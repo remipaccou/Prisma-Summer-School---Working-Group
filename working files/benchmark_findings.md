@@ -1,56 +1,56 @@
-# 2025 — rebond, ambition, et benchmark naïf
+# 2025 — rebound, ambition, and the naive benchmark
 
-Trois analyses liées qui répondent à « d'où vient l'erreur 2025 et que vaut l'ensemble ».
+Three linked analyses answering "where does the 2025 error come from, and is the ensemble any good?"
 
-## 1. Le « surplus 2025 » n'est pas un rebond — c'est la tendance qui reprend
+## 1. The "2025 surplus" is not a rebound — it is the trend resuming
 
-| 2025 | valeur |
+| 2025 | value |
 |---|---|
-| tendance pré-COVID extrapolée | 39 400 |
-| réalité | 38 100 (−1 300 *sous* la tendance) |
-| modèles (moyenne fam.) | 35 518 (−3 882 sous la tendance) |
+| pre-COVID trend, extrapolated | 39,400 |
+| reality | 38,100 (−1,300 *below* trend) |
+| models (family-weighted mean) | 35,518 (−3,882 below trend) |
 
-La réalité 2025 est *sous* sa trajectoire pré-COVID → pas de rebond exceptionnel à expliquer.
-Le +2 582 vient à ~75 % de l'hypothèse de **déclin** des modèles, pas d'un choc.
+Realised 2025 sits *below* its pre-COVID trajectory → there is no exceptional rebound to explain.
+The +2,582 ensemble gap comes ~75% from the models assuming a **decline**, not from a shock.
 
-## 2. La précision 2025 = l'ambition supposée, pas le modèle — `co2_2025_ambition.py`
+## 2. 2025 accuracy = the assumed ambition, not the model — `co2_2025_ambition.py`
 
-ME 2025 par catégorie climatique AR6 : gradient quasi monotone.
+ME at 2025 by AR6 climate category: a near-monotonic gradient.
 
 | C1 (1.5°) | C2 | C3 | C4 | C5 | C6 (<3°) | C7 (<4°) | C8 (>4°) |
 |---|---|---|---|---|---|---|---|
-| +8 353 | +4 229 | +4 377 | +2 355 | +1 530 | +720 | −2 005 | −6 481 |
+| +8,353 | +4,229 | +4,377 | +2,355 | +1,530 | +720 | −2,005 | −6,481 |
 
-La réalité tombe entre **C6 et C7** = un monde « <3-4°C, faible action ». Les scénarios qui
-« prévoient bien » 2025 sont ceux qui supposaient peu de décarbonation.
+Reality falls between **C6 and C7** = a "<3–4°C, low-action" world. The scenarios that
+"predict 2025 well" are those that assumed little decarbonisation.
 
-⚠️ En partie tautologique (un C1 *doit* décarboner tôt → CO₂ 2025 bas). Le résultat
-non-tautologique = **où tombe la réalité** (C6-C7).
+⚠️ Partly tautological (a C1 *must* decarbonise early → low 2025 CO₂). The non-tautological
+result is **where reality falls** (C6–C7).
 
-## 3. Benchmark naïf — l'ensemble bat-il une règle ? — `co2_benchmark.py`
+## 3. Naive benchmark — does the ensemble beat a simple rule? — `co2_benchmark.py`
 
-Prévision de 2025 avec l'info **2010-2015** (pré-COVID). skill = |err ensemble| / |err règle|.
-skill > 1 → la règle gagne. « % battus » = part des scénarios pires que la règle.
+Forecast 2025 using **2010–2015** (pre-COVID) information. skill = |error ensemble| / |error rule|.
+skill > 1 → the rule wins. "% beaten" = share of scenarios worse than the rule.
 
-| Variable | err ensemble | err règle | skill | % scénarios battus |
+| Variable | error ensemble | error rule | skill | % scenarios beaten |
 |---|---|---|---|---|
-| CO₂ | 7 % | 3 % (linéaire) | **2.0** | 81 % |
-| Charbon | 14 % | 3 % (linéaire) | **4.7** | 91 % |
-| Nucléaire | 16 % | 2 % (random walk) | **9.9** | 95 % |
-| PIB | 11 % | 4 % (linéaire) | **3.0** | 77 % |
-| Solar PV | 51 % | 75 % (linéaire) | 0.7 | 6 % |
-| Éolien | 17 % | 30 % (linéaire) | 0.6 | 34 % |
+| CO₂ | 7% | 3% (linear) | **2.0** | 81% |
+| Coal | 14% | 3% (linear) | **4.7** | 91% |
+| Nuclear | 16% | 2% (random walk) | **9.9** | 95% |
+| GDP | 11% | 4% (linear) | **3.0** | 77% |
+| Solar PV | 51% | 75% (linear) | 0.7 | 6% |
+| Wind | 17% | 30% (linear) | 0.6 | 34% |
 
-**4 variables sur 6 : une règle triviale bat l'ensemble entier** (jusqu'à 95 % des scénarios
-battus). Sur PV/éolien l'ensemble gagne mais reste massivement faux (51 % sur le PV) → c'est là
-qu'il faut une méthode dédiée (**loi de Wright / Farmer-Lafond**, cf. Part C2).
+**On 4 of 6 variables, a trivial rule beats the entire ensemble** (up to 95% of scenarios
+beaten). On PV/wind the ensemble wins but remains massively wrong (51% on PV) → this is where
+a dedicated method is needed (**Wright's law / Farmer–Lafond**, cf. Part C2).
 
-**Caveats** : une seule année cible (2025) → « % battus » est la stat robuste, pas le skill sur 1 point.
-Règle entraînée sur 2 points (2010, 2015). Pour le PV, le log-trend explose (7 311) : ni naïf ni
-ensemble ne captent l'exponentielle.
+**Caveats:** a single target year (2025) → "% beaten" is the robust statistic, not single-point skill.
+The rule is trained on 2 points (2010, 2015). For PV the log-trend explodes (7,311): neither naive
+nor ensemble captures the exponential — hence the diffusion-curve treatment in §5.2.
 
-## Piste suivante (collègue / François) : AR5 vs AR6
+## Next lead (colleague / François): AR5 vs AR6
 
-Ce dataset n'a **aucun scénario AR5** (publi la plus ancienne = 2017, lignée AR6). Pour un vrai
-test out-of-sample long-horizon (scénarios 2014 prévoyant 2025), il faut la base externe
-**IIASA AR5 Scenario Database**. Très intéressant car c'est le seul vrai test de prévision.
+This dataset contains **no AR5 scenarios** (earliest publication = 2017, AR6 lineage). A genuine
+long-horizon out-of-sample test (2014-vintage scenarios forecasting 2025) needs the external
+**IIASA AR5 Scenario Database**. This is the only true forecasting test, and the most interesting.
