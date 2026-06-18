@@ -1,7 +1,4 @@
-# Narrative — Lafond framework (formal version)
-
-*The same eight steps as `narrative.md`, restated in Lafond's vocabulary, with the formalism made
-explicit, and an honest map at the end of how far his method is actually applied.*
+# Narrative 
 
 ## Framework & notation
 
