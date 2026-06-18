@@ -1,76 +1,33 @@
 # Working files
 
-Working / exploration folder — **separate from the main pipeline** (`scripts/`, `report/`)
-so as not to disturb the rest and to make sharing easier. Everything concerns the variable
-**CO₂ (Energy & Industrial Processes)**, SCI-2025 ensemble.
+Working / exploration folder — **separate from the main pipeline** (`scripts/`, `report/`).
+SCI-2025 IAM ensemble vs observed 2010–2025 data.
 
-## 1. Global view & breakdowns — `co2_overview.py`
+See **`plan.md`** for the one-page roadmap (reframed question + 3 Lafond deliverables).
 
-| Figure | Description |
-|---|---|
-| `co2_overview.png` | All CO₂ trajectories (2010–2100) + 4 observed points (GCB 2025): full horizon + zoom on the hindcast window. |
-| `co2_views.png` | Breakdowns: all / Net-Zero 2070 / weighted by model (1 model = average of its scenarios) / energy / CGE / hybrid. Each panel annotates family-weighted ME/MAE/RMSE (2010–2025). |
+## The essential story (4–5 figures)
 
-## 2. Archetype test — `co2_archetypes.py`
+| File | Variables | What it shows |
+|---|---|---|
+| `calibration_pit.py/.png` | **6 vars** | **L1** — the ensemble is not a calibrated forecast: reality 2025 sits in the tails (GDP 1st, nuclear 20th, CO₂ 75th, coal 79th, solar 90th percentile), not the centre. |
+| `co2_benchmark.py/.png` | **6 vars** | A trivial rule (random walk / linear trend) beats the whole ensemble on 4 of 6 variables (up to 95% of scenarios beaten); only solar/wind favour the ensemble, and there it is still ~50% off. |
+| `partC_sensitivity.py/.png` | CO₂+coal+solar | **The result** — the "corrected net-zero share" is not even directionally robust: 20%→48% depending on the credibility variable (CO₂ ⬇️ vs solar ⬆️). Lafond slide 3: no unconditional probability from conditional forecasts. |
+| `co2_finding1_simple.py/.png` | CO₂ | 2020 = COVID noise (detrends away), 2025 = structural optimism (+2,582, the load-bearing number). |
+| `co2_kaya.py/.png` | CO₂+GDP | The CO₂ error = decoupling optimism (GDP +14%, intensity −18%), not growth → why filtering on CO₂ alone is a trap. |
 
-Restricted to a few "pure" models to reduce intra-group dispersion:
-- **ENERGY** (bottom-up, exogenous GDP): POLES, TIAM, COFFEE
-- **ECONOMY** (CGE + hybrids): GEM-E3, IMACLIM, WITCH
+## Notes
 
-| Figure | Description |
-|---|---|
-| `co2_archetypes.png` | One panel per model (intra-model dispersion visible) + metrics. |
-| `co2_archetypes_summary.png` | ME by year (energy vs economy) + group ME/MAE/RMSE bars. |
+- `plan.md` / `narrative.md` — project roadmap (question reframed, 3 deliverables, what to cut).
+- `benchmark_findings.md` — rebound≠trend, ambition gradient, naive benchmark, AR5 lead.
+- `partC_findings.md` — the Part C reframe, result, mechanism, next steps.
 
-**Result**: the energy trend **over-projects** (ME ≈ −715), the economy trend **under-projects** (≈ +655),
-but high dispersion → suggestive, not conclusive.
+## `archive/`
 
-## 3. Vintage analysis — `co2_vintage.py`
+Secondary / superseded CO₂ explorations (kept for reference, not part of the core story):
+overview & breakdowns, energy-vs-economy archetypes, vintage analysis, the 2025 ambition gradient,
+the complex Finding-1 figure, Finding-1 robustness note.
 
-Cross-references the **publication year** (`Scientific Manuscript`, a proxy for the vintage / base year)
-with the hindcast error.
-
-| Figure | Description |
-|---|---|
-| `co2_vintage.png` | MAE by year according to vintage (left) + vintage composition of the 6 archetypes (right). |
-
-**Key points**
-- A recent scenario "predicting" 2020 predicts nothing: 2020 is **historical** for it.
-- Real but partial effect (the models are not harmonized on the GCB observations).
-- ⚠️ **Confounding**: the energy/economy split is correlated with vintage (IMACLIM = 100% ≥2024).
-  → to conclude, one must **compare at equal vintage** or score each scenario only
-  **after its base year** (true out-of-sample).
-
-## 4. Finding 1 — defense layer — `co2_finding1.py`
-
-Separates the **COVID-contaminated 2020** from the **structural 2025** (the true signal).
-
-| Figure / file | Description |
-|---|---|
-| `co2_finding1.png` | Left: models peak ~2020 and decline vs reality which plunges (COVID) then recovers onto trend. Right: ME decomposition — 2020 = COVID (robust to 2 counterfactuals: +378 / +1,028), 2025 = +2,582 structural. |
-| `finding1_robustness.md` | All the robustness numbers: COVID detrend, weighting sensitivity (family/project), NZ threshold sensitivity (16→57%), addition signature (marginals vs joint), 1591/1564 reconciliation. |
-
-**Takeaway**: 2020 = COVID noise (to detrend), 2025 = optimism signal (to keep).
-This is the load-bearing number, and it survives detrending.
-
-## 5. 2025 — rebound, ambition, naive benchmark
-
-| File | Description |
-|---|---|
-| `co2_finding1_simple.py/.png` | Pedagogical version of Finding 1 (models vs reality + COVID/structural bars). |
-| `co2_2025_ambition.py/.png` | 2025 ME by AR6 climate category: C1→C8 gradient; reality falls to C6-C7 ("<3-4°C" world). |
-| `co2_benchmark.py/.png` | Naive benchmark test (Lafond/Farmer): for 4 of 6 variables, a trivial rule beats the ensemble (up to 95% of scenarios beaten). |
-| `benchmark_findings.md` | Note: rebound≠trend, ambition gradient, benchmark, AR5 lead. |
-
-## 6. Part C — net-zero share sensitivity (the project's result)
-
-| File | Description |
-|---|---|
-| `partC_sensitivity.py/.png` | The "corrected NZ share" is not robust: 20%→48% depending on the filtering variable (CO₂ ⬇️ vs solar ⬆️). Lafond slide 3: no unconditional probability from conditional forecasts. |
-| `co2_kaya.py/.png` | Kaya decomposition: the CO₂ error = decoupling optimism (GDP +14%, intensity −18%), not growth → why filtering on CO₂ alone is a trap. |
-| `partC_findings.md` | The reframe, the result (non-robustness), the mechanism, the next steps (calibration, Bertalanffy-Richards, Wright). |
-
-## Energy / CGE / hybrid classification
+## Classification (energy / CGE / hybrid)
 
 - **energy**: IMAGE, POLES, COFFEE, GCAM, TIAM, PROMETHEUS
 - **CGE**: AIM, GEM-E3, IMACLIM, EPPA, CGEM
@@ -79,8 +36,8 @@ This is the load-bearing number, and it survives detrending.
 ## Running
 
 ```bash
-python "co2_overview.py" && python "co2_archetypes.py" && python "co2_vintage.py"
+python calibration_pit.py && python co2_benchmark.py && python partC_sensitivity.py
 ```
 
 > Hard-coded data path (`SCI_DATA`) → reads the SCI-2025 `.xlsx` in
-> `~/PhD/.../Scenario_Compass_Initiative_Data`. Adapt to the machine.
+> `~/PhD/.../Scenario_Compass_Initiative_Data`. Adapt per machine.
