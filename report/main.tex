@@ -53,7 +53,7 @@ The SCI 2025 ensemble assembles 1{,}564 IAM pathways from 65 models across 41 re
 \section{Data and method}
 \label{sec:method}
 % ============================================================================
-We compare SCI-2025 (v1.0, global) projections at $t\in\{2010,2015,2020,2025\}$ with observed values for six variables: CO$_2$ emissions \cite{gcb}, coal primary energy \cite{ei}, solar PV and wind capacity \cite{irena}, nuclear capacity (IAEA PRIS), and GDP (PPP, World Bank). For pathway $j$, variable $v$, year $t$, the forecast error is $\varepsilon_{j,v,t}=y_{v,t}-\hat{y}_{j,v,t}$ ($\varepsilon>0$: the pathway projected too little). We summarise it by mean error ME (bias), MAE (typical magnitude), and RMSE. A pathway is \emph{net-zero-by-2070} if its SCI year-of-net-zero (CO$_2$) is $\leq 2070$. Three further statistics enter below: \emph{skill} $=|\varepsilon_{\text{ens}}|/|\varepsilon_{\text{rule}}|$ against a naive 2010--2015 random-walk or trend rule ($>1$: the rule wins); \emph{calibration}, the percentile (PIT) at which the observed value falls in the ensemble cloud; and a \emph{credibility filter} keeping the lowest-MAE quartile on the selected variables. Because the ensemble is a convenience sample --- five model families contribute about two-thirds of the runs --- we weight each pathway by $1/n_f$, with $n_f$ the number of runs from its family, and check robustness against scenario- and project-weighting. This is a \emph{hindcast} (a backtest on a window each model could see), not an out-of-sample test: all pathways post-date 2017.
+We compare SCI-2025 (v1.0, global) projections at $t\in\{2010,2015,2020,2025\}$ with observed values for six variables: CO$_2$ emissions \cite{gcb}, coal primary energy \cite{ei}, solar PV and wind capacity \cite{irena}, nuclear capacity (IAEA PRIS), and GDP (PPP, World Bank). For pathway $j$, variable $v$, year $t$, the forecast error is $\varepsilon_{j,v,t}=y_{v,t}-\hat{y}_{j,v,t}$ ($\varepsilon>0$: the pathway projected too little). We summarise it by mean error ME (bias), MAE (typical magnitude), and RMSE. A pathway is \emph{net-zero-by-2070} if its SCI year-of-net-zero (CO$_2$) is $\leq 2070$. Three further statistics enter below: \emph{skill} $=|\varepsilon_{\text{ens}}|/|\varepsilon_{\text{rule}}|$ against a naive 2010--2015 random-walk or trend rule ($>1$: the rule wins); \emph{calibration}, the percentile (PIT) at which the observed value falls in the ensemble cloud; and a \emph{credibility filter} keeping the lowest-MAE quartile on the selected variables. Because the ensemble is a convenience sample (five families contribute about two-thirds of the runs), we weight each pathway by $1/n_f$ (its family size) and check scenario- and project-weighting. This is a \emph{hindcast} (a backtest on a window each model could see), not an out-of-sample test: all pathways post-date 2017.
 
 % ============================================================================
 \section{The naive count is a sample frequency, not a probability}
@@ -85,7 +85,7 @@ Family-weighted CO$_2$ errors are $+405$ (2010), $+15$ (2015), $-1{,}572$ (2020)
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.88\linewidth]{co2_overview}
+\includegraphics[width=\linewidth]{co2_overview}
 \caption{The SCI CO$_2$ ensemble (grey) and the four observed points (black). Observed 2025 emissions sit above the ensemble central tendency.}
 \label{fig:overview}
 \end{figure}
@@ -103,7 +103,7 @@ The percentile of observed 2025 (the share of scenarios \emph{below} it) is 1st 
 Models underestimate fossil \emph{and} renewable deployment at once: 2025 solar (2{,}392~GW) is about double the ensemble median (1{,}169~GW), yet coal set a record (164~EJ). Coal and solar errors are anti-correlated ($\rho=-0.28$; $-0.30$ for net-zero): the pathways embed a substitution logic, but the world adds renewables on top of persistent fossils.
 
 \paragraph{Which variables carry the signal.}
-Separation between net-zero and non-net-zero error distributions, $(\text{med}_{\text{NZ}}-\text{med}_{\text{non}})/\text{IQR}$, is appreciable only for coal ($+0.46$), CO$_2$ ($+0.39$), and solar ($-0.32$); wind, nuclear, GDP do not discriminate. An $L_1$-penalised (LASSO) classifier selects the same three with the same signs. The signs disagree (net-zero pathways are worse on coal/CO$_2$, better on solar), so credibility must be assessed jointly --- CO$_2$ alone is misleading, as its GDP and intensity errors partly cancel.
+Separation $(\text{med}_{\text{NZ}}-\text{med}_{\text{non}})/\text{IQR}$ is appreciable only for coal ($+0.46$), CO$_2$ ($+0.39$) and solar ($-0.32$), confirmed by a LASSO classifier; the signs disagree (net-zero worse on coal/CO$_2$, better on solar), so credibility must be filtered jointly, not on CO$_2$ alone.
 
 \paragraph{Filtering: a sensitivity, not a revision.}
 Keeping the most accurate quartile and recomputing the share gives about 20\% (CO$_2$ filter), 22\% (joint coal+CO$_2$+solar), and 48\% (solar-only) against a $\sim$32\% baseline. The robust feature is the \emph{dependence} on the conditioning variable, which is exactly the conditional-forecast point of Sec.~\ref{sec:count}: no single unconditional share exists. We report $\sim$20\% under sensible criteria as a sensitivity floor; the 48\% arises only from filtering on solar, the variable every model misses.
@@ -116,7 +116,7 @@ A backtest over 15 years cannot resolve a 45-year question: for a drifting rando
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.74\linewidth]{pv_wright_cost_projection_to_2070_log}
+\includegraphics[width=0.88\linewidth]{pv_wright_cost_projection_to_2070_log}
 \caption{Wright's-law PV cost projection to 2070 (log scale). Net-zero and non-net-zero trajectories nearly coincide; shading is the $\pm 2$ s.e.\ learning-rate band, which overlaps across the two groups.}
 \label{fig:wright}
 \end{figure}
