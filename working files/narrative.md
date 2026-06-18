@@ -204,4 +204,36 @@ multivariate."
 
 ---
 
-*Next: Step 7 — Part C, the result: filtering gives no stable number (20%→48%).*
+## Step 7 — Part C: the result (filtering gives no number)
+
+The original goal: keep the credible scenarios, recompute the net-zero share, get a corrected
+number. **There is no single corrected number.**
+
+We keep the scenarios most accurate over 2010–2025 and recompute the net-zero share among them —
+varying how strict we are and which variable judges accuracy. The share moves in **opposite
+directions** depending on the credibility variable (naive ≈ 34%):
+
+| Keep the 25% most accurate on… | Net-zero share |
+|---|---|
+| **CO₂** | **~20%** ⬇️ |
+| multivariate (CO₂+coal+solar) | ~22% ⬇️ |
+| **Solar** | **~48%** ⬆️ |
+
+The "corrected" share can be **anything between 20% and 48%**, around the naive 34%, under a
+perfectly defensible choice of variable.
+
+![Step 7 — the corrected net-zero share is not robust](partC_sensitivity.png)
+
+**Why (the Step 6 mechanism):** NZ scenarios were right on solar (the boom) and wrong on CO₂/coal
+(no decline). Filter on what they missed (CO₂/coal) → they are removed → the share falls. Filter on
+what they got right (solar) → they are kept → the share rises.
+
+**The conclusion — it closes the loop.** There is no single corrected net-zero share, and this
+non-robustness **is** the result: the empirical proof of Step 1. You cannot extract an unconditional
+probability from conditional forecasts — because the answer depends on the conditioning variable you
+pick. So we relabel the object: not "the revised probability" but **"the sensitivity of the net-zero
+share"**. The starting tension is no longer a problem — it has become the result.
+
+---
+
+*Next: Step 8 — the honest limit (what a 15-year hindcast cannot settle).*
