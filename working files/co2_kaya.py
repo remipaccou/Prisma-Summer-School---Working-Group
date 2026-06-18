@@ -24,7 +24,7 @@ gdp_eff = lvl_gdp - OBS_CO2
 ci_eff  = co2_e - lvl_gdp
 
 fig, ax = plt.subplots(figsize=(10, 6))
-xs = ['Observé\n2025', 'effet PIB\n(+14%)', 'effet décarbonation\n(−18%)', 'Ensemble\n(médiane fam.)']
+xs = ['Observed\n2025', 'GDP effect\n(+14%)', 'decarbonisation effect\n(−18%)', 'Ensemble\n(family median)']
 # bar 0 and bar 3 are absolute; 1 and 2 are floating deltas
 ax.bar(0, OBS_CO2, color='#E63329', width=0.6)
 ax.bar(3, co2_e, color='#534AB7', width=0.6)
@@ -39,12 +39,12 @@ ax.text(3, co2_e+250, f'{co2_e:,.0f}', ha='center', fontweight='bold', color='#5
 ax.text(1, lvl_gdp+250, f'+{gdp_eff:,.0f}', ha='center', fontweight='bold', color='#C0392B')
 ax.text(2, lvl_gdp+200, f'{ci_eff:,.0f}', ha='center', va='bottom', fontweight='bold', color='#2471A3')
 ax.annotate('', (3.45, OBS_CO2), (3.45, co2_e), arrowprops=dict(arrowstyle='<->', color='#1D9E75', lw=1.8))
-ax.text(3.5, (OBS_CO2+co2_e)/2, f'erreur nette\n−{OBS_CO2-co2_e:,.0f}', color='#1D9E75', fontsize=9, fontweight='bold', va='center')
+ax.text(3.5, (OBS_CO2+co2_e)/2, f'net error\n−{OBS_CO2-co2_e:,.0f}', color='#1D9E75', fontsize=9, fontweight='bold', va='center')
 ax.set_xticks(range(4)); ax.set_xticklabels(xs)
 ax.set_ylabel('CO₂ 2025 (Mt)'); ax.set_ylim(30000, 45000)
-ax.set_title("Décomposition de Kaya de l'erreur CO₂ 2025\n"
-             "Le PIB sur-projeté pousse le CO₂ vers le haut (+5 147) ; la décarbonation supposée\n"
-             "l'écrase (−7 729) → notre biais = optimisme de DÉCOUPLAGE, pas de croissance",
+ax.set_title("Kaya decomposition of the 2025 CO₂ error\n"
+             "Over-projected GDP pushes CO₂ up (+5 147); the assumed decarbonisation\n"
+             "crushes it (−7 729) → our bias = DECOUPLING optimism, not growth",
              fontsize=11, fontweight='bold')
 ax.spines[['top','right']].set_visible(False)
 plt.tight_layout(); plt.savefig('co2_kaya.png', dpi=150, bbox_inches='tight')

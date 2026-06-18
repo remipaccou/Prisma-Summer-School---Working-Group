@@ -63,9 +63,9 @@ for i, r in R.iterrows():
             f"skill {r['skill']:.1f}\n{'ruler wins' if loses else 'ensemble wins'}",
             ha='center', fontsize=8, fontweight='bold', color='#C0392B' if loses else '#1D9E75')
 ax.set_xticks(x); ax.set_xticklabels([f"{r['var']}\n(naive: {r['best_naive']})" for _,r in R.iterrows()], fontsize=9)
-ax.set_ylabel('Erreur de prévision 2025  (% de l\'observé)', fontsize=10)
-ax.set_title('L\'ensemble d\'IAM bat-il une règle triviale pour prévoir 2025 ?\n'
-             'Prévision faite avec l\'info 2010-2015 (pré-COVID). skill>1 = la règle gagne.',
+ax.set_ylabel('2025 forecast error  (% of observed)', fontsize=10)
+ax.set_title('Does the IAM ensemble beat a trivial rule at predicting 2025?\n'
+             'Forecast made with info 2010-2015 (pre-COVID). skill>1 = the rule wins.',
              fontsize=12, fontweight='bold')
 ax.legend(fontsize=9); ax.spines[['top','right']].set_visible(False); ax.grid(axis='y', alpha=0.15)
 plt.tight_layout(); plt.savefig('co2_benchmark.png', dpi=150, bbox_inches='tight')

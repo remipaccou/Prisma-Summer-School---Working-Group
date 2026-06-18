@@ -1,4 +1,4 @@
-"""Finding 1 — version pédagogique (claire)."""
+"""Finding 1 — pedagogical version (clear)."""
 import warnings; warnings.filterwarnings('ignore')
 import pandas as pd, numpy as np, matplotlib.pyplot as plt
 from pathlib import Path
@@ -16,40 +16,40 @@ cf2020 = (OBS[2015] + OBS[2025]) / 2
 
 fig, (axL, axR) = plt.subplots(1, 2, figsize=(14, 5.6), gridspec_kw={'width_ratios': [1.4, 1]})
 
-# ── gauche : 2 courbes ──
+# ── left : 2 curves ──
 X = YEARS
-axL.plot(X, proj, '-s', color='#333', lw=2.4, ms=8, label='Ce que les modèles prévoyaient', zorder=4)
-axL.plot(X, [OBS[y] for y in X], '-o', color='#E63329', lw=2.4, ms=9, mec='black', label='Réalité observée', zorder=5)
+axL.plot(X, proj, '-s', color='#333', lw=2.4, ms=8, label='What the models projected', zorder=4)
+axL.plot(X, [OBS[y] for y in X], '-o', color='#E63329', lw=2.4, ms=9, mec='black', label='Observed', zorder=5)
 axL.scatter([2020], [cf2020], s=130, facecolor='white', edgecolor='#E63329', lw=2, zorder=6)
-axL.annotate('2020 sans COVID\n(~36 750)', (2020, cf2020), (2016.3, 37600), fontsize=9, color='#E63329',
+axL.annotate('2020 COVID-free\n(~36 750)', (2020, cf2020), (2016.3, 37600), fontsize=9, color='#E63329',
              arrowprops=dict(arrowstyle='->', color='#E63329'))
-axL.annotate('creux COVID', (2020, OBS[2020]), (2020.2, 33200), fontsize=9, color='#E63329',
+axL.annotate('COVID dip', (2020, OBS[2020]), (2020.2, 33200), fontsize=9, color='#E63329',
              arrowprops=dict(arrowstyle='->', color='#E63329'))
-# flèche du gap 2025
+# 2025 gap arrow
 axL.annotate('', (2025, OBS[2025]), (2025, proj[3]), arrowprops=dict(arrowstyle='<->', color='#1D9E75', lw=2))
-axL.text(2025.15, (OBS[2025]+proj[3])/2, 'écart +2 582\n(VRAI problème :\nmodèles trop\noptimistes)', fontsize=9,
+axL.text(2025.15, (OBS[2025]+proj[3])/2, 'gap +2 582\n(REAL problem:\nmodels too\noptimistic)', fontsize=9,
          color='#1D9E75', fontweight='bold', va='center')
-axL.text(2021.3, 35900, 'les modèles attendaient\nun pic puis un déclin', fontsize=8.5, color='#333', style='italic')
+axL.text(2021.3, 35900, 'the models expected\na peak then a decline', fontsize=8.5, color='#333', style='italic')
 axL.set_xticks(YEARS); axL.set_xlim(2009, 2028.5); axL.set_ylim(32000, 39500)
-axL.set_ylabel('CO₂ (Mt/an)'); axL.set_xlabel('Année'); axL.legend(loc='upper left', fontsize=9)
-axL.set_title('Modèles vs réalité', loc='left', fontsize=11, fontweight='bold')
+axL.set_ylabel('CO₂ (Mt/yr)'); axL.set_xlabel('Year'); axL.legend(loc='upper left', fontsize=9)
+axL.set_title('Models vs reality', loc='left', fontsize=11, fontweight='bold')
 axL.spines[['top','right']].set_visible(False); axL.grid(axis='y', alpha=0.15)
 
-# ── droite : 3 barres, langage simple ──
-labels = ['2020\nbrut', '2020\nsans COVID', '2025']
+# ── right : 3 bars, simple language ──
+labels = ['2020\nraw', '2020\nCOVID-free', '2025']
 vals = [OBS[2020]-proj[2], cf2020-proj[2], OBS[2025]-proj[3]]
 cols = ['#D85A30', '#9ecae1', '#1D9E75']
-notes = ['ON DIRAIT\ntrop haut…\nmais c’est\nle COVID', 'en fait\n≈ juste', 'VRAI problème :\ntrop bas\n(optimisme)']
+notes = ['LOOKS\ntoo high…\nbut it’s\nCOVID', 'actually\n≈ right', 'REAL problem:\ntoo low\n(optimism)']
 b = axR.bar(labels, vals, color=cols, width=0.6)
 axR.axhline(0, color='gray', lw=0.8)
 for bar, v, nt in zip(b, vals, notes):
     axR.text(bar.get_x()+bar.get_width()/2, v+(130 if v>=0 else -130), f'{v:+,.0f}',
              ha='center', va='bottom' if v>=0 else 'top', fontsize=10, fontweight='bold')
     axR.text(bar.get_x()+bar.get_width()/2, 1600 if v < 0 else -600, nt, ha='center', va='center', fontsize=8)
-axR.set_title('Erreur = réalité − modèles  (Mt CO₂)', loc='left', fontsize=11, fontweight='bold')
+axR.set_title('Error = reality − models  (Mt CO₂)', loc='left', fontsize=11, fontweight='bold')
 axR.set_ylim(-2200, 3100); axR.spines[['top','right']].set_visible(False)
 
-fig.suptitle('Une fois le COVID retiré, les modèles sont trop bas AUX DEUX dates → biais constant d’optimisme',
+fig.suptitle('Once COVID is removed, the models are too low AT BOTH dates → constant optimism bias',
              fontsize=12, fontweight='bold')
 plt.tight_layout(); plt.savefig('co2_finding1_simple.png', dpi=150, bbox_inches='tight')
 print('Saved: co2_finding1_simple.png')

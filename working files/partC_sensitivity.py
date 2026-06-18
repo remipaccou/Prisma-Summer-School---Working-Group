@@ -32,23 +32,23 @@ def curve(score):
     return fr*100, np.array([o.iloc[:max(int(q*len(o)),1)]['nz'].mean()*100 for q in fr])
 
 fig, ax = plt.subplots(figsize=(11, 6))
-for score, col, lab in [('Solar_r','#D85A30','filtre SOLAIRE → NZ MONTE (ils ont prévu le boom)'),
-                        ('bal','#7E57C2','filtre ÉQUILIBRÉ (CO₂+charbon+solaire, rangs)'),
-                        ('CO2_r','#378ADD','filtre CO₂ → NZ BAISSE (pas de décarbonation)')]:
+for score, col, lab in [('Solar_r','#D85A30','SOLAR filter → NZ UP (they predicted the boom)'),
+                        ('bal','#7E57C2','BALANCED filter (CO₂+coal+solar, ranks)'),
+                        ('CO2_r','#378ADD','CO₂ filter → NZ DOWN (no decarbonisation)')]:
     x, y = curve(score); ax.plot(x, y, '-o', color=col, lw=2.2, ms=3.5, label=lab)
-ax.axhline(naive, color='gray', ls=':', lw=1.5); ax.text(101, naive, f'naïf {naive:.0f}%', va='center', fontsize=9, color='gray')
-ax.annotate('← plus strict', (12, curve('CO2_r')[1][1]), (24, 8), fontsize=9, arrowprops=dict(arrowstyle='->'))
-ax.set_xlabel("% de scénarios gardés (les plus crédibles d'abord)", fontsize=10)
-ax.set_ylabel('PART des scénarios net-zéro 2070  (%)', fontsize=10)
-ax.set_title("Part C — la « part NZ corrigée » n'est pas robuste : 20%→48% selon la variable\n"
-             "Lafond slide 3 : on n'extrait pas une probabilité inconditionnelle de prévisions conditionnelles",
+ax.axhline(naive, color='gray', ls=':', lw=1.5); ax.text(101, naive, f'naive {naive:.0f}%', va='center', fontsize=9, color='gray')
+ax.annotate('← stricter', (12, curve('CO2_r')[1][1]), (24, 8), fontsize=9, arrowprops=dict(arrowstyle='->'))
+ax.set_xlabel("% of scenarios kept (most credible first)", fontsize=10)
+ax.set_ylabel('net-zero 2070 scenario SHARE  (%)', fontsize=10)
+ax.set_title("Part C — the « corrected NZ share » is not robust: 20%→48% depending on the variable\n"
+             "Lafond slide 3: you cannot extract an unconditional probability from conditional forecasts",
              fontsize=11, fontweight='bold')
 ax.set_xlim(0, 108); ax.set_ylim(0, 52)
 ax.legend(fontsize=8.5, loc='upper right'); ax.spines[['top','right']].set_visible(False); ax.grid(alpha=0.15)
 plt.tight_layout(); plt.savefig('partC_sensitivity.png', dpi=150, bbox_inches='tight')
-print(f"naïf {naive:.0f}% (n={len(M)})")
+print(f"naive {naive:.0f}% (n={len(M)})")
 for q in [0.25,0.5]:
-    print(f"  garder {int(q*100)}%: solaire {curve('Solar_r')[1][np.argmin(abs(np.linspace(.05,1,40)-q))]:.0f}% | "
-          f"équilibré {curve('bal')[1][np.argmin(abs(np.linspace(.05,1,40)-q))]:.0f}% | "
+    print(f"  keep {int(q*100)}%: solar {curve('Solar_r')[1][np.argmin(abs(np.linspace(.05,1,40)-q))]:.0f}% | "
+          f"balanced {curve('bal')[1][np.argmin(abs(np.linspace(.05,1,40)-q))]:.0f}% | "
           f"CO2 {curve('CO2_r')[1][np.argmin(abs(np.linspace(.05,1,40)-q))]:.0f}%")
 print('Saved: partC_sensitivity.png')

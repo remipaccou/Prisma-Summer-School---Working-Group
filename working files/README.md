@@ -1,86 +1,86 @@
 # Working files
 
-Dossier de travail / explorations — **séparé du pipeline principal** (`scripts/`, `report/`)
-pour ne pas perturber le reste et faciliter le partage. Tout porte sur la variable
-**CO₂ (Energy & Industrial Processes)**, ensemble SCI-2025.
+Working / exploration folder — **separate from the main pipeline** (`scripts/`, `report/`)
+so as not to disturb the rest and to make sharing easier. Everything concerns the variable
+**CO₂ (Energy & Industrial Processes)**, SCI-2025 ensemble.
 
-## 1. Vue globale & découpages — `co2_overview.py`
-
-| Figure | Description |
-|---|---|
-| `co2_overview.png` | Toutes les trajectoires CO₂ (2010–2100) + 4 points observés (GCB 2025) : horizon complet + zoom sur la fenêtre de hindcast. |
-| `co2_views.png` | Découpages : all / Net-Zero 2070 / pondéré par modèle (1 modèle = moyenne de ses scénarios) / energy / CGE / hybrid. Chaque panneau annote ME/MAE/RMSE pondérés par famille (2010–2025). |
-
-## 2. Test sur archétypes — `co2_archetypes.py`
-
-Restreint à quelques modèles « purs » pour réduire la dispersion intra-groupe :
-- **ENERGY** (bottom-up, PIB exogène) : POLES, TIAM, COFFEE
-- **ECONOMY** (CGE + hybrides) : GEM-E3, IMACLIM, WITCH
+## 1. Global view & breakdowns — `co2_overview.py`
 
 | Figure | Description |
 |---|---|
-| `co2_archetypes.png` | Un panneau par modèle (dispersion intra-modèle visible) + métriques. |
-| `co2_archetypes_summary.png` | ME par année (energy vs economy) + barres ME/MAE/RMSE de groupe. |
+| `co2_overview.png` | All CO₂ trajectories (2010–2100) + 4 observed points (GCB 2025): full horizon + zoom on the hindcast window. |
+| `co2_views.png` | Breakdowns: all / Net-Zero 2070 / weighted by model (1 model = average of its scenarios) / energy / CGE / hybrid. Each panel annotates family-weighted ME/MAE/RMSE (2010–2025). |
 
-**Résultat** : tendance énergie **sur-projette** (ME ≈ −715), économie **sous-projette** (≈ +655),
-mais forte dispersion → suggestif, non concluant.
+## 2. Archetype test — `co2_archetypes.py`
 
-## 3. Analyse millésime — `co2_vintage.py`
-
-Croise l'**année de publication** (`Scientific Manuscript`, proxy du millésime / année de base)
-avec l'erreur de hindcast.
+Restricted to a few "pure" models to reduce intra-group dispersion:
+- **ENERGY** (bottom-up, exogenous GDP): POLES, TIAM, COFFEE
+- **ECONOMY** (CGE + hybrids): GEM-E3, IMACLIM, WITCH
 
 | Figure | Description |
 |---|---|
-| `co2_vintage.png` | MAE par année selon le millésime (gauche) + composition en millésimes des 6 archétypes (droite). |
+| `co2_archetypes.png` | One panel per model (intra-model dispersion visible) + metrics. |
+| `co2_archetypes_summary.png` | ME by year (energy vs economy) + group ME/MAE/RMSE bars. |
 
-**Points clés**
-- Un scénario récent « prédisant » 2020 ne prédit rien : 2020 est de l'**historique** pour lui.
-- Effet réel mais partiel (les modèles ne sont pas harmonisés sur les obs GCB).
-- ⚠️ **Confusion** : le split energy/economy est corrélé au millésime (IMACLIM = 100 % ≥2024).
-  → pour conclure, il faut **comparer à millésime égal** ou scorer chaque scénario seulement
-  **après son année de base** (vrai out-of-sample).
+**Result**: the energy trend **over-projects** (ME ≈ −715), the economy trend **under-projects** (≈ +655),
+but high dispersion → suggestive, not conclusive.
 
-## 4. Finding 1 — couche soutenance — `co2_finding1.py`
+## 3. Vintage analysis — `co2_vintage.py`
 
-Sépare le **2020 contaminé COVID** du **2025 structurel** (le vrai signal).
+Cross-references the **publication year** (`Scientific Manuscript`, a proxy for the vintage / base year)
+with the hindcast error.
 
-| Figure / fichier | Description |
+| Figure | Description |
 |---|---|
-| `co2_finding1.png` | Gauche : modèles culminent ~2020 et déclinent vs réalité qui plonge (COVID) puis remonte sur tendance. Droite : décomposition du ME — 2020 = COVID (robuste à 2 contrefactuels : +378 / +1 028), 2025 = +2 582 structurel. |
-| `finding1_robustness.md` | Tous les chiffres de robustesse : détrend COVID, sensibilité pondération (famille/projet), sensibilité seuil NZ (16→57%), signature addition (marges vs jointe), réconciliation 1591/1564. |
+| `co2_vintage.png` | MAE by year according to vintage (left) + vintage composition of the 6 archetypes (right). |
 
-**À retenir** : 2020 = bruit COVID (à détrender), 2025 = signal d'optimisme (à garder).
-C'est le chiffre porteur, et il survit au détrending.
+**Key points**
+- A recent scenario "predicting" 2020 predicts nothing: 2020 is **historical** for it.
+- Real but partial effect (the models are not harmonized on the GCB observations).
+- ⚠️ **Confounding**: the energy/economy split is correlated with vintage (IMACLIM = 100% ≥2024).
+  → to conclude, one must **compare at equal vintage** or score each scenario only
+  **after its base year** (true out-of-sample).
 
-## 5. 2025 — rebond, ambition, benchmark naïf
+## 4. Finding 1 — defense layer — `co2_finding1.py`
 
-| Fichier | Description |
+Separates the **COVID-contaminated 2020** from the **structural 2025** (the true signal).
+
+| Figure / file | Description |
 |---|---|
-| `co2_finding1_simple.py/.png` | Version pédagogique du Finding 1 (modèles vs réalité + barres COVID/structurel). |
-| `co2_2025_ambition.py/.png` | ME 2025 par catégorie climatique AR6 : gradient C1→C8 ; la réalité tombe à C6-C7 (monde « <3-4°C »). |
-| `co2_benchmark.py/.png` | Test de benchmark naïf (Lafond/Farmer) : pour 4 variables sur 6, une règle triviale bat l'ensemble (jusqu'à 95 % des scénarios battus). |
-| `benchmark_findings.md` | Note : rebond≠tendance, gradient d'ambition, benchmark, piste AR5. |
+| `co2_finding1.png` | Left: models peak ~2020 and decline vs reality which plunges (COVID) then recovers onto trend. Right: ME decomposition — 2020 = COVID (robust to 2 counterfactuals: +378 / +1,028), 2025 = +2,582 structural. |
+| `finding1_robustness.md` | All the robustness numbers: COVID detrend, weighting sensitivity (family/project), NZ threshold sensitivity (16→57%), addition signature (marginals vs joint), 1591/1564 reconciliation. |
 
-## 6. Part C — sensibilité de la part net-zéro (le résultat du projet)
+**Takeaway**: 2020 = COVID noise (to detrend), 2025 = optimism signal (to keep).
+This is the load-bearing number, and it survives detrending.
 
-| Fichier | Description |
+## 5. 2025 — rebound, ambition, naive benchmark
+
+| File | Description |
 |---|---|
-| `partC_sensitivity.py/.png` | La « part NZ corrigée » n'est pas robuste : 20%→48% selon la variable de filtrage (CO₂ ⬇️ vs solaire ⬆️). Lafond slide 3 : pas de proba inconditionnelle depuis des prévisions conditionnelles. |
-| `co2_kaya.py/.png` | Décompo de Kaya : l'erreur CO₂ = optimisme de découplage (PIB +14%, intensité −18%), pas de croissance → pourquoi filtrer sur le CO₂ seul est piégé. |
-| `partC_findings.md` | Le reframe, le résultat (non-robustesse), le mécanisme, les prochaines étapes (calibration, Bertalanffy-Richards, Wright). |
+| `co2_finding1_simple.py/.png` | Pedagogical version of Finding 1 (models vs reality + COVID/structural bars). |
+| `co2_2025_ambition.py/.png` | 2025 ME by AR6 climate category: C1→C8 gradient; reality falls to C6-C7 ("<3-4°C" world). |
+| `co2_benchmark.py/.png` | Naive benchmark test (Lafond/Farmer): for 4 of 6 variables, a trivial rule beats the ensemble (up to 95% of scenarios beaten). |
+| `benchmark_findings.md` | Note: rebound≠trend, ambition gradient, benchmark, AR5 lead. |
 
-## Classification energy / CGE / hybrid
+## 6. Part C — net-zero share sensitivity (the project's result)
 
-- **energy** : IMAGE, POLES, COFFEE, GCAM, TIAM, PROMETHEUS
-- **CGE** : AIM, GEM-E3, IMACLIM, EPPA, CGEM
-- **hybrid** : REMIND, WITCH, MESSAGE, MERGE
+| File | Description |
+|---|---|
+| `partC_sensitivity.py/.png` | The "corrected NZ share" is not robust: 20%→48% depending on the filtering variable (CO₂ ⬇️ vs solar ⬆️). Lafond slide 3: no unconditional probability from conditional forecasts. |
+| `co2_kaya.py/.png` | Kaya decomposition: the CO₂ error = decoupling optimism (GDP +14%, intensity −18%), not growth → why filtering on CO₂ alone is a trap. |
+| `partC_findings.md` | The reframe, the result (non-robustness), the mechanism, the next steps (calibration, Bertalanffy-Richards, Wright). |
 
-## Lancer
+## Energy / CGE / hybrid classification
+
+- **energy**: IMAGE, POLES, COFFEE, GCAM, TIAM, PROMETHEUS
+- **CGE**: AIM, GEM-E3, IMACLIM, EPPA, CGEM
+- **hybrid**: REMIND, WITCH, MESSAGE, MERGE
+
+## Running
 
 ```bash
 python "co2_overview.py" && python "co2_archetypes.py" && python "co2_vintage.py"
 ```
 
-> Chemin des données en dur (`SCI_DATA`) → lit le `.xlsx` SCI-2025 dans
-> `~/PhD/.../Scenario_Compass_Initiative_Data`. À adapter selon la machine.
+> Hard-coded data path (`SCI_DATA`) → reads the SCI-2025 `.xlsx` in
+> `~/PhD/.../Scenario_Compass_Initiative_Data`. Adapt to the machine.

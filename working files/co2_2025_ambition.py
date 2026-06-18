@@ -1,6 +1,6 @@
 """
-Qui a bien prévu 2025, et pourquoi ? -> c'est l'AMBITION supposée, pas le modèle.
-Gradient monotone du ME 2025 par catégorie climatique AR6 (C1 = 1.5°C ... C8 = >4°C).
+Who correctly projected 2025, and why? -> it's the assumed AMBITION, not the model.
+Monotonic gradient of the 2025 ME by AR6 climate category (C1 = 1.5°C ... C8 = >4°C).
 """
 import warnings; warnings.filterwarnings('ignore')
 import pandas as pd, numpy as np, matplotlib.pyplot as plt
@@ -29,17 +29,17 @@ for i, (idx, r) in enumerate(g.iterrows()):
             ha='center', va='bottom' if r['mean'] >= 0 else 'top', fontsize=10, fontweight='bold')
     ax.text(i, -7600, f"n={int(r['count'])}", ha='center', fontsize=8, color='0.4')
 ax.set_xticks(range(len(g))); ax.set_xticklabels([LAB[i] for i in g.index], fontsize=9)
-ax.set_ylabel('Erreur 2025 = réalité − projection  (Mt CO₂)', fontsize=10)
+ax.set_ylabel('2025 Error = reality − projection  (Mt CO₂)', fontsize=10)
 ax.set_ylim(-8200, 9500)
-ax.set_title("Qui a bien prévu 2025 ? — ceux qui ont supposé PEU d'action climatique\n"
-             "L'erreur 2025 est un gradient quasi parfait de l'ambition : C1 (1.5°C) sous-projette de +8 Gt, "
-             "C8 (baseline) sur-projette de −6 Gt", fontsize=11.5, fontweight='bold')
-# zone "réalité"
+ax.set_title("Who correctly projected 2025? — those who assumed LITTLE climate action\n"
+             "The 2025 error is an almost perfect gradient of ambition: C1 (1.5°C) under-projects by +8 Gt, "
+             "C8 (baseline) over-projects by −6 Gt", fontsize=11.5, fontweight='bold')
+# "reality" zone
 ax.axhspan(-700, 700, color='#1D9E75', alpha=0.12)
-ax.text(len(g)-0.5, 700, 'réalité 2025 ≈ ici\n(monde « <3-4°C »,\nfaible action)',
+ax.text(len(g)-0.5, 700, '2025 reality ≈ here\n(« <3-4°C » world,\nweak action)',
         ha='right', va='bottom', fontsize=9, color='#1D7a52', fontweight='bold')
-ax.text(2.4, 7600, 'trop OPTIMISTES (décarbonation supposée absente)', fontsize=9.5, color='#C0392B', ha='center')
-ax.text(6.5, -7600, 'trop PESSIMISTES (baselines)', fontsize=9.5, color='#2471A3', ha='center')
+ax.text(2.4, 7600, 'too OPTIMISTIC (assumed decarbonization absent)', fontsize=9.5, color='#C0392B', ha='center')
+ax.text(6.5, -7600, 'too PESSIMISTIC (baselines)', fontsize=9.5, color='#2471A3', ha='center')
 ax.spines[['top','right']].set_visible(False)
 plt.tight_layout(); plt.savefig('co2_2025_ambition.png', dpi=150, bbox_inches='tight')
 print('Saved: co2_2025_ambition.png')
