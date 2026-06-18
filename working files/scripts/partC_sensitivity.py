@@ -40,9 +40,9 @@ def curve(score):
     return fr*100, np.array([o.iloc[:max(int(q*len(o)),1)]['nz'].mean()*100 for q in fr])
 
 fig, ax = plt.subplots(figsize=(11, 6))
-for score, col, lab in [('Solar_r','#D85A30','SOLAR filter → NZ UP (they predicted the boom)'),
-                        ('bal','#7E57C2','BALANCED filter (CO₂+coal+solar, ranks)'),
-                        ('CO2_r','#378ADD','CO₂ filter → NZ DOWN (no decarbonisation)')]:
+for score, col, lab in [('Solar_r','#D8732E','SOLAR filter → NZ UP (they predicted the boom)'),
+                        ('bal','#9aa0a6','BALANCED filter (CO₂+coal+solar, ranks)'),
+                        ('CO2_r','#2C6FA6','CO₂ filter → NZ DOWN (no decarbonisation)')]:
     x, y = curve(score); ax.plot(x, y, '-o', color=col, lw=2.2, ms=3.5, label=lab)
 ax.axhline(naive, color='gray', ls=':', lw=1.5); ax.text(101, naive, f'naive {naive:.0f}%', va='center', fontsize=9, color='gray')
 ax.annotate('← stricter', (12, curve('CO2_r')[1][1]), (24, 8), fontsize=9, arrowprops=dict(arrowstyle='->'))

@@ -63,13 +63,13 @@ print(R[['var','nv_RW','nv_linear','nv_log-trend']].round(0).to_string(index=Fal
 # ── figure ──
 fig, ax = plt.subplots(figsize=(13, 6))
 x = np.arange(len(R)); w = 0.38
-b1 = ax.bar(x-w/2, R['ens_pe'], w, color='#534AB7', label='IAM ensemble (median)')
+b1 = ax.bar(x-w/2, R['ens_pe'], w, color='#2C6FA6', label='IAM ensemble (median)')
 b2 = ax.bar(x+w/2, R['naive_pe'], w, color='#9aa0a6', label='best naive rule')
 for i, r in R.iterrows():
     loses = r['skill'] > 1
     ax.text(i, max(r['ens_pe'], r['naive_pe'])+2,
             f"skill {r['skill']:.1f}\n{'ruler wins' if loses else 'ensemble wins'}",
-            ha='center', fontsize=8, fontweight='bold', color='#C0392B' if loses else '#1D9E75')
+            ha='center', fontsize=8, fontweight='bold', color='#E63329' if loses else '#1D9E75')
 ax.set_xticks(x); ax.set_xticklabels([f"{r['var']}\n(naive: {r['best_naive']})" for _,r in R.iterrows()], fontsize=9)
 ax.set_ylabel('2025 forecast error  (% of observed)', fontsize=10)
 ax.set_title('Does the IAM ensemble beat a trivial rule at predicting 2025?\n'

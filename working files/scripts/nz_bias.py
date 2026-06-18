@@ -33,16 +33,16 @@ meA, meB = wm(A,'ME_j'), wm(B,'ME_j'); maA, maB = wm(A,'MAE_j'), wm(B,'MAE_j')
 
 fig, ax = plt.subplots(figsize=(10, 5.6))
 bins = np.arange(-6000, 6001, 500)
-ax.hist(B['ME_j'], bins=bins, density=True, alpha=0.55, color='#378ADD', label=f'non-NZ (n={len(B)})', edgecolor='white', lw=0.3)
-ax.hist(A['ME_j'], bins=bins, density=True, alpha=0.55, color='#D85A30', label=f'NZ2070 (n={len(A)})', edgecolor='white', lw=0.3)
+ax.hist(B['ME_j'], bins=bins, density=True, alpha=0.55, color='#2C6FA6', label=f'non-NZ (n={len(B)})', edgecolor='white', lw=0.3)
+ax.hist(A['ME_j'], bins=bins, density=True, alpha=0.55, color='#D8732E', label=f'NZ2070 (n={len(A)})', edgecolor='white', lw=0.3)
 ax.axvline(0, color='black', lw=1.2)
-ax.axvline(meB, color='#1f5c99', lw=2, ls='--'); ax.axvline(meA, color='#a8431f', lw=2, ls='--')
+ax.axvline(meB, color='#1f4e79', lw=2, ls='--'); ax.axvline(meA, color='#9c4a1f', lw=2, ls='--')
 top = ax.get_ylim()[1]
-ax.text(meA+120, top*0.92, f'NZ mean +{meA:.0f}', color='#a8431f', fontsize=9, fontweight='bold')
-ax.text(meB-120, top*0.80, f'non-NZ mean +{meB:.0f}', color='#1f5c99', fontsize=9, fontweight='bold', ha='right')
+ax.text(meA+120, top*0.92, f'NZ mean +{meA:.0f}', color='#9c4a1f', fontsize=9, fontweight='bold')
+ax.text(meB-120, top*0.80, f'non-NZ mean +{meB:.0f}', color='#1f4e79', fontsize=9, fontweight='bold', ha='right')
 ax.text(0, -top*0.10, 'perfect (0)', ha='center', fontsize=8, color='0.4')
 ax.annotate('biased LOW\n(under-project CO₂)', (2600, top*0.5), (3600, top*0.72),
-            fontsize=9, color='#a8431f', ha='center', arrowprops=dict(arrowstyle='->', color='#a8431f'))
+            fontsize=9, color='#9c4a1f', ha='center', arrowprops=dict(arrowstyle='->', color='#9c4a1f'))
 ax.set_xlabel('Per-scenario CO₂ error (obs − proj), mean over 2010–2025  (Mt)', fontsize=10)
 ax.set_ylabel('density'); ax.set_xlim(-6000, 6000)
 ax.set_title('Step 3 — Net-zero scenarios are biased low, not more imprecise\n'

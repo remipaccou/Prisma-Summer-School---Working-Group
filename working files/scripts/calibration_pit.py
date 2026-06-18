@@ -44,21 +44,21 @@ axL.axvspan(25, 75, color='#1D9E75', alpha=0.10)
 axL.axvline(50, color='#1D9E75', lw=1.4, ls='--')
 axL.text(50, len(R)-0.3, 'calibrated\n(median)', ha='center', va='bottom', fontsize=8, color='#1D7a52')
 for i, (name, r) in enumerate(R.iterrows()):
-    p = r['p2025']; col = '#C0392B' if (p>75 or p<25) else '#888'
+    p = r['p2025']; col = '#E63329' if (p>75 or p<25) else '#888'
     axL.plot([50, p], [i, i], color=col, lw=2, zorder=2)
     axL.scatter(p, i, s=90, color=col, zorder=3)
     axL.text(p + (3 if p<50 else -3), i, f'{p:.0f}', va='center', ha='left' if p<50 else 'right', fontsize=9, fontweight='bold')
 axL.set_yticks(y); axL.set_yticklabels(R.index)
 axL.set_xlim(0, 100); axL.set_xlabel('Percentile of observed 2025 in the ensemble (PIT)')
-axL.text(2, -0.9, 'ensemble too HIGH', fontsize=8, color='#2471A3')
-axL.text(98, -0.9, 'ensemble too LOW', fontsize=8, color='#C0392B', ha='right')
+axL.text(2, -0.9, 'ensemble too HIGH', fontsize=8, color='#2C6FA6')
+axL.text(98, -0.9, 'ensemble too LOW', fontsize=8, color='#E63329', ha='right')
 axL.set_title('Where does reality 2025 fall in the cloud?', loc='left', fontsize=10, fontweight='bold')
 axL.spines[['top','right']].set_visible(False)
 
 # ── Right: drift 2015 -> 2025 (calibration degrades with horizon) ──
 axR.axhspan(25, 75, color='#1D9E75', alpha=0.10); axR.axhline(50, color='#1D9E75', lw=1.2, ls='--')
 for i, (name, r) in enumerate(R.iterrows()):
-    axR.annotate('', (1, r['p2025']), (0, r['p2015']), arrowprops=dict(arrowstyle='->', color='#534AB7', lw=1.6))
+    axR.annotate('', (1, r['p2025']), (0, r['p2015']), arrowprops=dict(arrowstyle='->', color='#2C6FA6', lw=1.6))
     axR.text(-0.04, r['p2015'], name, ha='right', va='center', fontsize=8.5)
     axR.text(1.04, r['p2025'], f"{r['p2025']:.0f}", ha='left', va='center', fontsize=8.5, fontweight='bold')
 axR.set_xlim(-0.45, 1.3); axR.set_ylim(0, 100); axR.set_xticks([0,1]); axR.set_xticklabels(['2015','2025'])

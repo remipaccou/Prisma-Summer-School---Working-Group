@@ -46,7 +46,7 @@ axL.spines[['top','right']].set_visible(False); axL.grid(axis='y', alpha=0.15)
 # ── right : 3 bars, simple language ──
 labels = ['2020\nraw', '2020\nCOVID-free', '2025']
 vals = [OBS[2020]-proj[2], cf2020-proj[2], OBS[2025]-proj[3]]
-cols = ['#D85A30', '#9ecae1', '#1D9E75']
+cols = ['#D8732E', '#a9c9e6', '#1D9E75']
 notes = ['LOOKS\ntoo high…\nbut it’s\nCOVID', 'actually\n≈ right', 'REAL problem:\ntoo low\n(optimism)']
 b = axR.bar(labels, vals, color=cols, width=0.6)
 axR.axhline(0, color='gray', lw=0.8)
