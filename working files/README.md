@@ -41,6 +41,18 @@ avec l'erreur de hindcast.
   → pour conclure, il faut **comparer à millésime égal** ou scorer chaque scénario seulement
   **après son année de base** (vrai out-of-sample).
 
+## 4. Finding 1 — couche soutenance — `co2_finding1.py`
+
+Sépare le **2020 contaminé COVID** du **2025 structurel** (le vrai signal).
+
+| Figure / fichier | Description |
+|---|---|
+| `co2_finding1.png` | Gauche : modèles culminent ~2020 et déclinent vs réalité qui plonge (COVID) puis remonte sur tendance. Droite : décomposition du ME — 2020 = COVID (robuste à 2 contrefactuels : +378 / +1 028), 2025 = +2 582 structurel. |
+| `finding1_robustness.md` | Tous les chiffres de robustesse : détrend COVID, sensibilité pondération (famille/projet), sensibilité seuil NZ (16→57%), signature addition (marges vs jointe), réconciliation 1591/1564. |
+
+**À retenir** : 2020 = bruit COVID (à détrender), 2025 = signal d'optimisme (à garder).
+C'est le chiffre porteur, et il survit au détrending.
+
 ## Classification energy / CGE / hybrid
 
 - **energy** : IMAGE, POLES, COFFEE, GCAM, TIAM, PROMETHEUS
