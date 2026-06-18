@@ -6,6 +6,14 @@ filter on in Part C. Result: coal and solar PV (and CO2) discriminate; wind/nucl
 """
 import warnings; warnings.filterwarnings('ignore')
 import pandas as pd, numpy as np, matplotlib.pyplot as plt
+import matplotlib as _mpl
+_mpl.rcParams.update({
+    "figure.facecolor": "white", "axes.facecolor": "white", "savefig.facecolor": "white",
+    "font.size": 11, "axes.titlesize": 13, "axes.titleweight": "bold", "axes.labelsize": 11,
+    "axes.spines.top": False, "axes.spines.right": False,
+    "axes.grid": True, "axes.grid.axis": "y", "grid.alpha": 0.18, "grid.linewidth": 0.6,
+    "legend.frameon": False, "savefig.dpi": 150,
+})
 from pathlib import Path
 
 SCI_DATA = Path.home() / "PhD" / "4. Modeling" / "Prisma School" / "Scenario_Compass_Initiative_Data"

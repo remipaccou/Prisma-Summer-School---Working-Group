@@ -1,6 +1,14 @@
 """Finding 1 — pedagogical version (clear)."""
 import warnings; warnings.filterwarnings('ignore')
 import pandas as pd, numpy as np, matplotlib.pyplot as plt
+import matplotlib as _mpl
+_mpl.rcParams.update({
+    "figure.facecolor": "white", "axes.facecolor": "white", "savefig.facecolor": "white",
+    "font.size": 11, "axes.titlesize": 13, "axes.titleweight": "bold", "axes.labelsize": 11,
+    "axes.spines.top": False, "axes.spines.right": False,
+    "axes.grid": True, "axes.grid.axis": "y", "grid.alpha": 0.18, "grid.linewidth": 0.6,
+    "legend.frameon": False, "savefig.dpi": 150,
+})
 from pathlib import Path
 
 SCI = Path.home()/'PhD'/'4. Modeling'/'Prisma School'/'Scenario_Compass_Initiative_Data'/'SCI-2025_v1.0_pathways_ensemble_global.xlsx'
