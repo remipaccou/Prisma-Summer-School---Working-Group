@@ -104,4 +104,37 @@ Three things to keep honest:
 
 ---
 
-*Next: Step 4 — does the ensemble forecast at all? (a trivial rule beats it on 4 of 6 variables).*
+## Step 4 — Does the ensemble forecast at all? A trivial rule beats it
+
+A forecast earns trust only by beating a trivial rule. The test: standing in 2015, using only
+2010+2015, predict 2025 with a trivial rule (random walk / linear trend) vs the ensemble (median
+of the scenarios). `skill = |ensemble error| / |rule error|` — **skill > 1 means the rule wins.**
+"% beaten" = share of individual scenarios worse than the rule.
+
+| Variable | Ensemble error | Rule error | skill | % scenarios beaten |
+|---|---|---|---|---|
+| **CO₂** | 7% | 3% | **2.0** | **81%** |
+| **Coal** | 14% | 3% | **4.7** | **91%** |
+| **Nuclear** | 16% | 2% | **9.9** | **95%** |
+| **GDP** | 11% | 4% | **3.0** | **77%** |
+| Solar PV | 51% | 75% | 0.7 | 6% |
+| Wind | 17% | 30% | 0.6 | 34% |
+
+For **4 of 6 variables a 2-point rule beats the whole IAM ensemble** — on nuclear, 95% of
+scenarios are beaten by "nothing changes".
+
+![Step 4 — a trivial rule beats the ensemble on 4 of 6 variables](co2_benchmark.png)
+
+The ensemble *wins* only on solar and wind — but it is still massively wrong there (51% off on
+PV). So this is not "the ensemble is good on renewables"; it is "everyone misses PV, and the linear
+rule misses it even more". That is exactly where a dedicated method is needed (Wright's law, ahead).
+
+*Caveats*: a single target year (2025), so "% beaten" is the robust statistic, not skill on one
+point; the rule is trained on only 2 points.
+
+**What it means:** an ensemble that a 2-point rule outperforms on 4 of 6 variables has not
+demonstrated forecasting skill — and the net-zero share it implies inherits that weakness.
+
+---
+
+*Next: Step 5 — the ensemble is not even calibrated as a distribution (reality sits in the tails).*
