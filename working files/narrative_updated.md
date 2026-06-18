@@ -1,155 +1,182 @@
-# Narrative
+# Narrative — formal version
 
-*A working note, in the voice of students who keep re-checking their own answer. Three acts:
-the question we thought we had → taking the ensemble apart → the one thing we can still forecast.*
+*Three parts — the question, the diagnosis, what can still be forecast. Kept factual and explicit
+(notation, metrics, forecasting concepts spelled out), not a story. Oversold claims deflated.*
+
+## Framework & notation
+
+Each scenario is treated as a **forecast object** and evaluated as a forecast: unbiased? calibrated?
+better than a trivial rule?
+
+- **y** — observed value of a variable (CO₂, coal, solar, wind, nuclear, GDP) in a given year.
+- **ŷ** — a scenario's projection of the same thing.
+- **ε = y − ŷ** — forecast error. Positive ε ⇒ the scenario projected too little.
+- **F** — the predictive distribution: the cloud of scenario values for a variable in a year.
+
+Four concepts the project rests on:
+
+1. **Conditional vs unconditional forecast.** A scenario gives ŷ = f(P): the outcome *given* an
+   assumed policy/technology path P. An unconditional forecast is the outcome marginally — a
+   probability. One cannot obtain the second by counting the first.
+2. **Origin × horizon.** A forecast made at origin t₀ looks out over horizon τ. For a random walk
+   with estimated drift, error variance grows as **σ²·(τ + τ²/m)** — long horizons are far less
+   constrained than short ones.
+3. **Calibration vs sharpness.** Calibrated ⇒ the PIT (the percentile at which y falls in F) is
+   uniform: reality near the median about half the time. Sharpness = interval width. A narrow
+   interval reality keeps falling outside is overconfident.
+4. **Skill vs a naive benchmark.** skill = |ε(model)| / |ε(naive rule)|; skill > 1 ⇒ the naive rule
+   wins, i.e. the forecast adds nothing.
 
 ---
 
-## Act 1 — The question we thought we had
+## Part 1 — The question
 
-We started where everyone starts. The SCI 2025 ensemble has 1,564 model pathways; 497 of them reach
-net-zero CO₂ by 2070. So 497/1,564 ≈ **32%**, and the natural reflex is to treat that as the chance
-of net-zero and to try to make it sharper.
+**Research question.** The SCI 2025 ensemble holds 1,564 pathways; 497 reach net-zero CO₂ by 2070, so
+a naive P(NZ2070) = 497/1564 ≈ 32%. *Does the 2010–2025 record make that 32% meaningful?* This is a
+cascade of nested questions (the A/B/C structure):
 
-The more we looked, the less that number behaved like a probability — for two reasons.
+1. Is the ensemble a trustworthy forecast — unbiased, skilful, calibrated?
+2. If we keep only credible scenarios, which variables define "credible", and how does the net-zero
+   *share* move?
+3. What can a 15-year record structurally not settle about a 45-year question?
 
-**Conceptually**, each pathway is a *conditional* forecast: "*if* policy, technology and demand
-follow this path, *then* emissions follow that one." It is not a draw from a distribution of possible
-futures. Counting how many conditional "if–then" paths happen to end at zero tells us about the
-**menu of scenarios the modelling teams chose to run**, not about the likelihood of the world. You
-cannot manufacture an unconditional probability by counting conditional forecasts.
-
-**Empirically**, the number isn't even stable. "Net-zero by 2070" hides an arbitrary deadline — slide
-it and the share moves a lot:
+**Why the 32% is not a probability.** Conceptually, the 497 are conditional forecasts ŷ = f(P) whose
+assumed paths P end at zero — the menu of runs, not the likelihood of the world. Empirically, the
+count is unstable: "net-zero by 2070" hides an arbitrary deadline, and sliding it moves the share by
+a factor of three:
 
 | Net-zero reached by | Pathways | Share |
 |---|---|---|
 | 2060 | 256 | 16% |
 | 2070 | 497 | 31% |
 | 2080 | 688 | 43% |
-| any time (≤2100) | 909 | 57% |
+| ≤2100 (ever) | 909 | 57% |
 
-A figure that runs from **16% to 57%** by sliding its own definition a decade is not a probability.
-
-So we changed the question. Instead of *revising a probability*, we decided to test the ensemble the
-way you test any forecast: **is it biased? does it beat a trivial rule? is it calibrated?** — and
-then, if we keep only the scenarios that actually tracked reality, **what happens to the net-zero
-share?**
+A quantity that runs 16%→57% with its own definition is not a probability. We therefore test the
+ensemble *as a forecast* (Part 2) and report a sensitivity, not a probability (end of Part 2).
 
 ---
 
-## Act 2 — Taking the ensemble apart
+## Part 2 — Diagnosis: is the ensemble a usable forecast?
 
-If the 32% isn't a probability, the honest move is to backtest the ensemble against what already
-happened (2010–2025). We expected it to do reasonably well. It kept failing — in instructive ways.
+**2.1 — Error series; the 2025 undershoot is structural.** ε = y − ŷ on CO₂ (family-weighted mean):
 
-**It undershoots 2025, and that miss is structural.** Lining up the ensemble's CO₂ projection against
-reality (error ε = observed − projected, positive = projected too little):
-
-| Year | observed | ensemble mean | ε |
+| Year | y | ŷ | ε |
 |---|---|---|---|
 | 2010 | 33,400 | 32,995 | +405 |
 | 2015 | 35,400 | 35,385 | +15 |
 | 2020 | 34,800 | 36,372 | **−1,572** |
 | 2025 | 38,100 | 35,518 | **+2,582** |
 
-Two late errors, two different causes. **2020** looks like over-projection, but that is COVID: replace
-the dipped 34,800 with a COVID-free interpolation (~36,750) and the error flips to ≈ +378 and nearly
-vanishes — the models were right about the underlying level, they just couldn't foresee a pandemic.
-**2025** is the real one: emissions had recovered and landed almost exactly on the pre-COVID trend
-(~39,400 extrapolated), so reality did nothing surprising — the *ensemble* did, by assuming a
-peak-and-decline that never came. The +2,582 is structural optimism, and it survives every way of
-removing COVID.
+The 2020 error is COVID: replacing the dipped 34,800 by a COVID-free interpolation (≈36,750) flips ε
+to ≈ +378, so ~75% of the 2020 gap is the shock. The 2025 error is structural: 38,100 lies on the
+pre-COVID trend (~39,400 extrapolated), so reality did not deviate — the ensemble did, by assuming a
+peak-and-decline. The +2,582 survives every detrending.
 
-![Models vs reality, COVID (2020) vs structural (2025)](co2_finding1_simple.png)
+![COVID (2020) vs structural (2025)](co2_finding1_simple.png)
 
-**The net-zero scenarios are the most biased low.** Splitting by outcome, the net-zero group's mean
-CO₂ error is **+650** vs **+216** for the rest (family-weighted). One honesty note: the non-NZ *level*
-depends on weighting — it is near zero under scenario weighting, +216 under family weighting — so we
-read the **gap**, which is robust (+434 to +837 across weightings). It is a *bias*, not imprecision
-(the typical error sizes, ~6% vs ~5%, are close). And it is partly true by construction: reaching
-net-zero by 2070 forces an early downturn, so such a pathway *must* under-project a reality that did
-not turn. The defensible claim is narrow: *pathways premised on an early turn that has not begun are
-now the least consistent with the record.*
+**2.2 — Bias by outcome.** Mean error ME = mean over years of ε, family-weighted: NZ2070 **+650** vs
+non-NZ **+216**. (The non-NZ *level* is weighting-dependent — near 0 under scenario weighting — so we
+read the **gap**, robust at +434/+837/+1,281 under family/scenario/project weighting.) The typical
+magnitudes (MAE ≈ 6% vs 5%) are close: this is a **bias** (systematic direction), not imprecision.
+It is also partly definitional — reaching net-zero by 2070 forces an early downturn, so such pathways
+must under-project a reality that did not turn.
 
-![Net-zero scenarios are biased low (not more imprecise)](nz_bias.png)
+![NZ scenarios biased low, not more imprecise](nz_bias.png)
 
-**A trivial rule beats the ensemble — but this is a corollary, not a separate proof.** Forecasting
-2025 from only 2010–2015 with a dumb rule (random walk / straight-line trend) beats the ensemble on
-CO₂, coal, nuclear and GDP. We are careful here: the rule wins on CO₂/coal/GDP *for the same reason*
-as Act 2's structural optimism — reality stayed on trend while the ensemble bet on a turn — so this
-is the same fact seen again, not an independent leg. And nuclear's spectacular "skill 9.9" is hollow:
-nuclear is flat (375→377 GW), so "nothing changes" is near-perfect by construction. The honest
-takeaway: **on the variables that stayed on trend, the ensemble shows no skill against a ruler.**
+**2.3 — Skill vs a naive rule (a corollary, not an independent test).** Forecasting 2025 from 2010–
+2015 with a random walk or linear trend:
+
+| Variable | skill = \|ε_ens\|/\|ε_rule\| | % scenarios beaten |
+|---|---|---|
+| CO₂ | 2.0 | 81% |
+| Coal | 4.7 | 91% |
+| Nuclear | 9.9 | 95% |
+| GDP | 3.0 | 77% |
+| Solar PV | 0.7 | 6% |
+| Wind | 0.6 | 34% |
+
+The rule wins on 4/6. But this is **the same fact as §2.1–2.2**, not an independent leg: the rule
+wins on CO₂/coal/GDP precisely because reality stayed on trend while the ensemble bet on a turn. And
+nuclear's skill 9.9 is **hollow** — nuclear is flat (375→377 GW), so "nothing changes" wins by
+construction. Honest statement: on the on-trend variables the ensemble shows no skill against a ruler.
 
 ![A trivial rule beats the ensemble on the on-trend variables](co2_benchmark.png)
 
-**It is biased low — though "miscalibrated" is a diagnosis, not a proof.** Asking where reality lands
-in the scenario cloud (its percentile): GDP 1st, nuclear 20th, CO₂ 75th, wind 75th, coal 79th, solar
-90th. Reality is **systematically on the low-emissions side** — strongly so for solar and GDP. But we
-will not overstate it: 75th–79th is the upper-middle, *not* a tail, and with only one point per
-variable this is a suggestive diagnostic of low bias, not a formal calibration test (which needs many
-origins × targets). "Overconfident" is firm only where reality is in a true tail (solar, GDP).
+**2.4 — Calibration (a diagnostic, not a formal test).** Percentile of observed 2025 in F:
 
-![Reality is on the low-emissions side of the cloud](calibration_pit.png)
+| GDP | Nuclear | CO₂ | Wind | Coal | Solar PV |
+|---|---|---|---|---|---|
+| 1st | 20th | 75th | 75th | 79th | 90th |
 
-**Only three variables tell the groups apart, and they disagree.** Of the six, only coal, CO₂ and
-solar separate net-zero from non-net-zero scenarios; wind, nuclear, GDP do not. And the three that do
-*contradict each other*: net-zero scenarios are worse on coal and CO₂ (they assumed a fall that did
-not happen) but **better on solar** (they correctly expected the boom). That is the "addition"
-signature at the level of credibility. Practical consequence: filter on coal + CO₂ + solar together,
-not CO₂ alone (whose GDP/intensity errors can cancel).
+Reality is **systematically on the low-emissions side**. We do not overstate it: 75th–79th is the
+upper-middle, **not a tail** — only GDP (1st) and solar (90th) are true tails. And with **one point
+per variable** this is a suggestive diagnostic of low bias, not a formal PIT test (which needs many
+origins × targets). "Overconfident" is firm only for solar and GDP. What is solid is the *direction*:
+reality off-centre low ⇒ F is not a clean distribution to read P(NZ2070) from.
+
+![Reality on the low-emissions side of the cloud](calibration_pit.png)
+
+**2.5 — Variable selection (Part B).** Separation score sep = (median_NZ − median_non-NZ)/IQR per
+variable: **Coal +0.46, CO₂ +0.39, Solar −0.32** discriminate; Wind, Nuclear, GDP ≈ 0 do not. The
+three informative variables **disagree in sign**: NZ worse on coal/CO₂, better on solar (the addition
+signature). An L1-LASSO predicting NZ from the errors selects the same three with the same signs.
+Consequence: filter on coal+CO₂+solar jointly — CO₂ alone is a trap (its GDP/intensity errors cancel).
 
 ![Coal, CO₂, solar carry the signal — and disagree](partB1_boxplots.png)
 
-**So filtering gives ~20%, not "anything".** Keeping the most accurate scenarios and recomputing the
-net-zero share: it lands at **~20% under any reasonable filter** (CO₂ → 20%, multivariate → 22%). It
-only rises to 48% under *solar-only* filtering — a poor criterion, since solar is the variable
-*everyone* misses badly. So the honest claim is not "the number could be anything between 20 and 48",
-it is: **~20% whenever you filter sensibly, and only a questionable filter pushes it back up.** What
-is robust is that the answer *depends on the conditioning variable* — which is the empirical proof of
-Act 1: you cannot read a single unconditional probability out of conditional forecasts.
+**2.6 — Filtering (Part C): ~20%, not "anything".** Keeping the 25% most accurate and recomputing the
+net-zero share: **CO₂ → 20%, multivariate → 22%, solar-only → 48%** (naive 34%). So the corrected
+share is **~20% under any reasonable filter**; it rises to 48% only under solar-only filtering, a poor
+criterion since solar is the variable everyone misses. The robust result is the *directional*
+dependence on the conditioning variable — the empirical proof of Part 1 (no single unconditional
+probability exists). We label this object the **sensitivity of the net-zero share**, not a revised
+probability.
 
-![The corrected net-zero share: ~20% under sensible filters](partC_sensitivity.png)
+![Net-zero share ~20% under sensible filters](partC_sensitivity.png)
 
 ---
 
-## Act 3 — The one thing we can still forecast
+## Part 3 — What can still be forecast
 
-By here we were uneasy: if we have spent the whole project showing the ensemble is an unreliable
-forecast, can we say anything *constructive*? Two things — one a limit, one a genuine forecast.
+**3.1 — The structural limit.** A 15-year backtest cannot settle a 45-year question (error variance
+∝ τ + τ²/m). A pathway flat until ~2030 then crashing to net-zero is indistinguishable from non-NZ
+over 2010–2025, so filtering cannot go below the late-mover share (~20% as a practical floor;
+unidentifiable by construction). And every scenario is post-2017, so this is a hindcast, not a true
+out-of-sample test — the AR5 vintage (~2014 forecasting 2025) would provide one but is absent here.
 
-**The limit, stated honestly.** A 15-year backtest cannot settle a 45-year question. A pathway that
-stays flat until ~2030 and only then crashes to net-zero is indistinguishable from a non-net-zero
-pathway over 2010–2025, so no filter can push the share below the share of these "late movers" (the
-~20% acts as a practical floor — we cannot measure it precisely, by definition). And every scenario
-here is post-2017, so this is a hindcast, not a true out-of-sample test; the AR5 vintage (~2014
-forecasting 2025) would be the real test, and this ensemble does not contain it.
+**3.2 — The one quantity with skill: cost (Wright's law).** Solar PV cost fell ~2,440 → ~250 USD/kW
+(2010→2024); Wright's law projects ~30–40 USD/kW by 2070. The net-zero and non-net-zero projections
+are nearly identical — clean tech becomes cheap whether or not the world reaches net-zero.
 
-**The forecast we *can* make: cost.** The one quantity with a long, clean track record is the cost of
-clean technology, and Wright's law (cost falls with cumulative deployment) forecasts it well. Solar PV
-cost fell from ~2,440 $/kW in 2010 to ~250 in 2024, and Wright projects it toward ~30–40 $/kW by 2070.
+![PV cost (Wright): collapse, and NZ ≈ non-NZ](../figures/pv_wright_cost_projection_to_2070.png)
 
-![PV cost collapses, and the net-zero / non-net-zero curves are nearly identical](../figures/pv_wright_cost_projection_to_2070.png)
+*Two caveats we hold ourselves to:* the figure draws lines, not intervals — to match our own
+calibration critique it needs an uncertainty band on the learning rate; and Wright's law is hard to
+prove strictly superior to a time-trend, so it is the policy-relevant lens, not a proven point
+forecast.
 
-The striking detail: the net-zero and non-net-zero projections sit almost on top of each other. Clean
-tech becomes very cheap **whether or not the world reaches net-zero.** (Two caveats we hold ourselves
-to: this figure draws *lines*, not uncertainty bands — to be consistent with our own critique of the
-ensemble's overconfidence, it needs a band on the learning rate; and Wright's law is hard to prove
-strictly better than a time-trend, so we present it as the policy-relevant lens, not a proven point
-forecast.)
+**3.3 — Reconciliation: the lock is substitution, not cost.** Part 2 (ensemble too optimistic) and
+§3.2 (clean tech cheaper than assumed) only seem to conflict. The world does two things at once:
+deploys renewables faster than any model (costs fall faster — §3.2) *and* keeps the fossils
+(emissions rise — Part 2). So the constraint on net-zero is **not the cost of clean technology** —
+that is outperforming the scenarios — it is **substitution**: clean is added without removing dirty.
+The net-zero scenarios miss reality not because their technology optimism is wrong but because they
+assume a fossil phase-out that is not happening.
 
-**The reconciliation — and the real conclusion.** At first this seems to contradict Act 2: how can
-net-zero be "improbable" *and* clean tech be cheaper than the models assumed? It does not contradict,
-once you remember the addition signature. The world is doing **two things at once**: deploying
-renewables faster than any model (so costs fall faster than assumed — Act 3) while keeping the fossils
-(so emissions keep rising — Act 2). The lock on net-zero is therefore **not the cost of clean
-technology** — that is going *better* than the scenarios assume. The lock is **substitution**: we add
-clean energy without removing the dirty. The net-zero scenarios miss reality not because their
-technology optimism is wrong, but because they assume a fossil phase-out that is not happening.
+**Conclusion.** None of this forecloses net-zero by 2070; it **relocates the constraint**. The naive
+32% is not a probability; the ensemble's probabilistic reading does not survive the record; the
+sensitivity floor is ~20% under sensible filtering but cannot be sharpened further. The door to 2070
+is opened by cheap clean technology and held shut by fossil inertia — the decisive variable is
+substitution (policy and system inertia), not cost.
 
-So, where it leaves us. None of this forecloses net-zero by 2070 — it **relocates the problem**. The
-naive 32% is not a probability; the ensemble's probabilistic reading does not survive the record; but
-the door to 2070 is *opened* by cheap clean technology and *held shut* by fossil inertia. The
-decisive variable is not cost, it is substitution — which is to say, policy and system inertia, not
-engineering.
+### How far the forecasting method is applied (honest map)
+
+| Method | Status |
+|---|---|
+| Scenarios = conditional forecasts | ✅ central reframe (Part 1) |
+| Calibration / PIT | ✅ §2.4 (one point per variable — diagnostic, not formal test) |
+| Skill vs a naive rule | ✅ §2.3 |
+| Wright's law (cost ~ cumulative deployment) | 🟡 PV/wind cost projections built (`analyse_pv_wind_wright_costs…`); needs uncertainty bands |
+| Random walk + variance σ²(τ+τ²/m); Bertalanffy–Richards diffusion | ⬜ framed, not fitted (no deployment forecast built yet) |
+| Pooled Student-t, surrogate datasets, MA(1), CRPS/conformal | ⬜ not done — need long, many-point series; here 15 years / 4 points / all-AR6 |
