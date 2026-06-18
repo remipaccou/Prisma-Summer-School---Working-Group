@@ -14,7 +14,7 @@ Supervisor: François Lafond
 
 ## Repository structure
 
-**→ The readable story is in [`working files/narrative.md`](working%20files/narrative.md) (8 steps, illustrated).**
+**→ Main written output: [`working files/narrative_updated.md`](working%20files/narrative_updated.md)** — the full story with the forecasting vocabulary made explicit. (Plain 8-step version: [`working files/narrative.md`](working%20files/narrative.md).) *The output will be promoted to the repo root once final.*
 
 ```
 ├── README.md
@@ -25,18 +25,21 @@ Supervisor: François Lafond
 ├── report/main.tex              ← 2-page LaTeX report
 ├── data/                        ← observed data (6 variables) + SCI documentation
 │
-├── scripts/                     ← analysis pipeline
+├── scripts/                     ← analysis pipeline (the "official" run)
 │   ├── partA1_hindcast.py       ← Part A.1: hindcast evaluation (6 vars, weighting, vintage)
 │   ├── partA2_diagnostics.py    ← Part A.2: addition test, cross-correlation, autocorrelation
 │   ├── partB1_boxplots.py       ← Part B.1: variable selection (box plots)
-│   └── partB2_lasso.py          ← Part B.2: variable selection (LASSO, confirms B.1)
+│   ├── partB2_lasso.py          ← Part B.2: variable selection (LASSO, confirms B.1)
+│   └── analyse_pv_wind_wright_costs_vetted_log.py  ← Part C.2: Wright's-law cost projection (PV/wind)
 │
-├── figures/                     ← figures for the pipeline (partA1/A2/B1/B2)
+├── figures/                     ← figures for the pipeline (partA1/A2/B1/B2 + Wright PV/wind)
 │
-└── working files/               ← the NARRATIVE + the figures it uses + archive/
-    ├── narrative.md             ← the story in 8 steps (start here)
-    ├── narrative_updated.md     ← same, with the forecasting vocabulary + formalism made explicit
-    └── …                        ← Part C sensitivity, calibration, benchmark … + archive/
+└── working files/               ← the narratives + their figures + lab
+    ├── narrative.md             ← the story in 8 steps (team-facing)
+    ├── narrative_updated.md     ← the OUTPUT (detailed, with forecasting vocabulary)
+    ├── *.png                    ← the figures the narratives embed
+    ├── scripts/                 ← the Python that regenerates those figures
+    └── archive/                 ← secondary / superseded explorations
 ```
 
 ## Naming convention
