@@ -53,6 +53,15 @@ Sépare le **2020 contaminé COVID** du **2025 structurel** (le vrai signal).
 **À retenir** : 2020 = bruit COVID (à détrender), 2025 = signal d'optimisme (à garder).
 C'est le chiffre porteur, et il survit au détrending.
 
+## 5. 2025 — rebond, ambition, benchmark naïf
+
+| Fichier | Description |
+|---|---|
+| `co2_finding1_simple.py/.png` | Version pédagogique du Finding 1 (modèles vs réalité + barres COVID/structurel). |
+| `co2_2025_ambition.py/.png` | ME 2025 par catégorie climatique AR6 : gradient C1→C8 ; la réalité tombe à C6-C7 (monde « <3-4°C »). |
+| `co2_benchmark.py/.png` | Test de benchmark naïf (Lafond/Farmer) : pour 4 variables sur 6, une règle triviale bat l'ensemble (jusqu'à 95 % des scénarios battus). |
+| `benchmark_findings.md` | Note : rebond≠tendance, gradient d'ambition, benchmark, piste AR5. |
+
 ## Classification energy / CGE / hybrid
 
 - **energy** : IMAGE, POLES, COFFEE, GCAM, TIAM, PROMETHEUS
