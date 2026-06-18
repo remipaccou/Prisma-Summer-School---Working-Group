@@ -42,9 +42,21 @@ forecast: is it unbiased, is it calibrated, does it beat a trivial rule?
 
 ## Research question
 
-The SCI 2025 ensemble holds 1,564 model pathways; 497 of them reach net-zero CO₂ by 2070. Read
-naively, that is a ~32% "chance" of net-zero. **Is that 32% meaningful — and what happens to it once
-we hold these scenarios up against what actually happened over 2010–2025?**
+The SCI 2025 ensemble holds 1,564 model pathways; 497 of them reach net-zero CO₂ by 2070 — read
+naively, a ~32% "chance" of net-zero.
+
+**Top question:** *does the observed record of 2010–2025 tell us anything about reaching net-zero by
+2070 — and is that naive 32% a meaningful number?*
+
+This is not one flat question but a **cascade of nested ones** (which is exactly the A/B/C structure):
+
+1. **Is the ensemble even a trustworthy forecast?** (Part A) — three sub-checks: is it *unbiased*
+   (Steps 2–3), does it have *skill* against a naive rule (Step 4), is it *calibrated* (Step 5)?
+2. **If we keep only the credible scenarios** — which variables define "credible", and how does the
+   net-zero *share* move? (Parts B–C, Steps 6–7)
+3. **What can a 15-year record structurally *not* settle** about a 45-year question? (Step 8)
+
+The eight steps below open these drawers in order.
 
 ## Step 1 — The naive 32% is not a probability  ·  *conditional forecasts*
 
