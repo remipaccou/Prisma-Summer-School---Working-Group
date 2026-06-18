@@ -62,6 +62,14 @@ C'est le chiffre porteur, et il survit au détrending.
 | `co2_benchmark.py/.png` | Test de benchmark naïf (Lafond/Farmer) : pour 4 variables sur 6, une règle triviale bat l'ensemble (jusqu'à 95 % des scénarios battus). |
 | `benchmark_findings.md` | Note : rebond≠tendance, gradient d'ambition, benchmark, piste AR5. |
 
+## 6. Part C — sensibilité de la part net-zéro (le résultat du projet)
+
+| Fichier | Description |
+|---|---|
+| `partC_sensitivity.py/.png` | La « part NZ corrigée » n'est pas robuste : 20%→48% selon la variable de filtrage (CO₂ ⬇️ vs solaire ⬆️). Lafond slide 3 : pas de proba inconditionnelle depuis des prévisions conditionnelles. |
+| `co2_kaya.py/.png` | Décompo de Kaya : l'erreur CO₂ = optimisme de découplage (PIB +14%, intensité −18%), pas de croissance → pourquoi filtrer sur le CO₂ seul est piégé. |
+| `partC_findings.md` | Le reframe, le résultat (non-robustesse), le mécanisme, les prochaines étapes (calibration, Bertalanffy-Richards, Wright). |
+
 ## Classification energy / CGE / hybrid
 
 - **energy** : IMAGE, POLES, COFFEE, GCAM, TIAM, PROMETHEUS
