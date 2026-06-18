@@ -8,23 +8,23 @@ Factual and explicit throughout (notation, metrics, and forecasting concepts spe
 Each scenario is treated as a **forecast object** and evaluated as a forecast: unbiased? calibrated?
 better than a trivial rule?
 
-- **y** — observed value of a variable (CO₂, coal, solar, wind, nuclear, GDP) in a given year.
-- **ŷ** — a scenario's projection of the same thing.
-- **ε = y − ŷ** — forecast error. Positive ε ⇒ the scenario projected too little.
-- **F** — the predictive distribution: the cloud of scenario values for a variable in a year.
+- $`y`$ — observed value of a variable (CO₂, coal, solar, wind, nuclear, GDP) in a given year.
+- $`\hat{y}`$ — a scenario's projection of the same thing.
+- $`\varepsilon = y - \hat{y}`$ — forecast error. Positive $`\varepsilon`$ ⇒ the scenario projected too little.
+- $`F`$ — the predictive distribution: the cloud of scenario values for a variable in a year.
 
 Four concepts the project rests on:
 
-1. **Conditional vs unconditional forecast.** A scenario gives ŷ = f(P): the outcome *given* an
-   assumed policy/technology path P. An unconditional forecast is the outcome marginally — a
+1. **Conditional vs unconditional forecast.** A scenario gives $`\hat{y} = f(P)`$: the outcome *given* an
+   assumed policy/technology path $`P`$. An unconditional forecast is the outcome marginally — a
    probability. One cannot obtain the second by counting the first.
-2. **Origin × horizon.** A forecast made at origin t₀ looks out over horizon τ. For a random walk
-   with estimated drift, error variance grows as **σ²·(τ + τ²/m)** — long horizons are far less
+2. **Origin × horizon.** A forecast made at origin $`t_0`$ looks out over horizon $`\tau`$. For a random walk
+   with estimated drift, error variance grows as $`\sigma^2(\tau + \tau^2/m)`$ — long horizons are far less
    constrained than short ones.
-3. **Calibration vs sharpness.** Calibrated ⇒ the PIT (the percentile at which y falls in F) is
+3. **Calibration vs sharpness.** Calibrated ⇒ the PIT (the percentile at which $`y`$ falls in $`F`$) is
    uniform: reality near the median about half the time. Sharpness = interval width. A narrow
    interval reality keeps falling outside is overconfident.
-4. **Skill vs a naive benchmark.** skill = |ε(model)| / |ε(naive rule)|; skill > 1 ⇒ the naive rule
+4. **Skill vs a naive benchmark.** $`\text{skill} = |\varepsilon_{\text{model}}| / |\varepsilon_{\text{naive}}|`$; skill $`> 1`$ ⇒ the naive rule
    wins, i.e. the forecast adds nothing.
 
 ---
@@ -32,7 +32,7 @@ Four concepts the project rests on:
 ## Part 1 — The question
 
 **Research question.** The SCI 2025 ensemble holds 1,564 pathways; 497 reach net-zero CO₂ by 2070, so
-a naive P(NZ2070) = 497/1564 ≈ 32%. *Does the 2010–2025 record make that 32% meaningful?* This is a
+a naive $`P(\text{NZ2070}) = 497/1564 \approx 32\%`$. *Does the 2010–2025 record make that 32% meaningful?* This is a
 cascade of nested questions (the A/B/C structure):
 
 1. Is the ensemble a trustworthy forecast — unbiased, skilful, calibrated?
@@ -45,7 +45,7 @@ sensitivity check on the two arbitrary degrees of freedom hidden in the count.
 
 **Why the 32% is not a probability — three points.**
 
-*(1) What the number actually is.* We compute P̂(NZ2070) = (1/J)·Σⱼ 1[scenario j reaches net-zero] —
+*(1) What the number actually is.* We compute $`\hat{P}(\text{NZ2070}) = \frac{1}{J}\sum_{j} \mathbf{1}[\text{scenario } j \text{ reaches net-zero}]`$ —
 the **frequency of net-zero pathways in this sample**. For a sample frequency to estimate a real
 probability the sample must be (i) representative of what is being estimated and (ii) made of roughly
 independent draws. The SCI ensemble is neither: it is a **convenience sample** — 63 models, the top
@@ -68,8 +68,8 @@ runs each team submitted. Re-weighting so each modelling **family**, or each **p
 
 Two choices that have nothing to do with the climate — the deadline and the weighting — each move the
 number by roughly half (16–57%, 24–39%). A quantity that elastic is not a probability. Conceptually
-this is inevitable: each pathway is a *conditional* forecast ŷ = f(P) (emissions *given* an assumed
-policy path P), not a draw from the distribution of futures, and counting conditional "if–then"
+this is inevitable: each pathway is a *conditional* forecast $`\hat{y} = f(P)`$ (emissions *given* an assumed
+policy path $`P`$), not a draw from the distribution of futures, and counting conditional "if–then"
 statements cannot produce an unconditional probability. So we stop trying to revise a number and
 instead test the ensemble *as a forecast* (Part 2), reporting a sensitivity, not a probability.
 
@@ -79,7 +79,7 @@ instead test the ensemble *as a forecast* (Part 2), reporting a sensitivity, not
 
 *Research question: is the ensemble unbiased, skilful, and calibrated — and which variables carry
 credibility signal? **Method: a hindcast (backtest).** Each scenario's projection is scored against
-the observed 2010–2025 record (error ε = y − ŷ), then summarised by bias/accuracy metrics (§2.1–2.2),
+the observed 2010–2025 record (error $`\varepsilon = y - \hat{y}`$), then summarised by bias/accuracy metrics (§2.1–2.2),
 skill against a naive rule (§2.3), PIT calibration (§2.4), box-plot/LASSO variable selection (§2.5),
 and credibility filtering (§2.6).*
 
@@ -88,23 +88,23 @@ and credibility filtering (§2.6).*
 
 ![Full SCI ensemble and the observed CO₂ points](figures/co2_overview.png)
 
-ε = y − ŷ on CO₂ (family-weighted mean):
+$`\varepsilon = y - \hat{y}`$ on CO₂ (family-weighted mean):
 
-| Year | y | ŷ | ε |
+| Year | $`y`$ | $`\hat{y}`$ | $`\varepsilon`$ |
 |---|---|---|---|
 | 2010 | 33,400 | 32,995 | +405 |
 | 2015 | 35,400 | 35,385 | +15 |
 | 2020 | 34,800 | 36,372 | **−1,572** |
 | 2025 | 38,100 | 35,518 | **+2,582** |
 
-The 2020 error is COVID: replacing the dipped 34,800 by a COVID-free interpolation (≈36,750) flips ε
+The 2020 error is COVID: replacing the dipped 34,800 by a COVID-free interpolation (≈36,750) flips $`\varepsilon`$
 to ≈ +378, so ~75% of the 2020 gap is the shock. The 2025 error is structural: 38,100 lies on the
 pre-COVID trend (~39,400 extrapolated), so reality did not deviate — the ensemble did, by assuming a
 peak-and-decline. The +2,582 survives every detrending.
 
 ![COVID (2020) vs structural (2025)](figures/co2_finding1_simple.png)
 
-**2.2 — Bias by outcome.** Mean error ME = mean over years of ε, family-weighted: NZ2070 **+650** vs
+**2.2 — Bias by outcome.** Mean error ME = mean over years of $`\varepsilon`$, family-weighted: NZ2070 **+650** vs
 non-NZ **+216**. (The non-NZ *level* is weighting-dependent — near 0 under scenario weighting — so we
 read the **gap**, robust at +434/+837/+1,281 under family/scenario/project weighting.) The typical
 magnitudes (MAE ≈ 6% vs 5%) are close: this is a **bias** (systematic direction), not imprecision.
@@ -116,7 +116,7 @@ must under-project a reality that did not turn.
 **2.3 — Skill vs a naive rule (a corollary, not an independent test).** Forecasting 2025 from 2010–
 2015 with a random walk or linear trend:
 
-| Variable | skill = \|ε_ens\|/\|ε_rule\| | % scenarios beaten |
+| Variable | $`\text{skill} = \lvert\varepsilon_{\text{ens}}\rvert/\lvert\varepsilon_{\text{rule}}\rvert`$ | % scenarios beaten |
 |---|---|---|
 | CO₂ | 2.0 | 81% |
 | Coal | 4.7 | 91% |
@@ -132,7 +132,7 @@ construction. Honest statement: on the on-trend variables the ensemble shows no 
 
 ![A trivial rule beats the ensemble on the on-trend variables](figures/co2_benchmark.png)
 
-**2.4 — Calibration (a diagnostic, not a formal test).** Percentile of observed 2025 in F:
+**2.4 — Calibration (a diagnostic, not a formal test).** Percentile of observed 2025 in $`F`$:
 
 | GDP | Nuclear | CO₂ | Wind | Coal | Solar PV |
 |---|---|---|---|---|---|
@@ -142,11 +142,11 @@ Reality is **systematically on the low-emissions side**. We do not overstate it:
 upper-middle, **not a tail** — only GDP (1st) and solar (90th) are true tails. And with **one point
 per variable** this is a suggestive diagnostic of low bias, not a formal PIT test (which needs many
 origins × targets). "Overconfident" is firm only for solar and GDP. What is solid is the *direction*:
-reality off-centre low ⇒ F is not a clean distribution to read P(NZ2070) from.
+reality off-centre low ⇒ $`F`$ is not a clean distribution to read $`P(\text{NZ2070})`$ from.
 
 ![Reality on the low-emissions side of the cloud](figures/calibration_pit.png)
 
-**2.5 — Variable selection (Part B).** Separation score sep = (median_NZ − median_non-NZ)/IQR per
+**2.5 — Variable selection (Part B).** Separation score $`\text{sep} = (\text{median}_{\text{NZ}} - \text{median}_{\text{non-NZ}})/\text{IQR}`$ per
 variable: **Coal +0.46, CO₂ +0.39, Solar −0.32** discriminate; Wind, Nuclear, GDP ≈ 0 do not. The
 three informative variables **disagree in sign**: NZ worse on coal/CO₂, better on solar (the addition
 signature). An L1-LASSO predicting NZ from the errors selects the same three with the same signs.
@@ -174,7 +174,7 @@ experience-curve forecast (Wright's law) for technology cost (§3.2), reconciled
 addition/substitution structure (§3.3).*
 
 **3.1 — The structural limit.** A 15-year backtest cannot settle a 45-year question (error variance
-∝ τ + τ²/m). A pathway flat until ~2030 then crashing to net-zero is indistinguishable from non-NZ
+$`\propto \tau + \tau^2/m`$). A pathway flat until ~2030 then crashing to net-zero is indistinguishable from non-NZ
 over 2010–2025, so filtering cannot go below the late-mover share (~20% as a practical floor;
 unidentifiable by construction). And every scenario is post-2017, so this is a hindcast, not a true
 out-of-sample test — the AR5 vintage (~2014 forecasting 2025) would provide one but is absent here.
@@ -215,5 +215,5 @@ substitution (policy and system inertia), not cost.
 | Calibration / PIT | ✅ §2.4 (one point per variable — diagnostic, not formal test) |
 | Skill vs a naive rule | ✅ §2.3 |
 | Wright's law (cost ~ cumulative deployment) | ✅ PV/wind cost projections built (`analyse_pv_wind_wright_costs…`) with a ±2 s.e. learning-rate band |
-| Random walk + variance σ²(τ+τ²/m); Bertalanffy–Richards diffusion | ⬜ framed, not fitted (no deployment forecast built yet) |
+| Random walk + variance $`\sigma^2(\tau+\tau^2/m)`$; Bertalanffy–Richards diffusion | ⬜ framed, not fitted (no deployment forecast built yet) |
 | Pooled Student-t, surrogate datasets, MA(1), CRPS/conformal | ⬜ not done — need long, many-point series; here 15 years / 4 points / all-AR6 |
