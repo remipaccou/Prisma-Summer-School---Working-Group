@@ -40,23 +40,38 @@ cascade of nested questions (the A/B/C structure):
    *share* move?
 3. What can a 15-year record structurally not settle about a 45-year question?
 
-**Method (Part 1):** a framing analysis (conditional vs unconditional forecast) and a
-threshold-sensitivity check on the definition of "net-zero".
+**Method (Part 1):** a framing argument (conditional vs unconditional forecast) plus a
+sensitivity check on the two arbitrary degrees of freedom hidden in the count.
 
-**Why the 32% is not a probability.** Conceptually, the 497 are conditional forecasts ŷ = f(P) whose
-assumed paths P end at zero — the menu of runs, not the likelihood of the world. Empirically, the
-count is unstable: "net-zero by 2070" hides an arbitrary deadline, and sliding it moves the share by
-a factor of three:
+**Why the 32% is not a probability — three points.**
 
-| Net-zero reached by | Pathways | Share |
-|---|---|---|
-| 2060 | 256 | 16% |
-| 2070 | 497 | 31% |
-| 2080 | 688 | 43% |
-| ≤2100 (ever) | 909 | 57% |
+*(1) What the number actually is.* We compute P̂(NZ2070) = (1/J)·Σⱼ 1[scenario j reaches net-zero] —
+the **frequency of net-zero pathways in this sample**. For a sample frequency to estimate a real
+probability the sample must be (i) representative of what is being estimated and (ii) made of roughly
+independent draws. The SCI ensemble is neither: it is a **convenience sample** — 63 models, the top
+three contributing 28% of all runs, with heavily correlated scenarios (same models, reused
+assumptions). The frequency therefore measures the *research agenda of the modelling teams*, not the
+likelihood of the world.
 
-A quantity that runs 16%→57% with its own definition is not a probability. We therefore test the
-ensemble *as a forecast* (Part 2) and report a sensitivity, not a probability (end of Part 2).
+*(2) It moves with the deadline (degree of freedom #1).* "Net-zero by 2070" hides a chosen cutoff:
+
+| Reach net-zero by | 2060 | 2070 | 2080 | ≤2100 (ever) |
+|---|---|---|---|---|
+| Share | 16% | 31% | 43% | 57% |
+
+*(3) It moves with the composition (degree of freedom #2).* The frequency also depends on how many
+runs each team submitted. Re-weighting so each modelling **family**, or each **project**, counts once:
+
+| Weighting | by scenario count | one vote / family | one vote / project |
+|---|---|---|---|
+| NZ2070 share | 31% | 24% | 39% |
+
+Two choices that have nothing to do with the climate — the deadline and the weighting — each move the
+number by roughly half (16–57%, 24–39%). A quantity that elastic is not a probability. Conceptually
+this is inevitable: each pathway is a *conditional* forecast ŷ = f(P) (emissions *given* an assumed
+policy path P), not a draw from the distribution of futures, and counting conditional "if–then"
+statements cannot produce an unconditional probability. So we stop trying to revise a number and
+instead test the ensemble *as a forecast* (Part 2), reporting a sensitivity, not a probability.
 
 ---
 
