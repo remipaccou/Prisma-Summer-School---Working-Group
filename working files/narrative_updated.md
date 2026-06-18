@@ -40,6 +40,9 @@ cascade of nested questions (the A/B/C structure):
    *share* move?
 3. What can a 15-year record structurally not settle about a 45-year question?
 
+**Method (Part 1):** a framing analysis (conditional vs unconditional forecast) and a
+threshold-sensitivity check on the definition of "net-zero".
+
 **Why the 32% is not a probability.** Conceptually, the 497 are conditional forecasts ŷ = f(P) whose
 assumed paths P end at zero — the menu of runs, not the likelihood of the world. Empirically, the
 count is unstable: "net-zero by 2070" hides an arbitrary deadline, and sliding it moves the share by
@@ -59,7 +62,18 @@ ensemble *as a forecast* (Part 2) and report a sensitivity, not a probability (e
 
 ## Part 2 — Diagnosis: is the ensemble a usable forecast?
 
-**2.1 — Error series; the 2025 undershoot is structural.** ε = y − ŷ on CO₂ (family-weighted mean):
+*Research question: is the ensemble unbiased, skilful, and calibrated — and which variables carry
+credibility signal? **Method: a hindcast (backtest).** Each scenario's projection is scored against
+the observed 2010–2025 record (error ε = y − ŷ), then summarised by bias/accuracy metrics (§2.1–2.2),
+skill against a naive rule (§2.3), PIT calibration (§2.4), box-plot/LASSO variable selection (§2.5),
+and credibility filtering (§2.6).*
+
+**2.1 — Error series; the 2025 undershoot is structural.** The full ensemble (all 1,591 pathways
+2010–2100, with the four observed points) and a zoom on the hindcast window:
+
+![Full SCI ensemble and the observed CO₂ points](co2_overview.png)
+
+ε = y − ŷ on CO₂ (family-weighted mean):
 
 | Year | y | ŷ | ε |
 |---|---|---|---|
@@ -138,6 +152,11 @@ probability.
 ---
 
 ## Part 3 — What can still be forecast
+
+*Research question: if the ensemble is unreliable, what can we forecast honestly — and where is the
+real constraint on net-zero? **Method:** forecast-horizon limits (§3.1), an independent
+experience-curve forecast (Wright's law) for technology cost (§3.2), reconciled through the
+addition/substitution structure (§3.3).*
 
 **3.1 — The structural limit.** A 15-year backtest cannot settle a 45-year question (error variance
 ∝ τ + τ²/m). A pathway flat until ~2030 then crashing to net-zero is indistinguishable from non-NZ
