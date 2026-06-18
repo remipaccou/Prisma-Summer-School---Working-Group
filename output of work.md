@@ -3,6 +3,11 @@
 *Output of work. Three parts — the question, the diagnosis (hindcast), and what can still be forecast.
 Factual and explicit throughout (notation, metrics, and forecasting concepts spelled out), not a story.*
 
+> **None of the shares in this document is an unconditional probability of reaching net-zero by 2070.**
+> Each is a *conditional* sample frequency — a count over scenarios — reported as a sensitivity, not an
+> estimate of how likely the world is to get there. This is a hindcast (a backtest on 2010–2025), not a
+> true out-of-sample test: every pathway post-dates 2017.
+
 ## Framework & notation
 
 Each scenario is treated as a **forecast object** and evaluated as a forecast: unbiased? calibrated?
@@ -88,7 +93,7 @@ and credibility filtering (§2.6).*
 
 ![Full SCI ensemble and the observed CO₂ points](figures/co2_overview.png)
 
-$`\varepsilon = y - \hat{y}`$ on CO₂ (family-weighted mean):
+$`\varepsilon = y - \hat{y}`$ on CO₂ (fossil + industry, Global Carbon Budget 2025; family-weighted mean):
 
 | Year | $`y`$ | $`\hat{y}`$ | $`\varepsilon`$ |
 |---|---|---|---|
@@ -138,13 +143,17 @@ construction. Honest statement: on the on-trend variables the ensemble shows no 
 |---|---|---|---|---|---|
 | 1st | 20th | 75th | 75th | 79th | 90th |
 
-Reality is **systematically on the low-emissions side**. We do not overstate it: 75th–79th is the
-upper-middle, **not a tail** — only GDP (1st) and solar (90th) are true tails. And with **one point
-per variable** this is a suggestive diagnostic of low bias, not a formal PIT test (which needs many
-origins × targets). "Overconfident" is firm only for solar and GDP. What is solid is the *direction*:
-reality off-centre low ⇒ $`F`$ is not a clean distribution to read $`P(\text{NZ2070})`$ from.
+Reality sits **high** in the cloud for the carbon-relevant variables: the ensemble projected **too
+little** CO₂ (75th), coal (79th) and even solar (90th); only GDP (1st) and nuclear (20th) come in low.
+(Percentile = share of scenarios *below* the observed value, so a high percentile means the ensemble
+under-projected.) This is the calibration face of the §2.2 low bias — the ensemble under-shoots
+emissions. We do not overstate it: 75th–79th is the upper-middle, **not a tail** — only GDP (1st) and
+solar (90th) are true tails. And with **one point per variable** this is a suggestive diagnostic, not a
+formal PIT test (which needs many origins × targets). "Overconfident" is firm only for solar and GDP.
+What is solid is the *direction*: reality is rarely near the median ⇒ $`F`$ is not a clean distribution
+to read $`P(\text{NZ2070})`$ from.
 
-![Reality on the low-emissions side of the cloud](figures/calibration_pit.png)
+![Where observed 2025 falls in the ensemble cloud](figures/calibration_pit.png)
 
 **2.5 — Variable selection (Part B).** Separation score $`\text{sep} = (\text{median}_{\text{NZ}} - \text{median}_{\text{non-NZ}})/\text{IQR}`$ per
 variable: **Coal +0.46, CO₂ +0.39, Solar −0.32** discriminate; Wind, Nuclear, GDP ≈ 0 do not. The
@@ -155,8 +164,8 @@ Consequence: filter on coal+CO₂+solar jointly — CO₂ alone is a trap (its G
 ![Coal, CO₂, solar carry the signal — and disagree](figures/partB1_boxplots.png)
 
 **2.6 — Filtering (Part C): ~20%, not "anything".** Keeping the 25% most accurate and recomputing the
-net-zero share: **CO₂ → 20%, multivariate → 22%, solar-only → 48%** (naive 34%). So the corrected
-share is **~20% under any reasonable filter**; it rises to 48% only under solar-only filtering, a poor
+net-zero share: **CO₂ → 20%, multivariate → 22%, solar-only → 48%** (naive 34%). So conditioning on
+sensible accuracy criteria yields shares **near 20%**; it rises to 48% only under solar-only filtering, a poor
 criterion since solar is the variable everyone misses. The robust result is the *directional*
 dependence on the conditioning variable — the empirical proof of Part 1 (no single unconditional
 probability exists). We label this object the **sensitivity of the net-zero share**, not a revised
@@ -196,16 +205,17 @@ so this is the policy-relevant lens, not a proven point forecast.
 **3.3 — Reconciliation: the lock is substitution, not cost.** Part 2 (ensemble too optimistic) and
 §3.2 (clean tech cheaper than assumed) only seem to conflict. The world does two things at once:
 deploys renewables faster than any model (costs fall faster — §3.2) *and* keeps the fossils
-(emissions rise — Part 2). So the constraint on net-zero is **not the cost of clean technology** —
-that is outperforming the scenarios — it is **substitution**: clean is added without removing dirty.
+(emissions rise — Part 2). So the binding constraint on net-zero is **not primarily the cost of clean
+generation** — that is outperforming the scenarios; system costs (grids, storage, capital, permitting)
+still shape the *rate* — it is **substitution**: clean is added without removing dirty.
 The net-zero scenarios miss reality not because their technology optimism is wrong but because they
 assume a fossil phase-out that is not happening.
 
 **Conclusion.** None of this forecloses net-zero by 2070; it **relocates the constraint**. The naive
-32% is not a probability; the ensemble's probabilistic reading does not survive the record; the
-sensitivity floor is ~20% under sensible filtering but cannot be sharpened further. The door to 2070
-is opened by cheap clean technology and held shut by fossil inertia — the decisive variable is
-substitution (policy and system inertia), not cost.
+32% is not a probability; the record gives **no support** for reading the count as an unconditional
+probability; the conditional share sits near 20% under sensible filtering but cannot be sharpened
+further. The door to 2070 is opened by cheap clean technology and held shut by fossil inertia — the
+decisive variable is substitution (policy and system inertia), not generation cost.
 
 ### How far the forecasting method is applied (honest map)
 
