@@ -20,7 +20,7 @@
 
 | # | Deliverable | What it shows | Status | Files |
 |---|---|---|---|---|
-| **L1** | **Ensemble calibration (PIT/coverage)** | The ensemble is NOT calibrated: reality falls in the tails (CO₂ 75th, solar 90th, **GDP 1st percentile**). Replaces ME/MAE/RMSE with Lafond's true metric. | 🟡 **computed, figure missing** | (PIT to be plotted) |
+| **L1** | **Ensemble calibration (PIT/coverage)** | The ensemble is NOT calibrated: reality falls in the tails (CO₂ 75th, solar 90th, **GDP 1st percentile**). Replaces ME/MAE/RMSE with Lafond's true metric. | ✅ **done** | `calibration_pit.py/.png` |
 | **L2** | **Honest benchmark** | CO₂ = random walk with drift (already beats the ensemble); solar = **Bertalanffy-Richards diffusion curve** (not Moore — corrects the +149%), validated in PIT/coverage. Our intervals cover reality where the IAM misses it. | ⬜ **to be coded (the signature piece)** | `co2_benchmark.*` (deterministic skeleton) |
 | **L3** | **Conditional view (Wright)** | Each scenario IS a deployment path → Wright gives the implied cost. Way et al. 2022: the "expensive transition" assumption is inconsistent with their own deployment. Links the *addition* mode to cost. | ⬜ **one slide** | — |
 
