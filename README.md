@@ -19,8 +19,11 @@ Supervisor: François Lafond
 ```
 ├── README.md
 ├── methodology.md               ← full method description (Parts A/B/C)
-├── partA1_findings.md           ← Part A.1 results
-├── partA2_findings.md           ← Part A.2 results (addition, correlation, autocorrelation)
+├── findings/                    ← detailed results, one file per part (A1/A2/B/C)
+│   ├── partA1_findings.md       ← hindcast bias (undershoot, NZ low, ambition≠model, vintage)
+│   ├── partA2_findings.md       ← error structure & forecast quality (addition, skill, calibration)
+│   ├── partB_findings.md        ← variable selection (coal/CO₂/solar discriminate)
+│   └── partC_findings.md        ← filtering + the irreducible floor + Wright cost view
 │
 ├── report/main.tex              ← 2-page LaTeX report
 ├── data/                        ← observed data (6 variables) + SCI documentation
