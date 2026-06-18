@@ -963,6 +963,14 @@ def estimate_wright_learning_from_fit_data(
     ss_tot = float(np.sum((y - np.mean(y)) ** 2))
     r2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else np.nan
 
+    # Standard error of the slope (hence of the learning exponent b) from the
+    # log-log OLS fit. This lets the cost projection carry a learning-rate
+    # uncertainty band instead of a single line.
+    n_obs = int(len(x))
+    dof = max(n_obs - 2, 1)
+    sxx = float(np.sum((x - np.mean(x)) ** 2))
+    slope_se = float(np.sqrt((ss_res / dof) / sxx)) if (sxx > 0 and dof > 0) else float("nan")
+
     latest = historical.loc[historical["year"].idxmax()]
 
     return {
@@ -974,6 +982,8 @@ def estimate_wright_learning_from_fit_data(
         "intercept": float(intercept),
         "slope": float(slope),
         "wright_exponent_b": float(b),
+        "wright_exponent_b_se": float(slope_se),
+        "fit_dof": int(dof),
         "progress_ratio": float(progress_ratio),
         "learning_rate": float(learning_rate),
         "r_squared_log_log": float(r2),
@@ -1021,6 +1031,8 @@ def manual_wright_parameters(
         "intercept": np.nan,
         "slope": -float(b),
         "wright_exponent_b": float(b),
+        "wright_exponent_b_se": float("nan"),
+        "fit_dof": 0,
         "progress_ratio": float(progress_ratio),
         "learning_rate": float(learning_rate),
         "r_squared_log_log": np.nan,
@@ -1059,6 +1071,21 @@ def estimate_cost_projection_by_group(
     if not np.isfinite(cost_anchor) or cost_anchor <= 0:
         raise ValueError(f"Invalid anchor cost for {technology}.")
 
+    # Learning-rate uncertainty band: propagate the standard error of b (log-log
+    # fit) through the projection as a +/- 2 s.e. ("2 sigma", ~95%) envelope. We
+    # use a fixed 2 s.e. multiplier rather than a Student-t quantile because the
+    # fit rests on few overlapping points (low dof), where the t quantile is
+    # unstable. Future capacity exceeds the anchor, so a smaller b gives a higher
+    # cost; b is floored at 0 so the band never implies costs rising with scale.
+    b_se = float(params.get("wright_exponent_b_se", float("nan")))
+    fit_dof = int(params.get("fit_dof", 0) or 0)
+    SE_MULTIPLIER = 2.0
+    if np.isfinite(b_se) and b_se > 0 and fit_dof > 0:
+        b_high = b + SE_MULTIPLIER * b_se
+        b_low = max(b - SE_MULTIPLIER * b_se, 0.0)
+    else:
+        b_high = b_low = b
+
     available_years = [int(y) for y in capacity.index]
     if anchor_year is None:
         future_years = [y for y in available_years if y >= latest_hist_year]
@@ -1093,6 +1120,8 @@ def estimate_cost_projection_by_group(
 
             relative_experience = float(capacity_gw) / anchor_capacity
             cost = cost_anchor * relative_experience ** (-b)
+            cost_high = cost_anchor * relative_experience ** (-b_low)
+            cost_low = cost_anchor * relative_experience ** (-b_high)
 
             records.append(
                 {
@@ -1105,8 +1134,11 @@ def estimate_cost_projection_by_group(
                     "anchor_cost_usd_per_kw": float(cost_anchor),
                     "relative_experience_vs_anchor": float(relative_experience),
                     "wright_exponent_b": float(b),
+                    "wright_exponent_b_se": float(b_se),
                     "learning_rate": float(params["learning_rate"]),
                     "cost_usd_per_kw": float(cost),
+                    "cost_usd_per_kw_low": float(cost_low),
+                    "cost_usd_per_kw_high": float(cost_high),
                 }
             )
 
@@ -1178,14 +1210,27 @@ def plot_cost_projection(
             color="black",
         )
 
+    has_band = False
     for group, df in projection.groupby("group", sort=False):
-        plt.plot(
+        line, = plt.plot(
             df["year"],
             df["cost_usd_per_kw"],
             marker="o",
             linewidth=2,
             label=f"Wright projection - {group}",
         )
+        if {"cost_usd_per_kw_low", "cost_usd_per_kw_high"}.issubset(df.columns) and \
+                df["cost_usd_per_kw_low"].notna().any() and \
+                not np.allclose(df["cost_usd_per_kw_low"], df["cost_usd_per_kw_high"]):
+            plt.fill_between(
+                df["year"],
+                df["cost_usd_per_kw_low"],
+                df["cost_usd_per_kw_high"],
+                color=line.get_color(),
+                alpha=0.18,
+                linewidth=0,
+            )
+            has_band = True
 
     title_suffix = " - log scale" if log_y else ""
     plt.title(f"{technology} cost projection using Wright's law to {target_end_year}{title_suffix}")
@@ -1194,7 +1239,14 @@ def plot_cost_projection(
     if log_y:
         plt.yscale("log")
     plt.grid(True, alpha=0.3, which="both")
-    plt.legend()
+    if has_band:
+        from matplotlib.patches import Patch
+        handles, labels = plt.gca().get_legend_handles_labels()
+        handles.append(Patch(facecolor="grey", alpha=0.18, linewidth=0))
+        labels.append("learning-rate uncertainty (±2 s.e., ≈95%)")
+        plt.legend(handles, labels)
+    else:
+        plt.legend()
     plt.tight_layout()
     plt.savefig(output_path, dpi=200)
     plt.close()
@@ -1603,10 +1655,12 @@ def main() -> None:
             print(f"\n{technology} cost projection in final year:")
             final_year = cost_projection["year"].max()
             capacity_col = f"{tech_lower}_capacity_gw"
+            final_cols = ["group", "year", capacity_col, "cost_usd_per_kw"]
+            for extra in ("cost_usd_per_kw_low", "cost_usd_per_kw_high"):
+                if extra in cost_projection.columns:
+                    final_cols.append(extra)
             print(
-                cost_projection[cost_projection["year"] == final_year][
-                    ["group", "year", capacity_col, "cost_usd_per_kw"]
-                ].to_string(index=False)
+                cost_projection[cost_projection["year"] == final_year][final_cols].to_string(index=False)
             )
 
     print("\nPV dictionary groups and scenario counts:")

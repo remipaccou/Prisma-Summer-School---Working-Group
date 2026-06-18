@@ -106,12 +106,12 @@ Keeping the most accurate quartile and recomputing the share gives about 20\% (C
 \section{What a 15-year record cannot settle, and what it can}
 \label{sec:forecast}
 % ============================================================================
-A backtest over 15 years cannot resolve a 45-year question: for a drifting random walk the error variance grows as $\sigma^2(\tau+\tau^2/m)$ in the horizon $\tau$. A pathway that stays flat to $\sim$2030 then falls steeply to net-zero is indistinguishable from a non-net-zero pathway over 2010--2025, so filtering cannot push below the late-mover share ($\sim$20\% acts as a practical, not a proven, floor). One quantity does carry skill: technology cost. Solar PV fell from $\sim$2{,}440 to $\sim$250~USD/kW (2010--2024); a Wright's-law fit projects $\sim$30--40~USD/kW by 2070, and the net-zero and non-net-zero projections nearly coincide (Fig.~\ref{fig:wright}). Cost is therefore not the binding constraint --- clean technology is outperforming the scenarios whether or not the world reaches net-zero. Reconciling the two halves: the ensemble is too optimistic on \emph{emissions} yet too pessimistic on \emph{cost}, because the world both deploys renewables faster than any model and keeps its fossils. The lock on net-zero is substitution, not the price of clean energy.
+A backtest over 15 years cannot resolve a 45-year question: for a drifting random walk the error variance grows as $\sigma^2(\tau+\tau^2/m)$ in the horizon $\tau$. A pathway that stays flat to $\sim$2030 then falls steeply to net-zero is indistinguishable from a non-net-zero pathway over 2010--2025, so filtering cannot push below the late-mover share ($\sim$20\% acts as a practical, not a proven, floor). One quantity does carry skill: technology cost. Solar PV fell from $\sim$2{,}440 to $\sim$250~USD/kW (2010--2024); a Wright's-law fit (learning rate $\approx 0.39$) projects $\sim$40~USD/kW by 2070, with a $\pm 2$~s.e.\ learning-rate band that overlaps across groups, and the net-zero and non-net-zero projections nearly coincide (Fig.~\ref{fig:wright}). Cost is therefore not the binding constraint --- clean technology is outperforming the scenarios whether or not the world reaches net-zero. Reconciling the two halves: the ensemble is too optimistic on \emph{emissions} yet too pessimistic on \emph{cost}, because the world both deploys renewables faster than any model and keeps its fossils. The lock on net-zero is substitution, not the price of clean energy.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.86\linewidth]{pv_wright_cost_projection_to_2070}
-\caption{Wright's-law PV cost projection to 2070. Net-zero and non-net-zero trajectories are nearly identical; the figure shows central lines, not uncertainty bands.}
+\includegraphics[width=0.92\linewidth]{pv_wright_cost_projection_to_2070_log}
+\caption{Wright's-law PV cost projection to 2070 (log scale). Net-zero and non-net-zero trajectories nearly coincide; shading is the $\pm 2$ s.e.\ learning-rate band, which overlaps across the two groups.}
 \label{fig:wright}
 \end{figure}
 

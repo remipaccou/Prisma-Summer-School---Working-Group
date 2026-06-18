@@ -180,15 +180,18 @@ unidentifiable by construction). And every scenario is post-2017, so this is a h
 out-of-sample test — the AR5 vintage (~2014 forecasting 2025) would provide one but is absent here.
 
 **3.2 — The one quantity with skill: cost (Wright's law).** Solar PV cost fell ~2,440 → ~250 USD/kW
-(2010→2024); Wright's law projects ~30–40 USD/kW by 2070. The net-zero and non-net-zero projections
-are nearly identical — clean tech becomes cheap whether or not the world reaches net-zero.
+(2010→2024); a log-log experience-curve fit (learning rate ≈ 0.39, i.e. cost falls ~39% per doubling
+of capacity) projects ~38 USD/kW by 2070 for net-zero pathways and ~43 for non-net-zero ones. The two
+projections are nearly identical — clean tech becomes cheap whether or not the world reaches net-zero.
 
-![PV cost (Wright): collapse, and NZ ≈ non-NZ](figures/pv_wright_cost_projection_to_2070.png)
+![PV cost (Wright): collapse, and NZ ≈ non-NZ](figures/pv_wright_cost_projection_to_2070_log.png)
 
-*Two caveats we hold ourselves to:* the figure draws lines, not intervals — to match our own
-calibration critique it needs an uncertainty band on the learning rate; and Wright's law is hard to
-prove strictly superior to a time-trend, so it is the policy-relevant lens, not a proven point
-forecast.
+The shaded band is a **±2 s.e. (≈95%) learning-rate uncertainty**, propagated from the standard error
+of the fitted exponent through the projection. Even at its edges the net-zero and non-net-zero bands
+overlap, so the "NZ ≈ non-NZ" reading is robust to learning-rate uncertainty. *Two caveats we hold
+ourselves to:* the band reflects only the learning-rate fit (estimated on few overlapping points), not
+trajectory or model uncertainty; and Wright's law is hard to prove strictly superior to a time-trend,
+so this is the policy-relevant lens, not a proven point forecast.
 
 **3.3 — Reconciliation: the lock is substitution, not cost.** Part 2 (ensemble too optimistic) and
 §3.2 (clean tech cheaper than assumed) only seem to conflict. The world does two things at once:
@@ -211,6 +214,6 @@ substitution (policy and system inertia), not cost.
 | Scenarios = conditional forecasts | ✅ central reframe (Part 1) |
 | Calibration / PIT | ✅ §2.4 (one point per variable — diagnostic, not formal test) |
 | Skill vs a naive rule | ✅ §2.3 |
-| Wright's law (cost ~ cumulative deployment) | 🟡 PV/wind cost projections built (`analyse_pv_wind_wright_costs…`); needs uncertainty bands |
+| Wright's law (cost ~ cumulative deployment) | ✅ PV/wind cost projections built (`analyse_pv_wind_wright_costs…`) with a ±2 s.e. learning-rate band |
 | Random walk + variance σ²(τ+τ²/m); Bertalanffy–Richards diffusion | ⬜ framed, not fitted (no deployment forecast built yet) |
 | Pooled Student-t, surrogate datasets, MA(1), CRPS/conformal | ⬜ not done — need long, many-point series; here 15 years / 4 points / all-AR6 |
