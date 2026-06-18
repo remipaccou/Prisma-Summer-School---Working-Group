@@ -1,11 +1,5 @@
 # Narrative
 
-An analytical account of the argument, written in continuous prose. It records what we
-asked, what the data returned, and where our own confidence stops. It is revised as the
-work advances; new analysis is folded into the argument rather than appended as a list.
-
----
-
 ## The question, and how it moved
 
 The summer school posed a deliberately open question: what can be concluded about reaching global net-zero CO₂ emissions by 2070. We narrowed it to something a record can adjudicate. The Scenario Compass Initiative assembles 1,564 model pathways, of which 497 reach net zero by 2070, and we set out to ask whether confronting these pathways with the observed trajectory of 2010 to 2025 changes the share that reach net zero. The plan assumed there was a probability to revise. The work displaced that assumption, and the displacement became the result.
