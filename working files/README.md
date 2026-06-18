@@ -8,7 +8,7 @@ The **readable story** of the project, plus the figures it uses. Separate from t
 | File | For |
 |---|---|
 | **`narrative.md`** | The story in 8 plain steps, illustrated. **Start here** (team-facing). |
-| **`narrative_updated.md`** | The same 8 steps in Lafond's vocabulary + formalism, with an honest map of how far his method is applied (supervisor-facing). |
+| **`narrative_updated.md`** | The same 8 steps with the forecasting vocabulary + formalism made explicit, plus an honest map of how far the method is applied (detailed version). |
 
 ## Figures used by the narrative
 

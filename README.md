@@ -35,7 +35,7 @@ Supervisor: François Lafond
 │
 └── working files/               ← the NARRATIVE + the figures it uses + archive/
     ├── narrative.md             ← the story in 8 steps (start here)
-    ├── narrative_updated.md     ← same, in Lafond's vocabulary + formalism
+    ├── narrative_updated.md     ← same, with the forecasting vocabulary + formalism made explicit
     └── …                        ← Part C sensitivity, calibration, benchmark … + archive/
 ```
 
