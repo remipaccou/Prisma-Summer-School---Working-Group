@@ -10,7 +10,7 @@ We treat each scenario as a **forecast object** and evaluate it the way one eval
 - $\varepsilon_{j,v,t} = y_{v,t} - \hat{y}_{j,v,t}$ — forecast error (**positive = the scenario aimed too low**).
 - $F_{v,t}$ — the ensemble's empirical predictive distribution (the cloud of scenarios) for $v$ at $t$.
 
-**Four Lafond concepts the whole project rests on.**
+**Four concepts the whole project rests on.**
 
 1. **Conditional vs unconditional forecast.** A scenario is a *conditional* forecast,
    $\hat{y}_j = f_j(P_j)$ — emissions *given* an assumed policy/technology path $P_j$. An
@@ -57,7 +57,7 @@ A number that doubles when you slide its own definition by a decade is not a pro
 
 ---
 
-## Step 2 — The hindcast: the ensemble undershoots 2025  ·  *[Lafond: error series $\varepsilon_{j,t}$]*
+## Step 2 — The hindcast: the ensemble undershoots 2025  ·  
 
 Error $\varepsilon = y - \hat{y}$ on CO₂ at the 4 points 2010→2025. Full ensemble (context):
 
@@ -81,7 +81,7 @@ Two late errors, two stories:
 
 ---
 
-## Step 3 — The net-zero scenarios are the most biased low  ·  *[Lafond: systematic bias in $\varepsilon$]*
+## Step 3 — The net-zero scenarios are the most biased low  · 
 
 Split by net-zero status. Mean error $\mathrm{ME}_j = \frac{1}{|T|}\sum_t \varepsilon_{j,t}$
 (family-weighted):
@@ -104,7 +104,7 @@ Split by net-zero status. Mean error $\mathrm{ME}_j = \frac{1}{|T|}\sum_t \varep
 
 ---
 
-## Step 4 — Skill: a trivial rule beats the ensemble  ·  *[Lafond: skill vs random walk, slide 2]*
+## Step 4 — Skill: a trivial rule beats the ensemble  ·  *
 
 From origin 2015 ($\tau$ = 10 yr), predict 2025 with a naive rule (random walk / linear trend) vs
 the ensemble. Skill ratio $= |\varepsilon_{\text{ens}}|/|\varepsilon_{\text{naive}}|$; $>1$ = rule wins.
@@ -127,7 +127,7 @@ still ~50% off on PV, *exactly* where a dedicated diffusion/experience-curve met
 
 ---
 
-## Step 5 — Calibration: reality sits in the tails  ·  *[Lafond: PIT / calibration, slide 5]*
+## Step 5 — Calibration: reality sits in the tails  · 
 
 PIT test: where does $y_{v,2025}$ fall in the ensemble distribution $F_{v,2025}$? Calibrated ⇒
 percentiles $\sim \mathrm{Uniform}$, i.e. reality near the median ~half the time.
@@ -150,7 +150,7 @@ $\mathbb{P}(\text{net-zero})$ can be read from $F$. *Calibration, not MAE, is wh
 
 ---
 
-## Step 6 — Part B: which observables carry the signal  ·  *[Lafond: informative variables]*
+## Step 6 — Part B: which observables carry the signal  ·  
 
 Box plots of $\varepsilon$ per variable, NZ vs non-NZ. Separation
 $\mathrm{sep} = (\text{med}_{NZ} - \text{med}_{\neg NZ})/\mathrm{IQR}$:
@@ -171,7 +171,7 @@ multivariate (coal+CO₂+solar)**; CO₂ alone is a trap (Kaya: GDP/intensity er
 
 ---
 
-## Step 7 — Part C: filtering gives no number  ·  *[Lafond: the conditional-forecast trap, slide 3]*
+## Step 7 — Part C: filtering gives no number  ·  
 
 Keep the most accurate scenarios; recompute the net-zero share. It moves in **opposite directions**
 by credibility variable (naive ≈ 34%):
@@ -191,7 +191,7 @@ forecasts. We relabel the object: *the **sensitivity** of the net-zero share*, n
 
 ---
 
-## Step 8 — The honest limit  ·  *[Lafond: origin × horizon, slide 11]*
+## Step 8 — The honest limit  ·  
 
 We tested skill over $\tau$ = 15 yr; the question is $\tau$ = 45 yr, and error variance grows as
 $\tau + \tau^2/m$.
@@ -205,9 +205,9 @@ $\tau + \tau^2/m$.
 
 ---
 
-## How far this applies Lafond's method (honest map)
+## How far this applies teached method (honest map)
 
-| Lafond method | Status | Where |
+| Method | Status | Where |
 |---|---|---|
 | Scenarios = conditional forecasts (sl. 3) | ✅ applied | the central reframe — Steps 1, 7 |
 | Calibration & sharpness / PIT (sl. 5) | ✅ applied | Step 5 |
@@ -218,7 +218,7 @@ $\tau + \tau^2/m$.
 | Bertalanffy–Richards diffusion curve (sl. 26–29) | ⬜ diagnosed, not fitted | the honest solar forecast (`partC2`, next) |
 | Student-t pooling, surrogate datasets, $\Xi(\tau)$ test, MA(1), Bayesian posterior, CRPS/conformal (sl. 9–18, 30) | ⬜ not done | **need long, many-point series; we have 15 yr / 4 points / all-AR6** |
 
-**Verdict.** Lafond's *framework* is the project's backbone — conditional forecasts, calibration,
+**Verdict.**  is the project's backbone — conditional forecasts, calibration,
 skill against a naive rule, honest intervals. His full *toolkit* is not applied, and deliberately so:
 the data are too short and too compressed (all post-2017) to carry the pooled machinery — which is
 *why* we point to AR5 as the only genuine long test. The one place his exact formula is meant to run
