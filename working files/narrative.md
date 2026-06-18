@@ -199,8 +199,9 @@ This dictates Part C:
 2. Because the informative variables disagree, the filtered result depends on which you weight —
    exactly what flips Part C.
 
-No LASSO or PCA needed: Part B reduces to "coal, CO₂ and solar carry the signal; filter on them,
-multivariate."
+An L1-LASSO (logistic regression predicting NZ membership from the hindcast errors) **independently
+selects the same three variables, with the same signs** (`partB2_lasso`); PCA adds nothing. Part B
+reduces to: coal, CO₂ and solar carry the signal; filter on them, multivariate.
 
 ---
 
@@ -236,4 +237,31 @@ share"**. The starting tension is no longer a problem — it has become the resu
 
 ---
 
-*Next: Step 8 — the honest limit (what a 15-year hindcast cannot settle).*
+## Step 8 — The honest limit (what a 15-year hindcast cannot settle)
+
+Before concluding, the limit. We tested skill over **15 years** (2010–2025); the question is about
+**45** (2070). Three things the record structurally cannot resolve:
+
+1. **Late decarbonizers are invisible.** A pathway that stays flat until ~2030, then crashes to
+   net-zero by 2070, looks *exactly* like a non-NZ pathway over 2010–2025. The hindcast cannot tell
+   them apart — so credibility filtering cannot push the net-zero share below the share of these
+   late movers (~20%). That residual is uncertainty the recent record is structurally unable to
+   resolve.
+
+2. **No true out-of-sample test.** Everything here is hindcast: the scenarios were built knowing
+   part of the 2010–2025 history. A genuine forecast test would need *older* scenarios — the AR5
+   vintage (~2014) predicting 2025 — which this ensemble, being entirely post-2017, does not contain
+   (the IIASA AR5 database would supply it).
+
+3. **15 years ≠ 45 years.** Accuracy over a short horizon does not guarantee it over a long one.
+   The hindcast bounds what we can *claim*, not what will *happen*.
+
+## Where the argument stands
+
+The 2025 world resembles the low-action pathways, not the net-zero ones; the pathways that promise
+net-zero assumed a turn that has not started; the ensemble is biased low, overconfident on the
+technologies that moved fastest, and beaten by trivial rules on the variables it should find easy.
+
+**None of this forecloses net-zero by 2070.** It removes the ground for treating **32% as the
+*chance* of getting there** — the door to 2070 is not closed by data; it is the *probabilistic
+reading of the ensemble* that does not survive.
