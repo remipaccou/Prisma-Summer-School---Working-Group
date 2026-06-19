@@ -85,8 +85,9 @@ instead test the ensemble *as a forecast* (Part 2), reporting a sensitivity, not
 *Research question: is the ensemble unbiased, skilful, and calibrated — and which variables carry
 credibility signal? **Method: a hindcast (backtest).** Each scenario's projection is scored against
 the observed 2010–2025 record (error $`\varepsilon = y - \hat{y}`$), then summarised by bias/accuracy metrics (§2.1–2.2),
-skill against a naive rule (§2.3), PIT calibration (§2.4), box-plot/LASSO variable selection (§2.5),
-and credibility filtering (§2.6).*
+the addition signature (§2.3), error structure (§2.4),
+skill against a naive rule (§2.5), PIT calibration (§2.6), box-plot/LASSO variable selection (§2.7),
+and credibility filtering (§2.8).*
 
 **2.1 — Error series; the 2025 undershoot is structural.** The full ensemble (all 1,591 pathways
 2010–2100, with the four observed points) and a zoom on the hindcast window:
@@ -118,7 +119,88 @@ must under-project a reality that did not turn.
 
 ![NZ scenarios biased low, not more imprecise](figures/nz_bias.png)
 
-**2.3 — Skill vs a naive rule (a corollary, not an independent test).** Forecasting 2025 from 2010–
+**2.2b — Bias by model type.** Classifying the 17 model families by economic structure — **economy**
+(endogenous macro: REMIND, WITCH, AIM, GEM-E3, IMACLIM, EPPA, CGEM, MERGE; 8 families, 701
+scenarios) vs **energy-system** (partial equilibrium, GDP exogenous: MESSAGE, IMAGE, POLES, COFFEE,
+GCAM, TIAM, PROMETHEUS; 7 families, 883 scenarios):
+
+| Class | ME (overall) | ME 2020 | ME 2025 |
+|---|---|---|---|
+| Economy | +613 | −1,264 | +2,717 |
+| Energy | −41 | −2,164 | +2,541 |
+
+Economy models carry a **persistent positive bias** (+613): they are structurally more optimistic
+about decarbonisation at every date. Energy-system models are centred overall (−41) but miss the
+COVID dip more severely (−2,164 vs −1,264) — their bottom-up engineering structure tracks technical
+trajectories, not macro shocks. Both classes undershoot 2025 comparably (~+2,600): the post-COVID
+rebound is a shared blind spot.
+
+**2.2c — Vintage does not explain the bias.** Classifying scenarios by the date of the research
+project that produced them — **early** (≤2017: SSP, ADVANCE, EMF30, EMF33; 289 scenarios), **mid**
+(2018–2020: CD-LINKS, COMMIT, etc.; 232 scenarios), **late** (2021+: ENGAGE, NAVIGATE, NGFS, IAM
+COMPACT; 1,070 scenarios):
+
+| Vintage | MAE 2010 | ME 2025 |
+|---|---|---|
+| Early (≤2017) | 1,141 | +466 |
+| Mid (2018–2020) | 800 | +2,840 |
+| Late (2021+) | 685 | **+3,280** |
+
+Recent scenarios calibrate better at their base year (MAE 2010: 685 vs 1,141) — but they had the
+answer. The real test is 2025, the only year where all vintages project into the unknown, and there
+the late scenarios are **more wrong** (+3,280 vs +466), despite having more information and a shorter
+horizon. The explanation is not technical degradation but **policy optimism**: post-Paris, post-Green
+Deal projects produced more ambitious decarbonisation scenarios that reality has not confirmed.
+
+The NZ vs non-NZ gap persists within every vintage group (ME$`_j`$ ≈ +800 for NZ vs ≈ 0 for non-NZ),
+confirming the bias is structural and not an artefact of when scenarios were built.
+
+**2.3 — The addition signature: fossil and renewable underestimated simultaneously.** Extending
+beyond CO₂, the 2025 error across all six observed variables:
+
+| Variable | Observed 2025 | Ensemble median | ME | Direction |
+|---|---|---|---|---|
+| CO₂ | 38,100 Mt | 35,559 Mt | +2,695 | **underestimated** |
+| Coal | 164 EJ | 140 EJ | +26 | **underestimated** |
+| Solar PV | 2,392 GW | 1,169 GW | +1,004 | **underestimated** |
+| Wind | 1,291 GW | 1,069 GW | +153 | **underestimated** |
+| Nuclear | 377 GW | 437 GW | −70 | overestimated |
+| GDP PPP | 122,000 B$ | 135,538 B$ | −13,400 | overestimated |
+
+The ensemble underestimates fossil **and** renewable deployment simultaneously: observed solar PV
+capacity is **double** the ensemble median, yet coal also hit a record. This is **energy addition** —
+the world adds renewables on top of persistent fossils rather than substituting. The cross-variable
+error correlation confirms the mechanism: Corr($`\varepsilon_{\text{coal}}, \varepsilon_{\text{solar}}`$) = −0.28,
+indicating models embed a substitution logic (more solar → less coal within a scenario). But the
+*level* is wrong for both — reality sits in the high-coal, high-solar corner of the scenario cloud
+where the negative correlation prevents the ensemble from reaching. The anti-correlation is stronger
+for NZ scenarios (−0.30) than non-NZ (−0.17): net-zero pathways rely more heavily on the substitution
+assumption.
+
+Nuclear is overestimated (models expected expansion beyond the post-Fukushima stagnation) and GDP
+even more so (−13,400 B$). Both are largely independent of the fossil-renewable axis (Corr ≈ 0.05).
+
+![ME at 2025 for all six variables and cross-variable correlation](figures/partA2_fig1_diagnostics.png)
+
+**2.4 — Error structure: temporal autocorrelation.** Is the error fixed at the base year or does it
+evolve? We compute ρ($`\varepsilon_{2010}, \varepsilon_{2025}`$) across scenarios for each variable:
+
+| Variable | ρ(2010, 2025) | Interpretation |
+|---|---|---|
+| CO₂ | +0.056 | ≈ 0: error evolves, not locked in |
+| Coal | −0.080 | ≈ 0: same |
+| Solar PV | +0.113 | weak |
+| Wind | −0.091 | ≈ 0 |
+| Nuclear | +0.146 | weak |
+| **GDP** | **+0.701** | **strong: structural, persistent bias** |
+
+For energy and emissions variables, errors are **non-persistent**: a scenario's accuracy in 2010 does
+not predict its accuracy in 2025. The error comes from the trajectory assumptions (how fast things
+change), not the initial calibration. For GDP, ρ = 0.70: the bias is locked in at the base year (GDP
+is typically an exogenous input, not an endogenous outcome). Practical consequence: filtering on
+base-year accuracy is uninformative for energy/emissions variables but meaningful for GDP.
+
+**2.5 — Skill vs a naive rule (a corollary, not an independent test).** Forecasting 2025 from 2010–
 2015 with a random walk or linear trend:
 
 | Variable | $`\text{skill} = \lvert\varepsilon_{\text{ens}}\rvert/\lvert\varepsilon_{\text{rule}}\rvert`$ | % scenarios beaten |
@@ -137,7 +219,7 @@ construction. Honest statement: on the on-trend variables the ensemble shows no 
 
 ![A trivial rule beats the ensemble on the on-trend variables](figures/co2_benchmark.png)
 
-**2.4 — Calibration (a diagnostic, not a formal test).** Percentile of observed 2025 in $`F`$:
+**2.6 — Calibration (a diagnostic, not a formal test).** Percentile of observed 2025 in $`F`$:
 
 | GDP | Nuclear | CO₂ | Wind | Coal | Solar PV |
 |---|---|---|---|---|---|
@@ -145,28 +227,27 @@ construction. Honest statement: on the on-trend variables the ensemble shows no 
 
 Reality sits **high** in the cloud for the carbon-relevant variables: the ensemble projected **too
 little** CO₂ (75th), coal (79th) and even solar (90th); only GDP (1st) and nuclear (20th) come in low.
-(Percentile = share of scenarios *below* the observed value, so a high percentile means the ensemble
-under-projected.) This is the calibration face of the §2.2 low bias — the ensemble under-shoots
-emissions. We do not overstate it: 75th–79th is the upper-middle, **not a tail** — only GDP (1st) and
-solar (90th) are true tails. And with **one point per variable** this is a suggestive diagnostic, not a
-formal PIT test (which needs many origins × targets). "Overconfident" is firm only for solar and GDP.
+This is the calibration face of the §2.2 low bias — the ensemble under-shoots emissions. We do not
+overstate it: 75th–79th is the upper-middle, **not a tail** — only GDP (1st) and solar (90th) are true
+tails. And with **one point per variable** this is a suggestive diagnostic, not a formal PIT test.
 What is solid is the *direction*: reality is rarely near the median ⇒ $`F`$ is not a clean distribution
 to read $`P(\text{NZ2070})`$ from.
 
 ![Where observed 2025 falls in the ensemble cloud](figures/calibration_pit.png)
 
-**2.5 — Variable selection (Part B).** Separation score $`\text{sep} = (\text{median}_{\text{NZ}} - \text{median}_{\text{non-NZ}})/\text{IQR}`$ per
+**2.7 — Variable selection (Part B).** Separation score $`\text{sep} = (\text{median}_{\text{NZ}} - \text{median}_{\text{non-NZ}})/\text{IQR}`$ per
 variable: **Coal +0.46, CO₂ +0.39, Solar −0.32** discriminate; Wind, Nuclear, GDP ≈ 0 do not. The
 three informative variables **disagree in sign**: NZ worse on coal/CO₂, better on solar (the addition
-signature). An L1-LASSO predicting NZ from the errors selects the same three with the same signs.
-Consequence: filter on coal+CO₂+solar jointly — CO₂ alone is a trap (its GDP/intensity errors cancel).
+signature at the level of credibility). An L1-LASSO predicting NZ from the errors selects the same
+three with the same signs. Consequence: filter on coal+CO₂+solar jointly — CO₂ alone is a trap (its
+GDP/intensity errors cancel).
 
 ![Coal, CO₂, solar carry the signal — and disagree](figures/partB1_boxplots.png)
 
-**2.6 — Filtering (Part C): ~20%, not "anything".** Keeping the 25% most accurate and recomputing the
+**2.8 — Filtering (Part C): ~20%, not "anything".** Keeping the 25% most accurate and recomputing the
 net-zero share: **CO₂ → 20%, multivariate → 22%, solar-only → 48%** (naive 34%). So conditioning on
-sensible accuracy criteria yields shares **near 20%**; it rises to 48% only under solar-only filtering, a poor
-criterion since solar is the variable everyone misses. The robust result is the *directional*
+sensible accuracy criteria yields shares **near 20%**; it rises to 48% only under solar-only filtering,
+a poor criterion since solar is the variable everyone misses. The robust result is the *directional*
 dependence on the conditioning variable — the empirical proof of Part 1 (no single unconditional
 probability exists). We label this object the **sensitivity of the net-zero share**, not a revised
 probability.
@@ -222,8 +303,12 @@ decisive variable is substitution (policy and system inertia), not generation co
 | Method | Status |
 |---|---|
 | Scenarios = conditional forecasts | ✅ central reframe (Part 1) |
-| Calibration / PIT | ✅ §2.4 (one point per variable — diagnostic, not formal test) |
-| Skill vs a naive rule | ✅ §2.3 |
-| Wright's law (cost ~ cumulative deployment) | ✅ PV/wind cost projections built (`analyse_pv_wind_wright_costs…`) with a ±2 s.e. learning-rate band |
-| Random walk + variance $`\sigma^2(\tau+\tau^2/m)`$; Bertalanffy–Richards diffusion | ⬜ framed, not fitted (no deployment forecast built yet) |
-| Pooled Student-t, surrogate datasets, MA(1), CRPS/conformal | ⬜ not done — need long, many-point series; here 15 years / 4 points / all-AR6 |
+| Calibration / PIT | ✅ §2.6 (one point per variable — diagnostic, not formal test) |
+| Skill vs a naive rule | ✅ §2.5 |
+| Cross-variable error correlation | ✅ §2.3 (addition signature, Corr coal-solar = −0.28) |
+| Temporal autocorrelation | ✅ §2.4 (GDP structural ρ=0.70, energy non-persistent ρ≈0) |
+| Economy vs energy model split | ✅ §2.2b (economy +613 bias, energy centred) |
+| Vintage analysis | ✅ §2.2c (late more wrong despite more info) |
+| Wright's law (cost ~ cumulative deployment) | ✅ PV/wind cost projections with ±2 s.e. band |
+| Random walk + variance $`\sigma^2(\tau+\tau^2/m)`$; Bertalanffy–Richards diffusion | ⬜ framed, not fitted |
+| Pooled Student-t, surrogate datasets, MA(1), CRPS/conformal | ⬜ not done |
