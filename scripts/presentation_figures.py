@@ -62,12 +62,23 @@ years_num = [int(y) for y in YEARS_PROJ if y in co2.columns]
 mat_nz = co2[co2["nz2070"]][[str(y) for y in years_num]].values
 mat_ot = co2[~co2["nz2070"]][[str(y) for y in years_num]].values
 
-for pct in [5, 10, 25]:
-    ax.fill_between(years_num, np.nanpercentile(mat_nz, pct, axis=0), np.nanpercentile(mat_nz, 100-pct, axis=0), color=C_NZ, alpha=0.08)
-    ax.fill_between(years_num, np.nanpercentile(mat_ot, pct, axis=0), np.nanpercentile(mat_ot, 100-pct, axis=0), color=C_OT, alpha=0.08)
+# Interpolate to smooth the sawtooth
+from scipy.interpolate import interp1d
+years_smooth = np.arange(min(years_num), max(years_num) + 1)
 
-ax.plot(years_num, np.nanmedian(mat_nz, axis=0), color=C_NZ, lw=2, label=f"NZ2070 median (n={len(mat_nz)})")
-ax.plot(years_num, np.nanmedian(mat_ot, axis=0), color=C_OT, lw=2, label=f"non-NZ median (n={len(mat_ot)})")
+for pct in [5, 10, 25]:
+    for mat, color in [(mat_nz, C_NZ), (mat_ot, C_OT)]:
+        lo = np.nanpercentile(mat, pct, axis=0)
+        hi = np.nanpercentile(mat, 100 - pct, axis=0)
+        f_lo = interp1d(years_num, lo, kind='cubic', fill_value='extrapolate')
+        f_hi = interp1d(years_num, hi, kind='cubic', fill_value='extrapolate')
+        ax.fill_between(years_smooth, f_lo(years_smooth), f_hi(years_smooth), color=color, alpha=0.08)
+
+for mat, color, label in [(mat_nz, C_NZ, f"NZ2070 median (n={len(mat_nz)})"),
+                           (mat_ot, C_OT, f"non-NZ median (n={len(mat_ot)})")]:
+    med = np.nanmedian(mat, axis=0)
+    f_med = interp1d(years_num, med, kind='cubic', fill_value='extrapolate')
+    ax.plot(years_smooth, f_med(years_smooth), color=color, lw=2, label=label)
 ax.plot([int(y) for y in OBS_CO2], list(OBS_CO2.values()), "ko-", ms=8, lw=2.5, zorder=10, label="Observed (GCB 2025)")
 ax.set_xlabel("Year"); ax.set_ylabel("Mt CO₂/yr")
 ax.set_title("CO\u2082 emissions: SCI ensemble vs observed 2010\u20132025")
