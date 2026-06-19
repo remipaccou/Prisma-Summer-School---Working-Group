@@ -23,14 +23,17 @@ Four concepts the project rests on:
 1. **Conditional vs unconditional forecast.** A scenario gives $`\hat{y} = f(P)`$: the outcome *given* an
    assumed policy/technology path $`P`$. An unconditional forecast is the outcome marginally — a
    probability. One cannot obtain the second by counting the first.
-2. **Origin × horizon.** A forecast made at origin $`t_0`$ looks out over horizon $`\tau`$. For a random walk
-   with estimated drift, error variance grows as $`\sigma^2(\tau + \tau^2/m)`$ — long horizons are far less
-   constrained than short ones.
-3. **Calibration vs sharpness.** Calibrated ⇒ the PIT (the percentile at which $`y`$ falls in $`F`$) is
-   uniform: reality near the median about half the time. Sharpness = interval width. A narrow
-   interval reality keeps falling outside is overconfident.
-4. **Skill vs a naive benchmark.** $`\text{skill} = |\varepsilon_{\text{model}}| / |\varepsilon_{\text{naive}}|`$; skill $`> 1`$ ⇒ the naive rule
-   wins, i.e. the forecast adds nothing.
+2. **Origin × horizon.** A forecast made earlier has a longer horizon; errors grow with distance.
+   Scenarios from 2015 project 2025 at 10 years; scenarios from 2022 project it at 3 years — yet
+   the latter are more wrong (§2.4), because they embedded more ambitious policy assumptions.
+3. **Skill and calibration.** Skill: does the ensemble beat a trivial extrapolation
+   ($`\text{skill} = |\varepsilon_{\text{ens}}| / |\varepsilon_{\text{rule}}|`$; $`>1`$ ⇒ the rule
+   wins)? Calibration: does reality fall near the centre of the ensemble cloud (PIT ≈ 50th
+   percentile)? Both test whether the ensemble is a usable probability distribution.
+4. **Addition vs substitution.** Models embed a substitution logic: more renewables → less fossil
+   within each scenario. Reality in 2025 shows addition: fossil AND renewable deployment both exceed
+   the ensemble median. This structural mismatch — the world adds clean energy without retiring
+   dirty energy — drives the core findings (§2.5, §2.9, §3.3).
 
 ---
 
