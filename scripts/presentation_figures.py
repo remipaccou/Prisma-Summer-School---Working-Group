@@ -239,49 +239,8 @@ ax.legend(handles=[Patch(facecolor=C_NZ, alpha=0.5, label="NZ2070"),
 fig4.tight_layout(); fig4.savefig(FIG_DIR / "pres_4_boxplots.png", bbox_inches="tight")
 print("  Saved pres_4_boxplots.png")
 
-# ═══════════════════════════════════════════════════════════════════════
-# FIGURE 5: Wright's law PV cost (kept, updated title)
-# ═══════════════════════════════════════════════════════════════════════
-print("Fig 5...")
-fig5, ax = plt.subplots(figsize=SQ)
-
-pv_cost_obs = {2010: 2440, 2012: 1500, 2014: 1100, 2016: 800, 2018: 550, 2020: 380, 2022: 300, 2024: 250}
-pv_cap_obs = {2010: 40, 2012: 100, 2014: 177, 2016: 303, 2018: 486, 2020: 714, 2022: 1050, 2024: 1800}
-
-ln_cap = np.log(list(pv_cap_obs.values()))
-ln_cost = np.log(list(pv_cost_obs.values()))
-b, a = np.polyfit(ln_cap, ln_cost, 1)
-residuals = ln_cost - (a + b * ln_cap)
-se_b = np.sqrt(np.sum(residuals**2) / (len(ln_cap) - 2) / np.sum((ln_cap - ln_cap.mean())**2))
-
-pv = df[df["Variable"] == VAR_SOLAR].copy()
-pv["key"] = pv["Model"] + "|||" + pv["Scenario"]
-pv["nz2070"] = pv["key"].isin(nz_keys)
-proj_years = [int(y) for y in YEARS_PROJ if int(y) >= 2025]
-cap_nz = pv[pv["nz2070"]][[str(y) for y in proj_years]].median().values
-cap_ot = pv[~pv["nz2070"]][[str(y) for y in proj_years]].median().values
-
-cost_nz = np.exp(a + b * np.log(np.maximum(cap_nz, 1)))
-cost_ot = np.exp(a + b * np.log(np.maximum(cap_ot, 1)))
-cost_nz_lo = np.exp(a + (b - 2*se_b) * np.log(np.maximum(cap_nz, 1)))
-cost_nz_hi = np.exp(a + (b + 2*se_b) * np.log(np.maximum(cap_nz, 1)))
-cost_ot_lo = np.exp(a + (b - 2*se_b) * np.log(np.maximum(cap_ot, 1)))
-cost_ot_hi = np.exp(a + (b + 2*se_b) * np.log(np.maximum(cap_ot, 1)))
-
-ax.scatter(list(pv_cost_obs.keys()), list(pv_cost_obs.values()), color="black", s=50, zorder=10, label="Observed PV cost")
-ax.plot(proj_years, cost_nz, color=C_NZ, lw=2, label=f"NZ2070 (Wright, b={b:.2f})")
-ax.fill_between(proj_years, cost_nz_lo, cost_nz_hi, color=C_NZ, alpha=0.15)
-ax.plot(proj_years, cost_ot, color=C_OT, lw=2, label="non-NZ (Wright)")
-ax.fill_between(proj_years, cost_ot_lo, cost_ot_hi, color=C_OT, alpha=0.15)
-ax.set_xlabel("Year"); ax.set_ylabel("PV cost ($/kW)")
-ax.set_title("PV reaches ~$40/kW by 2070\nwhether the world reaches net zero or not")
-ax.set_ylim(0, 2800); ax.set_xlim(2008, 2072); ax.legend(loc="upper right")
-ax.annotate(f"~{cost_nz[-1]:.0f} $/kW", (2070, cost_nz[-1]), (2058, cost_nz[-1]+250),
-            fontsize=9, color=C_NZ, arrowprops=dict(arrowstyle="->", color=C_NZ))
-ax.annotate(f"~{cost_ot[-1]:.0f} $/kW", (2070, cost_ot[-1]), (2058, cost_ot[-1]+400),
-            fontsize=9, color=C_OT, arrowprops=dict(arrowstyle="->", color=C_OT))
-fig5.tight_layout(); fig5.savefig(FIG_DIR / "pres_5_wright_pv.png", bbox_inches="tight")
-print("  Saved pres_5_wright_pv.png")
+# FIGURE 5: uses the original Wright log figure from the full analysis script
+# (copied to figures/final/ separately — not regenerated here)
 
 plt.close("all")
 print("\nDone — 5 figures saved.")
