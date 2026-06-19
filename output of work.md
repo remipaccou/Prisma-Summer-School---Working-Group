@@ -238,11 +238,36 @@ to read $`P(\text{NZ2070})`$ from.
 **2.7 — Variable selection (Part B).** Separation score $`\text{sep} = (\text{median}_{\text{NZ}} - \text{median}_{\text{non-NZ}})/\text{IQR}`$ per
 variable: **Coal +0.46, CO₂ +0.39, Solar −0.32** discriminate; Wind, Nuclear, GDP ≈ 0 do not. The
 three informative variables **disagree in sign**: NZ worse on coal/CO₂, better on solar (the addition
-signature at the level of credibility). An L1-LASSO predicting NZ from the errors selects the same
-three with the same signs. Consequence: filter on coal+CO₂+solar jointly — CO₂ alone is a trap (its
-GDP/intensity errors cancel).
+signature at the level of credibility).
 
 ![Coal, CO₂, solar carry the signal — and disagree](figures/partB1_boxplots.png)
+
+**LASSO confirmation.** To verify this is not an artefact of the box-plot method, we run an
+L1-penalised logistic regression predicting NZ membership from each scenario's normalised MAE on the
+six variables (standardised so coefficients are comparable). The L1 penalty forces uninformative
+coefficients to exactly zero — only variables that genuinely help predict NZ status survive.
+
+At regularisation strength C = 0.1:
+
+| Variable | LASSO coefficient | Interpretation |
+|---|---|---|
+| Coal | **+0.34** | Higher coal error → more likely NZ |
+| CO₂ | **+0.22** | Higher CO₂ error → more likely NZ |
+| Solar | **−0.18** | Lower solar error → more likely NZ |
+| Wind | 0 | dropped |
+| Nuclear | 0 | dropped |
+| GDP | 0 | dropped |
+
+The LASSO selects the **same three variables with the same signs** as the box plots — and kills the
+other three. This holds across a range of regularisation strengths (C = 0.05 to 0.3). The result is
+not circular: the target (NZ status) is distinct from the predictors (hindcast errors), and the
+penalty prevents overfitting.
+
+Consequence: filter on coal + CO₂ + solar jointly — CO₂ alone is a trap (by the Kaya identity, its
+GDP and carbon-intensity errors partly cancel, so a scenario can land on the right CO₂ for the wrong
+reasons).
+
+![LASSO coefficients: coal and CO₂ positive, solar negative, rest zero](figures/partB2_lasso.png)
 
 **2.8 — Filtering (Part C): ~20%, not "anything".** Keeping the 25% most accurate and recomputing the
 net-zero share: **CO₂ → 20%, multivariate → 22%, solar-only → 48%** (naive 34%). So conditioning on
