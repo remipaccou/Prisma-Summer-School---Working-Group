@@ -94,7 +94,7 @@ and credibility filtering (§2.10).*
 **2.1 — Error series; the 2025 undershoot is structural.** The full ensemble (all 1,591 pathways
 2010–2100, with the four observed points) and a zoom on the hindcast window:
 
-![Full SCI ensemble and the observed CO₂ points](figures/co2_overview.png)
+![Full SCI ensemble and the observed CO₂ points](../figures/co2_overview.png)
 
 $`\varepsilon = y - \hat{y}`$ on CO₂ (fossil + industry, Global Carbon Budget 2025; family-weighted mean):
 
@@ -110,7 +110,7 @@ to ≈ +378, so ~75% of the 2020 gap is the shock. The 2025 error is structural:
 pre-COVID trend (~39,400 extrapolated), so reality did not deviate — the ensemble did, by assuming a
 peak-and-decline. The +2,582 survives every detrending.
 
-![COVID (2020) vs structural (2025)](figures/co2_finding1_simple.png)
+![COVID (2020) vs structural (2025)](../figures/co2_finding1_simple.png)
 
 **2.2 — Bias by outcome (NZ vs non-NZ).** Mean error ME = mean over years of $`\varepsilon`$, family-weighted: NZ2070 **+650** vs
 non-NZ **+216**. (The non-NZ *level* is weighting-dependent — near 0 under scenario weighting — so we
@@ -119,7 +119,7 @@ magnitudes (MAE ≈ 6% vs 5%) are close: this is a **bias** (systematic directio
 It is also partly definitional — reaching net-zero by 2070 forces an early downturn, so such pathways
 must under-project a reality that did not turn.
 
-![NZ scenarios biased low, not more imprecise](figures/nz_bias.png)
+![NZ scenarios biased low, not more imprecise](../figures/nz_bias.png)
 
 **2.3 — Bias by model type (economy vs energy).** Classifying the 17 model families by economic structure — **economy**
 (endogenous macro: REMIND, WITCH, AIM, GEM-E3, IMACLIM, EPPA, CGEM, MERGE; 8 families, 701
@@ -182,7 +182,7 @@ assumption.
 Nuclear is overestimated (models expected expansion beyond the post-Fukushima stagnation) and GDP
 even more so (−13,400 B$). Both are largely independent of the fossil-renewable axis (Corr ≈ 0.05).
 
-![ME at 2025 for all six variables and cross-variable correlation](figures/partA2_fig1_diagnostics.png)
+![ME at 2025 for all six variables and cross-variable correlation](../figures/partA2_fig1_diagnostics.png)
 
 **2.6 — Error structure: temporal autocorrelation.** Is the error fixed at the base year or does it
 evolve? *(Pearson autocorrelation across scenarios)* We compute ρ($`\varepsilon_{2010}, \varepsilon_{2025}`$) across scenarios for each variable:
@@ -219,7 +219,7 @@ wins on CO₂/coal/GDP precisely because reality stayed on trend while the ensem
 nuclear's skill 9.9 is **hollow** — nuclear is flat (375→377 GW), so "nothing changes" wins by
 construction. Honest statement: on the on-trend variables the ensemble shows no skill against a ruler.
 
-![A trivial rule beats the ensemble on the on-trend variables](figures/co2_benchmark.png)
+![A trivial rule beats the ensemble on the on-trend variables](../figures/co2_benchmark.png)
 
 **2.8 — Calibration (a diagnostic, not a formal test).** *Purpose: test whether the ensemble is a well-calibrated probability distribution — if not, one cannot read P(NZ2070) from it.* Percentile of observed 2025 *(PIT — probability integral transform)* in $`F`$:
 
@@ -235,14 +235,14 @@ tails. And with **one point per variable** this is a suggestive diagnostic, not 
 What is solid is the *direction*: reality is rarely near the median ⇒ $`F`$ is not a clean distribution
 to read $`P(\text{NZ2070})`$ from.
 
-![Where observed 2025 falls in the ensemble cloud](figures/calibration_pit.png)
+![Where observed 2025 falls in the ensemble cloud](../figures/calibration_pit.png)
 
 **2.9 — Variable selection (Part B).** Separation score *(normalised effect size, akin to Cohen's d)* $`\text{sep} = (\text{median}_{\text{NZ}} - \text{median}_{\text{non-NZ}})/\text{IQR}`$ per
 variable: **Coal +0.46, CO₂ +0.39, Solar −0.32** discriminate; Wind, Nuclear, GDP ≈ 0 do not. The
 three informative variables **disagree in sign**: NZ worse on coal/CO₂, better on solar (the addition
 signature at the level of credibility).
 
-![Coal, CO₂, solar carry the signal — and disagree](figures/partB1_boxplots.png)
+![Coal, CO₂, solar carry the signal — and disagree](../figures/partB1_boxplots.png)
 
 **LASSO confirmation.** To verify this is not an artefact of the box-plot method, we run an
 L1-penalised logistic regression *(probabilistic classification model)* predicting NZ membership from each scenario's normalised MAE on the
@@ -269,7 +269,7 @@ Consequence: filter on coal + CO₂ + solar jointly — CO₂ alone is a trap (b
 GDP and carbon-intensity errors partly cancel, so a scenario can land on the right CO₂ for the wrong
 reasons).
 
-![LASSO coefficients: coal and CO₂ positive, solar negative, rest zero](figures/partB2_lasso.png)
+![LASSO coefficients: coal and CO₂ positive, solar negative, rest zero](../figures/partB2_lasso.png)
 
 **2.10 — Filtering (Part C): ~20%, not "anything".** Keeping the 25% most accurate and recomputing the
 net-zero share: **CO₂ → 20%, multivariate → 22%, solar-only → 48%** (naive 34%). So conditioning on
@@ -279,7 +279,7 @@ dependence on the conditioning variable — the empirical proof of Part 1 (no si
 probability exists). We label this object the **sensitivity of the net-zero share**, not a revised
 probability.
 
-![Net-zero share ~20% under sensible filters](figures/partC_sensitivity.png)
+![Net-zero share ~20% under sensible filters](../figures/partC_sensitivity.png)
 
 ---
 
@@ -301,7 +301,7 @@ out-of-sample test — the AR5 vintage (~2014 forecasting 2025) would provide on
 of capacity) projects ~38 USD/kW by 2070 for net-zero pathways and ~43 for non-net-zero ones. The two
 projections are nearly identical — clean tech becomes cheap whether or not the world reaches net-zero.
 
-![PV cost (Wright): collapse, and NZ ≈ non-NZ](figures/pv_wright_cost_projection_to_2070_log.png)
+![PV cost (Wright): collapse, and NZ ≈ non-NZ](../figures/pv_wright_cost_projection_to_2070_log.png)
 
 The shaded band is a **±2 s.e. (≈95%) learning-rate uncertainty**, propagated from the standard error
 of the fitted exponent through the projection. Even at its edges the net-zero and non-net-zero bands
