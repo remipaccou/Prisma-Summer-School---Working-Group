@@ -14,11 +14,11 @@ In `figures/final/`:
 
 | Slide | Figure | Title |
 |---|---|---|
-| 1 | `pres_1_co2_ensemble.png` | The ensemble missed 2025: reality exceeded most projections |
-| 2 | `pres_2_nz_bias.png` | Net-zero scenarios systematically underestimate emissions |
-| 3 | `pres_3_skill.png` | A straight line beats the ensemble on 4 out of 6 variables |
-| 4 | `pres_4_boxplots.png` | Coal and solar separate NZ from non-NZ — in opposite directions |
-| 5 | `pres_5_wright_pv.png` | PV reaches ~$40/kW by 2070 whether the world reaches net zero or not |
+| 1 | `pres_1_co2_ensemble.png` | CO₂ emissions: SCI ensemble vs observed 2010–2025 |
+| 2 | `pres_2_nz_bias.png` | CO₂ error distribution: NZ2070 vs non-NZ scenarios |
+| 3 | `pres_3_skill.png` | Forecast skill: ensemble vs linear extrapolation at 2025 |
+| 4 | `pres_4_boxplots.png` | Variable separation: NZ vs non-NZ across six observables |
+| 5 | `pres_5_wright_pv.png` | PV cost projection to 2070: Wright's law applied to NZ and non-NZ trajectories |
 
 ## Team
 
