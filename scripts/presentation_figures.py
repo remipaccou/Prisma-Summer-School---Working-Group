@@ -39,7 +39,14 @@ fig1, ax = plt.subplots(figsize=SQ)
 years_num = [int(y) for y in YEARS_PROJ if y in co2.columns]
 mat_nz = co2[co2["nz2070"]][[str(y) for y in years_num]].values
 mat_ot = co2[~co2["nz2070"]][[str(y) for y in years_num]].values
-years_smooth = np.arange(min(years_num), max(years_num)+1)
+# Smooth annual interpolation up to 2050, then raw decadal points after
+years_before = [y for y in years_num if y <= 2050]
+years_after = [y for y in years_num if y > 2050 and y % 10 == 0]
+idx_before = [years_num.index(y) for y in years_before]
+idx_after = [years_num.index(y) for y in years_after]
+years_smooth_before = np.arange(min(years_num), 2051)
+years_plot_after = np.array(years_after)
+years_all = np.concatenate([years_smooth_before, years_plot_after])
 
 for pct in [5, 10, 25]:
     for mat, color in [(mat_nz, C_NZ), (mat_ot, C_OT)]:
@@ -47,16 +54,24 @@ for pct in [5, 10, 25]:
         hi = np.nanpercentile(mat, 100-pct, axis=0)
         valid = ~(np.isnan(lo)|np.isnan(hi))
         if valid.sum() < 2: continue
-        lo_s = np.interp(years_smooth, np.array(years_num)[valid], lo[valid])
-        hi_s = np.interp(years_smooth, np.array(years_num)[valid], hi[valid])
-        ax.fill_between(years_smooth, lo_s, hi_s, color=color, alpha=0.08)
+        yv = np.array(years_num)[valid]; lov = lo[valid]; hiv = hi[valid]
+        lo_before = np.interp(years_smooth_before, yv, lov)
+        hi_before = np.interp(years_smooth_before, yv, hiv)
+        lo_after = np.interp(years_plot_after, yv, lov)
+        hi_after = np.interp(years_plot_after, yv, hiv)
+        lo_all = np.concatenate([lo_before, lo_after])
+        hi_all = np.concatenate([hi_before, hi_after])
+        ax.fill_between(years_all, lo_all, hi_all, color=color, alpha=0.08)
 
 for mat, color, label in [(mat_nz, C_NZ, f"NZ2070 median (n={len(mat_nz)})"),
                            (mat_ot, C_OT, f"non-NZ median (n={len(mat_ot)})")]:
     med = np.nanmedian(mat, axis=0)
     valid = ~np.isnan(med)
-    med_s = np.interp(years_smooth, np.array(years_num)[valid], med[valid])
-    ax.plot(years_smooth, med_s, color=color, lw=2, label=label)
+    yv = np.array(years_num)[valid]; mv = med[valid]
+    med_before = np.interp(years_smooth_before, yv, mv)
+    med_after = np.interp(years_plot_after, yv, mv)
+    med_all = np.concatenate([med_before, med_after])
+    ax.plot(years_all, med_all, color=color, lw=2, label=label)
 
 ax.plot([int(y) for y in OBS_CO2], list(OBS_CO2.values()), "ko-", ms=8, lw=2.5, zorder=10, label="Observed (GCB 2025)")
 ax.set_xlabel("Year"); ax.set_ylabel("Mt CO\u2082/yr")
